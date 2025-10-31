@@ -125,7 +125,7 @@ export const HeroSection = () => {
           visible: { y: 0, opacity: 1, transition: { duration: 0.8 } },
         }}
       >
-        <span className="block text-foreground">Je suis Mahamadou</span>
+        <span className="block text-foreground">Mahamadou</span>
         <motion.span
           className="block bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent mt-2"
           animate={{

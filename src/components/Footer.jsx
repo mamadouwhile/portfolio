@@ -11,9 +11,9 @@ export const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
-        { icon: <Linkedin size={18} />, href: "https://linkedin.com/in/mahamadou-dembele", label: "LinkedIn" },
-        { icon: <Github size={18} />, href: "https://github.com/the-mahamadou", label: "GitHub" },
-        { icon: <Mail size={18} />, href: "mailto:mahamadou.dembele@example.com", label: "Email" },
+        { icon: <Linkedin size={18} />, href: "https://linkedin.com/in/mahamadou-dembele-56a69925", label: "LinkedIn" },
+        { icon: <Github size={18} />, href: "https://github.com/mamadouwhile", label: "GitHub" },
+        { icon: <Mail size={18} />, href: "mailto:mdembele2711@gmail.com", label: "Email" },
     ];
 
     const quickLinks = [
@@ -24,8 +24,8 @@ export const Footer = () => {
     ];
 
     const contactInfo = [
-        { icon: <Mail size={16} />, text: "mahamadou.dembele@example.com", href: "mailto:mahamadou.dembele@example.com" },
-        { icon: <Phone size={16} />, text: "+33 6 00 00 00 00", href: "tel:+33600000000" },
+        { icon: <Mail size={16} />, text: "mdembele2711@gmail.com", href: "mailto:mdembele2711@gmail.com" },
+        { icon: <Phone size={16} />, text: "+33 7 53 81 35 45", href: "tel:+33753813545" },
     ];
 
     const containerVariants = {

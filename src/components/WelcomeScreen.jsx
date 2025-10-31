@@ -9,7 +9,6 @@ const WelcomeScreen = ({ onWelcomeComplete }) => {
     const [typedText, setTypedText] = useState("");
     const { theme } = useTheme();
 
-    // 🎨 Thèmes dynamiques
     const colors = {
         light: {
             primary: "hsl(222.2 47.4% 11.2%)",
@@ -28,36 +27,28 @@ const WelcomeScreen = ({ onWelcomeComplete }) => {
     };
 
     const currentColors = colors[theme] || colors.dark;
-
-    // 🌐 Ton URL perso (modifie si tu veux)
     const portfolioUrl = "mahamadouwhile";
 
-    // 💬 Messages qui défilent
     const welcomeMessages = [
         "Développeur Web & Testeur Automaticien",
         "Créateur d’expériences numériques",
         "Passionné par la qualité et la performance",
     ];
 
-    // 🕒 Phases d'affichage
+    // Séquençage
     useEffect(() => {
-        const phase1 = setTimeout(() => setPhase(1), 800);
-        const phase2 = setTimeout(() => setPhase(2), 1600);
-        const phase3 = setTimeout(() => setPhase(3), 2400);
-        const complete = setTimeout(() => {
-            setExitAnimation(true);
-            setTimeout(onWelcomeComplete, 1000);
-        }, 5000);
-
-        return () => {
-            clearTimeout(phase1);
-            clearTimeout(phase2);
-            clearTimeout(phase3);
-            clearTimeout(complete);
-        };
+        const timers = [
+            setTimeout(() => setPhase(1), 1000),
+            setTimeout(() => setPhase(2), 2000),
+            setTimeout(() => {
+                setExitAnimation(true);
+                setTimeout(onWelcomeComplete, 1000);
+            }, 5500),
+        ];
+        return () => timers.forEach(clearTimeout);
     }, [onWelcomeComplete]);
 
-    // ⌨️ Effet de texte tapé
+    // Animation du texte tapé
     useEffect(() => {
         if (phase >= 2) {
             let i = 0;
@@ -68,109 +59,127 @@ const WelcomeScreen = ({ onWelcomeComplete }) => {
                 } else {
                     clearInterval(typingInterval);
                 }
-            }, 40);
+            }, 60);
             return () => clearInterval(typingInterval);
         }
     }, [phase]);
 
-    // 🎬 Animations
     const containerVariants = {
         hidden: { opacity: 0 },
-        visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } },
+        visible: { opacity: 1 },
         exit: {
-            y: "-100vh",
+            scale: 1.1,
             opacity: 0,
-            transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+            transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] },
         },
     };
 
-    const contentVariants = {
-        hidden: { y: 30, opacity: 0 },
-        visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-    };
-
-    const underlineVariants = {
-        hidden: { scaleX: 0 },
-        visible: { scaleX: 1, transition: { delay: 0.8, duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+    const fadeUp = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
     };
 
     const cursorVariants = {
-        blinking: { opacity: [0, 0, 1, 1], transition: { duration: 1, repeat: Infinity } },
+        blinking: {
+            opacity: [0, 0, 1, 1],
+            transition: { duration: 1, repeat: Infinity },
+        },
     };
 
     return (
-        <div className="fixed inset-0 z-50 overflow-hidden">
+        <motion.div
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center text-center overflow-hidden"
+            style={{ backgroundColor: currentColors.background }}
+            variants={containerVariants}
+            initial="hidden"
+            animate={exitAnimation ? "exit" : "visible"}
+        >
+            {/* 🌈 Orbe de fond animé */}
             <motion.div
-                className="h-full w-full flex items-center justify-center p-4"
-                style={{ backgroundColor: currentColors.background }}
-                variants={containerVariants}
-                initial="hidden"
-                animate={exitAnimation ? "exit" : "visible"}
-            >
-                {/* 🌈 Arrière-plan animé */}
-                <motion.div className="absolute inset-0 -z-10 overflow-hidden opacity-25">
+                className="absolute w-[600px] h-[600px] rounded-full blur-[150px]"
+                style={{
+                    background: `radial-gradient(circle, ${currentColors.secondary}, transparent 70%)`,
+                }}
+                animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.5, 0.8, 0.5],
+                    rotate: [0, 360],
+                }}
+                transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* 💻 Icône principale avec effet lumineux */}
+            {phase >= 0 && (
+                <motion.div
+                    variants={fadeUp}
+                    className="flex flex-col items-center mb-6"
+                >
                     <motion.div
-                        className="absolute top-1/4 left-1/4 w-40 h-40 rounded-full blur-[70px]"
+                        className="p-6 rounded-full border-2 shadow-lg"
                         style={{
-                            background: `linear-gradient(to right, ${currentColors.primary}, ${currentColors.secondary})`,
+                            borderColor: currentColors.secondary,
+                            color: currentColors.secondary,
                         }}
-                        animate={{ x: [0, 30, 0], y: [0, -40, 0] }}
-                        transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-                    />
-                </motion.div>
-
-                {/* 💡 Contenu principal */}
-                <div className="w-full max-w-2xl mx-auto text-center px-4">
-                    <motion.div className="space-y-6">
-                        {phase >= 0 && (
-                            <motion.div variants={contentVariants}>
-                                <motion.div
-                                    className="text-sm md:text-lg font-mono inline-flex items-center gap-2 px-4 py-2 rounded-full border"
-                                    style={{
-                                        color: currentColors.primary,
-                                        backgroundColor: theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
-                                        borderColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
-                                    }}
-                                    initial={{ scale: 0.9, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                >
-                                    <Code2 className="h-4 w-4" />
-                                    {welcomeMessages[phase % welcomeMessages.length]}
-                                </motion.div>
-                            </motion.div>
-                        )}
-
-                        {phase >= 1 && (
-                            <motion.h1
-                                className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight"
-                                style={{ color: currentColors.primary }}
-                                variants={contentVariants}
-                            >
-                                Bienvenue sur <span className="text-blue-500">mon portfolio</span>
-                            </motion.h1>
-                        )}
-
-                        {phase >= 2 && (
-                            <motion.div className="text-base sm:text-lg md:text-xl font-light" style={{ color: currentColors.muted }} variants={contentVariants}>
-                                <motion.div
-                                    className="mt-4 font-mono flex justify-center items-center"
-                                    style={{ color: currentColors.link }}
-                                >
-                                    {typedText}
-                                    <motion.span
-                                        className="ml-1 h-5 w-0.5 inline-block"
-                                        style={{ backgroundColor: currentColors.link }}
-                                        variants={cursorVariants}
-                                        animate="blinking"
-                                    />
-                                </motion.div>
-                                <motion.p className="mt-2 text-sm opacity-70">(Développé avec passion par Mahamadou)</motion.p>
-                            </motion.div>
-                        )}
+                        animate={{
+                            scale: [1, 1.05, 1],
+                            textShadow: [
+                                `0 0 10px ${currentColors.secondary}`,
+                                `0 0 20px ${currentColors.secondary}`,
+                                `0 0 10px ${currentColors.secondary}`,
+                            ],
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                    >
+                        <Code2 className="w-10 h-10" />
                     </motion.div>
-                </div>
-            </motion.div>
-        </div>
+                </motion.div>
+            )}
+
+            {/* 💬 Texte principal */}
+            {phase >= 1 && (
+                <motion.h1
+                    className="text-4xl md:text-6xl font-bold mb-4"
+                    style={{ color: currentColors.primary }}
+                    variants={fadeUp}
+                >
+                    Bienvenue sur{" "}
+                    <motion.span
+                        style={{ color: currentColors.link }}
+                        animate={{
+                            textShadow: [
+                                `0 0 5px ${currentColors.link}`,
+                                `0 0 15px ${currentColors.link}`,
+                                `0 0 5px ${currentColors.link}`,
+                            ],
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                    >
+                        mon portfolio
+                    </motion.span>
+                </motion.h1>
+            )}
+
+            {/* 🖋️ Typing animation */}
+            {phase >= 2 && (
+                <motion.div variants={fadeUp} className="font-mono text-lg mt-2">
+                    <motion.span style={{ color: currentColors.link }}>
+                        {typedText}
+                    </motion.span>
+                    <motion.span
+                        className="ml-1 h-5 w-0.5 inline-block"
+                        style={{ backgroundColor: currentColors.link }}
+                        variants={cursorVariants}
+                        animate="blinking"
+                    />
+                    <p
+                        className="text-sm opacity-70 mt-3"
+                        style={{ color: currentColors.muted }}
+                    >
+                        (Développé avec passion par Mahamadou)
+                    </p>
+                </motion.div>
+            )}
+        </motion.div>
     );
 };
 
