@@ -82,7 +82,7 @@ export const AboutSection = () => {
                         <div className="bg-card/50 border border-border rounded-3xl p-8 backdrop-blur-xl shadow-2xl">
                             <div className="flex flex-col md:flex-row items-center gap-8">
                                 <div className="w-32 h-32 rounded-2xl overflow-hidden border-4 border-primary/20 shadow-2xl">
-                                    <img src="/profile-logo.png" alt="Mahamadou Dembele" className="w-full h-full object-cover" />
+                                    <img src="/profil.jpeg" alt="Mahamadou Dembele" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="flex-1 text-center md:text-left">
                                     <h2 className="text-3xl font-bold mb-2">Mahamadou Dembele</h2>

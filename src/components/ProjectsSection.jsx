@@ -13,7 +13,7 @@ const projects = [
         category: "Développement Web",
         description:
             "Développement du site e-commerce de Distri2B avec Symfony et React. Gestion des produits, du stock et du parcours client complet.",
-        image: "/projects/distri2b.png",
+        image: "/projects/projet3.png",
         tags: ["Symfony", "React", "MySQL", "API Platform"],
         accentColor: "from-blue-500 to-cyan-600",
         status: "Terminé",
@@ -29,7 +29,7 @@ const projects = [
         category: "Tests & Automatisation",
         description:
             "Participation au développement du site 07ZR en React. Réalisation des tests automatisés avec Selenium (Java) et des tests de charge avec JMeter.",
-        image: "/projects/07zr.png",
+        image: "/projects/projet2.png",
         tags: ["React", "Selenium", "Java", "JMeter", "CI/CD"],
         accentColor: "from-emerald-500 to-teal-600",
         status: "En production",
@@ -45,7 +45,7 @@ const projects = [
         category: "Tests & Automatisation",
         description:
             "Réalisation d’un test de charge complet du site Mecazen avec JMeter et BrowserStack. Analyse des performances, compatibilité multi-navigateurs et optimisation du parcours utilisateur.",
-        image: "/projects/mecazen.png",
+        image: "/projects/projet1.png",
         tags: ["JMeter", "BrowserStack", "Performance Testing", "QA"],
         accentColor: "from-orange-500 to-amber-600",
         status: "Terminé",
