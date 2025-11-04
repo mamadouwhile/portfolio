@@ -211,7 +211,7 @@ export const HeroSection = () => {
         </motion.a>
 
         <motion.a
-          href="/cv_mahamadou_dembele.pdf"
+          href="/mahamadou-dembele.pdf"
           download
           className="group relative overflow-hidden px-6 py-4 rounded-xl font-semibold border border-border text-muted-foreground hover:border-primary/30 transition-all duration-300 bg-background/60 backdrop-blur-sm text-sm flex items-center justify-center gap-2"
           whileHover={{ scale: 1.05, y: -2 }}
