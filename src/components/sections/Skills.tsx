@@ -8,7 +8,7 @@ export function Skills() {
         {skillGroups.map((group) => (
           <div key={group.category}>
             <h3 className="font-medium">{group.category}</h3>
-            <ul className="mt-2 text-sm text-muted">
+            <ul className="text-muted mt-2 text-sm">
               {group.skills.map((skill) => (
                 <li key={skill}>{skill}</li>
               ))}

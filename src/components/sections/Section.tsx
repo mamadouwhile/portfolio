@@ -13,7 +13,11 @@ export function Section({ id, title, className, children }: SectionProps) {
   const headingId = id ? `${id}-title` : undefined;
 
   return (
-    <section id={id} aria-labelledby={headingId} className={cn("mx-auto max-w-6xl px-4 py-12", className)}>
+    <section
+      id={id}
+      aria-labelledby={headingId}
+      className={cn("mx-auto max-w-6xl px-4 py-12", className)}
+    >
       <h2 id={headingId} className="mb-6 text-2xl font-semibold">
         {title}
       </h2>
