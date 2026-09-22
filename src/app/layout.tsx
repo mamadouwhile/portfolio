@@ -48,7 +48,6 @@ export const metadata: Metadata = {
     "TypeScript",
   ],
   alternates: { canonical: "/" },
-  robots: { index: true, follow: true },
   openGraph: {
     type: "profile",
     locale: "fr_FR",
