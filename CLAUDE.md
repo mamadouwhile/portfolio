@@ -29,6 +29,16 @@ chaque push déclenche un déploiement (preview sur les branches, production sur
   Jamais de couleur en dur dans les composants.
 - Typographie : Space Grotesk (titres, `font-display`), Inter (texte), Geist Mono (code/labels).
 - Thème sombre par défaut via `next-themes` (classe `.dark`, persistance localStorage `theme`).
+- **Échelle d'espacement (dense)** — à respecter partout, ne pas réintroduire de `py-24+` :
+  - Section (`Section.tsx`) : `py-10 md:py-14 lg:py-16`, séparées par un filet `border-t`.
+  - En-tête de section → contenu : `mt-8 md:mt-10` ; eyebrow → titre `mt-2` ; titre → lead `mt-3`.
+  - Sous-blocs d'une même section : `mt-12` ; grilles de cards : `gap-4` ; colonnes texte/grille :
+    `gap-6 lg:gap-10`.
+  - Cards : `p-5` (`md:p-6` pour les grandes) ; timeline : `pb-8` entre items.
+  - Hero : `pt-10 md:pt-14 lg:pt-16`, `pb-10 md:pb-12`, suivi du bandeau « Stack principale ».
+  - Footer : CTA `py-12 md:py-14`, colonnes `py-10`.
+- **Typographie** : titres `leading-[1.1]` (hero `leading-[1.05]`), H2 `text-3xl md:text-4xl`,
+  hero `text-4xl sm:text-5xl lg:text-6xl`, lead `text-base md:text-lg`.
 - Animations : Framer Motion sous `MotionConfig reducedMotion="user"` ; transitions de page dans
   `src/app/template.tsx`.
 
@@ -49,7 +59,7 @@ src/
   app/          routes (App Router) + api/contact/route.ts
   components/
     layout/     Header, Footer, Navbar (indicateur « disponible en freelance »)
-    sections/   Hero, About, Skills, Projects, Experience, Contact, CTA
+    sections/   Hero, About, Skills, Projects, Experience, Contact (CTA final dans le Footer)
     ui/         composants shadcn
   data/         projects.ts, experience.ts, skills.ts, site.ts — source unique du contenu
   lib/          utils, constants, variants Framer Motion

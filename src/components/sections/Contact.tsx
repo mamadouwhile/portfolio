@@ -20,8 +20,8 @@ export function Contact() {
       title="Un projet en tête ? Parlons-en."
       lead="Site vitrine, plateforme, application mobile ou base de SaaS : décrivez votre besoin, je vous réponds avec une première approche."
     >
-      <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
-        <Reveal className="space-y-8">
+      <div className="grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-10">
+        <Reveal className="space-y-6">
           <AvailabilityBadge />
           <div>
             <p className="font-mono text-xs tracking-widest text-muted uppercase">Localisation</p>

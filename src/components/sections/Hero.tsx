@@ -5,12 +5,20 @@ import { Reveal } from "@/components/motion/Reveal";
 import { HeroSpotlight } from "@/components/sections/HeroSpotlight";
 import { projects } from "@/data/projects";
 import { site } from "@/data/site";
+import { skillGroups } from "@/data/skills";
+import { techIcons } from "@/lib/tech-icons";
 
 const featured = projects.find((project) => project.featured);
 const productionCount = projects.filter((project) => project.status === "production").length;
 const apiProjectsCount = projects.filter((project) =>
   project.repos.some((repo) => repo.label.includes("api")),
 ).length;
+
+/** Bandeau « stack principale » : frontend + backend, uniquement les technos avec logo. */
+const coreStack = skillGroups
+  .filter((group) => group.id === "frontend" || group.id === "backend")
+  .flatMap((group) => group.skills)
+  .filter((skill) => techIcons[skill.name] && !skill.name.startsWith("Architecture"));
 
 const stats = [
   { value: projects.length, label: "projets présentés" },
@@ -23,7 +31,7 @@ export function Hero() {
     <HeroSpotlight>
       <section
         aria-labelledby="hero-title"
-        className="mx-auto grid max-w-6xl gap-12 px-4 pt-16 pb-20 md:px-6 md:pt-24 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:pb-28"
+        className="mx-auto grid max-w-6xl gap-10 px-4 pt-10 pb-10 md:px-6 md:pt-14 md:pb-12 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-12 lg:pt-16"
       >
         <div className="min-w-0">
           <Reveal>
@@ -34,7 +42,7 @@ export function Hero() {
           <Reveal delay={0.05}>
             <h1
               id="hero-title"
-              className="mt-5 text-4xl leading-[1.05] font-semibold text-balance sm:text-5xl lg:text-6xl"
+              className="mt-4 text-4xl leading-[1.05] font-semibold text-balance sm:text-5xl lg:text-6xl"
             >
               Des idées aux produits numériques{" "}
               <span className="relative whitespace-nowrap text-accent">
@@ -48,12 +56,12 @@ export function Hero() {
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-6 max-w-xl text-lg text-pretty text-muted">
+            <p className="mt-5 max-w-xl text-base text-pretty text-muted md:text-lg">
               Développeur fullstack, du code à la mise en production. {site.description}
             </p>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/projects"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:-translate-y-0.5"
@@ -73,7 +81,7 @@ export function Hero() {
             </div>
           </Reveal>
           <Reveal delay={0.2}>
-            <dl className="mt-12 grid max-w-lg grid-cols-3 gap-4 border-t border-border pt-6">
+            <dl className="mt-8 grid max-w-lg grid-cols-3 gap-4 border-t border-border pt-5">
               {stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col gap-1">
                   <dt className="text-xs text-muted">{stat.label}</dt>
@@ -127,6 +135,22 @@ export function Hero() {
           </figure>
         </Reveal>
       </section>
+      <div className="border-y border-border bg-surface/50">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 md:px-6">
+          <p className="font-mono text-xs tracking-widest text-muted uppercase">Stack principale</p>
+          <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            {coreStack.map((skill) => {
+              const Icon = techIcons[skill.name];
+              return (
+                <li key={skill.name} className="flex items-center gap-2 text-sm text-muted">
+                  {Icon ? <Icon className="size-4" aria-hidden /> : null}
+                  {skill.name}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
     </HeroSpotlight>
   );
 }

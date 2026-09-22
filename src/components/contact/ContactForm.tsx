@@ -84,15 +84,15 @@ export function ContactForm() {
       noValidate
       onSubmit={handleSubmit}
       aria-describedby="contact-feedback"
-      className="relative rounded-2xl border border-border bg-surface p-6 md:p-8"
+      className="relative rounded-2xl border border-border bg-surface p-5 md:p-6"
     >
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         {fields.map((field) => {
           const error = errors[field.name];
           const inputId = `contact-${field.name}`;
           const errorId = `${inputId}-error`;
           const inputClass = cn(
-            "mt-2 w-full rounded-xl border bg-background px-4 py-3 text-base text-foreground transition-colors focus:border-accent",
+            "mt-1.5 w-full rounded-xl border bg-background px-3.5 py-2.5 text-base text-foreground transition-colors focus:border-accent",
             error ? "border-red-500" : "border-border",
           );
           const common = {
@@ -110,7 +110,7 @@ export function ContactForm() {
                 {field.label}
               </label>
               {field.type === "textarea" ? (
-                <textarea {...common} rows={6} className={cn(inputClass, "resize-y")} />
+                <textarea {...common} rows={5} className={cn(inputClass, "resize-y")} />
               ) : (
                 <input
                   {...common}
@@ -135,7 +135,7 @@ export function ContactForm() {
         <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p
           id="contact-feedback"
           role="status"

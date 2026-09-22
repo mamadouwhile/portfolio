@@ -25,7 +25,7 @@ export function Experience() {
               as="li"
               key={item.title}
               delay={index * 0.08}
-              className="relative pb-12 pl-14 last:pb-0"
+              className="relative pb-8 pl-12 last:pb-0"
             >
               <span
                 aria-hidden="true"
@@ -36,10 +36,10 @@ export function Experience() {
               <p className="font-mono text-xs tracking-widest text-accent uppercase">
                 {item.period}
               </p>
-              <h3 className="mt-2 text-xl font-semibold">{item.title}</h3>
+              <h3 className="mt-1 text-xl font-semibold">{item.title}</h3>
               <p className="text-sm text-muted">{item.organization}</p>
-              <p className="mt-3 text-pretty text-muted">{item.description}</p>
-              <ul className="mt-4 flex flex-wrap gap-2" aria-label="Points clés">
+              <p className="mt-2 text-pretty text-muted">{item.description}</p>
+              <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Points clés">
                 {item.highlights.map((highlight) => (
                   <li
                     key={highlight}

@@ -20,6 +20,7 @@ export function HeroSpotlight({ children }: { children: ReactNode }) {
   return (
     <div
       ref={ref}
+      data-hero=""
       onPointerMove={handlePointerMove}
       className="group/hero relative isolate overflow-hidden [--x:70%] [--y:30%]"
     >

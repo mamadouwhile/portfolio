@@ -13,9 +13,9 @@ export function Footer() {
   const socials = site.socials.filter((social) => social.href);
 
   return (
-    <footer className="mt-12 border-t border-border bg-surface/40">
+    <footer className="border-t border-border bg-surface/40">
       <FooterCta />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-[2fr_1fr_1fr] md:px-6">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-[2fr_1fr_1fr] md:px-6">
         <div>
           <p className="font-display text-lg font-semibold">
             {site.name}
@@ -27,7 +27,7 @@ export function Footer() {
 
         <nav aria-label="Pied de page">
           <p className="font-mono text-xs tracking-widest text-muted uppercase">Navigation</p>
-          <ul className="mt-4 space-y-2 text-sm">
+          <ul className="mt-3 space-y-1.5 text-sm">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
@@ -43,7 +43,7 @@ export function Footer() {
 
         <div>
           <p className="font-mono text-xs tracking-widest text-muted uppercase">Réseaux</p>
-          <ul className="mt-4 space-y-2 text-sm">
+          <ul className="mt-3 space-y-1.5 text-sm">
             {socials.map((social) => {
               const Icon = socialIcons[social.platform];
               return (
@@ -65,7 +65,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-border">
-        <p className="mx-auto max-w-6xl px-4 py-6 text-xs text-muted md:px-6">
+        <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-muted md:px-6">
           © {new Date().getFullYear()} {site.name} — Conçu et développé avec Next.js.
         </p>
       </div>

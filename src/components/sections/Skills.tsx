@@ -30,7 +30,7 @@ export function Skills() {
               key={group.id}
               delay={index * 0.05}
               className={cn(
-                "flex flex-col rounded-2xl border border-border bg-surface p-6",
+                "flex flex-col rounded-2xl border border-border bg-surface p-5",
                 layout[group.id],
               )}
             >
@@ -40,11 +40,11 @@ export function Skills() {
                 </span>
                 <h3 className="text-lg font-semibold">{group.category}</h3>
               </div>
-              <p className="mt-3 text-sm text-muted">{group.summary}</p>
+              <p className="mt-2 text-sm text-muted">{group.summary}</p>
 
               <ul
                 className={cn(
-                  "mt-6 grid gap-2",
+                  "mt-4 grid gap-2",
                   isWide ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1",
                 )}
               >
@@ -54,7 +54,7 @@ export function Skills() {
                     <li
                       key={skill.name}
                       className={cn(
-                        "flex items-center gap-3 rounded-xl border border-border bg-background px-3 py-2.5 text-sm",
+                        "flex items-center gap-3 rounded-xl border border-border bg-background px-3 py-2 text-sm",
                       )}
                     >
                       {Icon ? <Icon className="size-4 shrink-0 text-muted" aria-hidden /> : null}

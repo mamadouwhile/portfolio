@@ -48,10 +48,10 @@ export function About() {
           <Reveal
             key={role.label}
             delay={index * 0.08}
-            className="rounded-2xl border border-border bg-surface p-6 md:p-8"
+            className="rounded-2xl border border-border bg-surface p-5 md:p-6"
           >
-            <role.icon className="size-6 text-accent" aria-hidden />
-            <p className="mt-6 font-mono text-xs tracking-widest text-muted uppercase">
+            <role.icon className="size-5 text-accent" aria-hidden />
+            <p className="mt-4 font-mono text-xs tracking-widest text-muted uppercase">
               {role.label}
             </p>
             <h3 className="mt-2 text-xl font-semibold">{role.title}</h3>
@@ -60,10 +60,10 @@ export function About() {
         ))}
       </div>
 
-      <div className="mt-20 grid gap-10 lg:grid-cols-[1fr_2fr]">
+      <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-10">
         <Reveal>
           <h3 className="text-2xl font-semibold">Ce que je fais</h3>
-          <p className="mt-3 text-muted">
+          <p className="mt-2 text-muted">
             Des missions web et mobile, de la première maquette à la mise en production.
           </p>
         </Reveal>
@@ -71,9 +71,9 @@ export function About() {
           {services.map((service, index) => {
             const Icon = serviceIcons[index] ?? Code2;
             return (
-              <li key={service.title} className="bg-background p-6">
+              <li key={service.title} className="bg-background p-5">
                 <Icon className="size-5 text-accent" aria-hidden />
-                <h4 className="mt-4 font-display font-semibold">{service.title}</h4>
+                <h4 className="mt-3 font-display font-semibold">{service.title}</h4>
                 <p className="mt-2 text-sm text-muted">{service.description}</p>
               </li>
             );
@@ -81,10 +81,10 @@ export function About() {
         </ul>
       </div>
 
-      <div className="mt-20 grid gap-10 lg:grid-cols-[1fr_2fr]">
+      <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-10">
         <Reveal>
           <h3 className="text-2xl font-semibold">Ma façon de travailler</h3>
-          <p className="mt-3 text-muted">{workingMethod}</p>
+          <p className="mt-2 text-muted">{workingMethod}</p>
         </Reveal>
         <ol className="grid gap-4 sm:grid-cols-3">
           {steps.map((step, index) => (
@@ -92,12 +92,12 @@ export function About() {
               as="li"
               key={step}
               delay={index * 0.08}
-              className="rounded-2xl border border-dashed border-border p-5"
+              className="rounded-2xl border border-dashed border-border p-4"
             >
               <span className="font-mono text-sm text-accent">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <p className="mt-3 font-medium">{step}</p>
+              <p className="mt-2 font-medium">{step}</p>
             </Reveal>
           ))}
         </ol>

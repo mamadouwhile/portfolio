@@ -46,7 +46,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
         </div>
       </div>
 
-      <div className={cn("flex flex-1 flex-col p-6", isFeatured && "md:p-8 lg:flex-none")}>
+      <div className={cn("flex flex-1 flex-col p-5", isFeatured && "md:p-6 lg:flex-none")}>
         {isFeatured ? (
           <p className="font-mono text-xs tracking-widest text-accent uppercase">Projet phare</p>
         ) : null}
@@ -63,7 +63,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
         </p>
 
         {project.stack.length > 0 ? (
-          <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Stack utilisée">
+          <ul className="mt-4 flex flex-wrap gap-1.5" aria-label="Stack utilisée">
             {project.stack.map((tech) => (
               <li
                 key={tech}
@@ -75,7 +75,7 @@ export function ProjectCard({ project, variant = "default" }: ProjectCardProps) 
           </ul>
         ) : null}
 
-        <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-6">
+        <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-5">
           <ProjectLinks project={project} />
           <ArrowRight
             className="size-4 text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent"
