@@ -10,7 +10,7 @@ export function Skills() {
             <h3 className="font-medium">{group.category}</h3>
             <ul className="mt-2 text-sm text-muted">
               {group.skills.map((skill) => (
-                <li key={skill}>{skill}</li>
+                <li key={skill.name}>{skill.name}</li>
               ))}
             </ul>
           </div>

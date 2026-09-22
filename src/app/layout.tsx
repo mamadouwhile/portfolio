@@ -26,7 +26,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${site.name} — ${site.title}`,
+    default: `${site.name} — ${site.role}`,
     template: `%s — ${site.name}`,
   },
   description: site.description,

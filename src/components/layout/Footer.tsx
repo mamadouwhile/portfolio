@@ -8,18 +8,20 @@ export function Footer() {
           © {new Date().getFullYear()} {site.name}
         </p>
         <ul className="flex gap-4">
-          {site.socials.map((social) => (
-            <li key={social.href}>
-              <a
-                href={social.href}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-foreground"
-              >
-                {social.label}
-              </a>
-            </li>
-          ))}
+          {site.socials.map((social) =>
+            social.href ? (
+              <li key={social.href}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground"
+                >
+                  {social.label}
+                </a>
+              </li>
+            ) : null,
+          )}
         </ul>
       </div>
     </footer>
