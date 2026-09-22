@@ -3,7 +3,7 @@ import { experience } from "@/data/experience";
 
 export function Experience() {
   return (
-    <Section id="experience" title="Parcours">
+    <Section id="experience" eyebrow="04 — Parcours" title="Parcours">
       <ol className="space-y-6 border-l border-border pl-6">
         {experience.map((item) => (
           <li key={item.title}>

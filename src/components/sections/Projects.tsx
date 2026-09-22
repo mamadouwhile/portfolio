@@ -5,7 +5,7 @@ import { projects } from "@/data/projects";
 
 export function Projects() {
   return (
-    <Section id="projects" title="Projets">
+    <Section id="projects" eyebrow="03 — Projets" title="Projets">
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
           <li key={project.slug} className="rounded-lg border border-border p-4">
