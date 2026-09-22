@@ -1,7 +1,11 @@
+import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ProjectLinks } from "@/components/projects/ProjectLinks";
+import { ProjectStatusBadge } from "@/components/projects/ProjectStatusBadge";
+import { ProjectVisual } from "@/components/projects/ProjectVisual";
 import { getProjectBySlug, projects } from "@/data/projects";
 
 type ProjectPageProps = {
@@ -26,22 +30,54 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (!project) notFound();
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-16">
-      <Link href="/projects" className="text-sm text-muted hover:text-foreground">
-        ← Tous les projets
+    <article className="mx-auto max-w-4xl px-4 py-16 md:px-6 md:py-24">
+      <Link
+        href="/projects"
+        className="inline-flex items-center gap-2 text-sm text-muted hover:text-foreground"
+      >
+        <ArrowLeft className="size-4" aria-hidden />
+        Tous les projets
       </Link>
-      <h1 className="mt-4 text-3xl font-bold">{project.name}</h1>
-      <p className="mt-2 text-muted">{project.tagline}</p>
-      {project.liveUrl ? (
-        <a
-          href={project.liveUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-block underline"
-        >
-          Voir le site en ligne
-        </a>
-      ) : null}
+
+      <header className="mt-8">
+        <ProjectStatusBadge status={project.status} />
+        <h1 className="mt-4 text-4xl font-semibold md:text-5xl">{project.name}</h1>
+        <p className="mt-4 text-xl text-pretty text-muted">{project.tagline}</p>
+      </header>
+
+      <ProjectVisual
+        project={project}
+        priority
+        sizes="(min-width: 896px) 896px, 100vw"
+        className="mt-10 aspect-[16/9] rounded-2xl border border-border"
+      />
+
+      <div className="mt-10 grid gap-10 md:grid-cols-[2fr_1fr]">
+        <div>
+          <h2 className="text-xl font-semibold">Le projet</h2>
+          <p className="mt-3 text-pretty text-muted">{project.description}</p>
+        </div>
+        <dl className="space-y-6">
+          {project.stack.length > 0 ? (
+            <div>
+              <dt className="font-mono text-xs tracking-widest text-muted uppercase">Stack</dt>
+              <dd className="mt-2 flex flex-wrap gap-1.5">
+                {project.stack.map((tech) => (
+                  <span key={tech} className="rounded-md bg-surface-2 px-2 py-1 font-mono text-xs">
+                    {tech}
+                  </span>
+                ))}
+              </dd>
+            </div>
+          ) : null}
+          <div>
+            <dt className="font-mono text-xs tracking-widest text-muted uppercase">Liens</dt>
+            <dd className="mt-2">
+              <ProjectLinks project={project} />
+            </dd>
+          </div>
+        </dl>
+      </div>
     </article>
   );
 }
