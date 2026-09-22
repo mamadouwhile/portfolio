@@ -8,12 +8,15 @@ concrètes (projets réels, stack, parcours) et un formulaire de contact fonctio
 contemporain : dark mode natif, bento grid, micro-interactions sobres. Déployé sur Vercel,
 chaque push déclenche un déploiement (preview sur les branches, production sur `master`).
 
+**Workflow** : travailler et pousser directement sur `master` (pas de branche séparée sauf
+demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
+
 ## Stack
 
 - Next.js 15 — App Router, Server Components par défaut (`"use client"` seulement si nécessaire)
 - TypeScript strict (`strict`, `noUncheckedIndexedAccess`) — pas de `any`
 - Tailwind CSS v4 (config CSS-first dans `src/app/globals.css`)
-- shadcn/ui pour les primitives UI, générées à la demande dans `src/components/ui`
+- shadcn/ui : à générer à la demande dans `src/components/ui` (aucun composant à ce jour)
 - Animations en CSS pur (keyframes `@theme` + scroll-driven animations) — pas de lib JS d'animation
 - Zod pour la validation (formulaire de contact, côté client et serveur)
 - Hébergement : Vercel
@@ -44,6 +47,37 @@ chaque push déclenche un déploiement (preview sur les branches, production sur
   sans fondu). Tout est coupé par `prefers-reduced-motion`. Framer Motion a été retiré : il
   rendait le contenu invisible côté serveur (opacity 0 jusqu'à l'hydratation) et dégradait le LCP.
 
+## Décisions d'architecture
+
+- **Contenu** : `src/data/*` est l'unique source ; les composants ne contiennent que du texte
+  d'interface. Chiffres du hero calculés depuis les données (jamais écrits en dur).
+- **Server Components par défaut**. Composants client limités à : `MobileMenu`, `Navbar`
+  (lien actif), `ThemeToggle`, `Providers` (next-themes), `HeroSpotlight` (halo au curseur),
+  `FooterCta` (masqué sur `/` et `/contact`), `ContactForm`. Le `Header` reste serveur.
+- **Animations CSS, pas de Framer Motion** : retiré car il rendait le contenu en `opacity: 0`
+  côté serveur jusqu'à l'hydratation (LCP mobile 3,8 s → ~2,6 s, −40 kB de JS sur l'accueil).
+  Apparition au scroll = `.reveal` (scroll-driven, mouvement seul, sans fondu pour garder un
+  contraste plein). Aucune animation ne doit partir d'`opacity: 0` au-dessus de la ligne de
+  flottaison.
+- **URL du site** (`SITE_URL`, `src/lib/constants.ts`) : `NEXT_PUBLIC_SITE_URL` →
+  `VERCEL_PROJECT_PRODUCTION_URL` (automatique sur Vercel) → localhost.
+- **SEO** : chaque page exporte `pageMetadata({ title, description, path })`
+  (`src/lib/metadata.ts`) — Next.js ne fusionne pas `openGraph`/`twitter` entre layout et page,
+  le helper redéclare tout. JSON-LD `ProfilePage` + `Person` sur l'accueil
+  (`src/lib/structured-data.ts`). `sitemap.ts` / `robots.ts` dynamiques. Pas de `robots` dans le
+  layout (conflit avec le `noindex` automatique des 404).
+- **Image Open Graph** : `public/og-image.png` (1200×630) statique, rendue depuis le site avec
+  ses polices ; à régénérer si le positionnement ou le design change.
+- **Titres** : un seul `h1` par page. `Section` accepte `headingLevel` (`h1` sur /about,
+  /projects, /contact) ; les sous-titres (About, ProjectCard) descendent d'un niveau en conséquence.
+- **Captures de projets** : `public/images/projects/<slug>-screenshot.png`, détectées au build
+  (`getScreenshot`, `server-only`) ; à défaut, illustration géométrique déterministe (slug).
+- **Contact** : schéma Zod partagé client/serveur (`src/lib/contact-schema.ts`) ; API Resend en
+  `fetch` (sans SDK) ; 503 si non configurée ; champ piège `website` → 200 silencieux.
+- **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
+- **Budgets qualité** : Lighthouse mobile ≥ 95 perf, 100 a11y / best practices / SEO ; CLS 0 ;
+  axe-core sans violation en thèmes clair et sombre.
+
 ## Commandes
 
 ```bash
@@ -58,15 +92,20 @@ npm run format     # Prettier (écriture)
 
 ```
 src/
-  app/          routes (App Router) + api/contact/route.ts
+  app/          routes, api/contact, sitemap.ts, robots.ts, icon.svg, template.tsx
   components/
-    layout/     Header, Footer, Navbar (indicateur « disponible en freelance »)
-    sections/   Hero, About, Skills, Projects, Experience, Contact (CTA final dans le Footer)
-    ui/         composants shadcn
-  data/         projects.ts, experience.ts, skills.ts, site.ts — source unique du contenu
-  lib/          utils, constants, icônes techno, helpers projets
+    layout/     Header, Navbar, MobileMenu, ThemeToggle, AvailabilityBadge, Footer, FooterCta
+    sections/   Section, Hero, HeroSpotlight, About, Skills, Projects, Experience, Contact
+    projects/   ProjectCard, ProjectVisual, ProjectStatusBadge, ProjectLinks
+    contact/    ContactForm
+    motion/     Reveal (CSS)
+    seo/        JsonLd
+    ui/         composants shadcn (à la demande)
+  data/         site, projects, skills, experience, services — source unique du contenu
+  lib/          constants, metadata, structured-data, contact-schema, tech-icons, utils…
   types/        types partagés du contenu
-public/images   visuels réels (captures, profil, logo)
+public/         og-image.png, images/projects/, documents/ (CV)
+docs/           captures d'écran du README
 ```
 
 ## Conventions de code
