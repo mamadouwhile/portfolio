@@ -1,30 +1,12 @@
-"use client";
-
-import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { AvailabilityBadge } from "@/components/layout/AvailabilityBadge";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Navbar } from "@/components/layout/Navbar";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { site } from "@/data/site";
 
 export function Header() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => setOpen(false), [pathname]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
-
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
       <a
@@ -47,25 +29,9 @@ export function Header() {
             <Navbar />
           </div>
           <ThemeToggle />
-          <button
-            type="button"
-            className="inline-flex size-9 items-center justify-center rounded-full border border-border md:hidden"
-            aria-expanded={open}
-            aria-controls="menu-mobile"
-            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-            onClick={() => setOpen((value) => !value)}
-          >
-            {open ? <X className="size-4" aria-hidden /> : <Menu className="size-4" aria-hidden />}
-          </button>
+          <MobileMenu />
         </div>
       </div>
-
-      {open ? (
-        <div id="menu-mobile" className="border-t border-border px-4 pt-3 pb-5 md:hidden">
-          <Navbar orientation="vertical" onNavigate={() => setOpen(false)} />
-          <AvailabilityBadge className="mt-4" />
-        </div>
-      ) : null}
 
       <div className="hidden justify-center border-t border-border py-2 md:flex lg:hidden">
         <AvailabilityBadge />

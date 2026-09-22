@@ -1,16 +1,10 @@
-"use client";
-
-import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
+/**
+ * Transition de page en CSS pur (fade + léger translate) : rejouée à chaque navigation car le
+ * template est remonté, mais sans attendre l'hydratation JS — le contenu n'est jamais rendu
+ * invisible côté serveur (meilleur LCP). Désactivée par `prefers-reduced-motion`.
+ */
 export default function Template({ children }: { children: ReactNode }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className="animate-page-enter">{children}</div>;
 }

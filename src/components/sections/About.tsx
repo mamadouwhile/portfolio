@@ -44,10 +44,9 @@ export function About() {
       lead="Deux casquettes qui se nourrissent l'une l'autre : la rigueur des fondamentaux d'un côté, des projets réels à livrer de l'autre."
     >
       <div className="grid gap-4 md:grid-cols-2">
-        {roles.map((role, index) => (
+        {roles.map((role) => (
           <Reveal
             key={role.label}
-            delay={index * 0.08}
             className="rounded-2xl border border-border bg-surface p-5 md:p-6"
           >
             <role.icon className="size-5 text-accent" aria-hidden />
@@ -91,7 +90,6 @@ export function About() {
             <Reveal
               as="li"
               key={step}
-              delay={index * 0.08}
               className="rounded-2xl border border-dashed border-border p-4"
             >
               <span className="font-mono text-sm text-accent">

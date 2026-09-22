@@ -56,7 +56,7 @@ export function Contact() {
             </div>
           ) : null}
         </Reveal>
-        <Reveal delay={0.08}>
+        <Reveal>
           <ContactForm />
         </Reveal>
       </div>

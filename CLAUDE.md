@@ -14,7 +14,7 @@ chaque push déclenche un déploiement (preview sur les branches, production sur
 - TypeScript strict (`strict`, `noUncheckedIndexedAccess`) — pas de `any`
 - Tailwind CSS v4 (config CSS-first dans `src/app/globals.css`)
 - shadcn/ui pour les primitives UI, générées à la demande dans `src/components/ui`
-- Framer Motion pour les animations (variants centralisés dans `src/lib/animations.ts`)
+- Animations en CSS pur (keyframes `@theme` + scroll-driven animations) — pas de lib JS d'animation
 - Zod pour la validation (formulaire de contact, côté client et serveur)
 - Hébergement : Vercel
 
@@ -39,8 +39,10 @@ chaque push déclenche un déploiement (preview sur les branches, production sur
   - Footer : CTA `py-12 md:py-14`, colonnes `py-10`.
 - **Typographie** : titres `leading-[1.1]` (hero `leading-[1.05]`), H2 `text-3xl md:text-4xl`,
   hero `text-4xl sm:text-5xl lg:text-6xl`, lead `text-base md:text-lg`.
-- Animations : Framer Motion sous `MotionConfig reducedMotion="user"` ; transitions de page dans
-  `src/app/template.tsx`.
+- Animations : CSS uniquement. Entrée du hero `animate-enter`, transition de page
+  `animate-page-enter` (`src/app/template.tsx`), apparition au scroll `.reveal` (mouvement seul,
+  sans fondu). Tout est coupé par `prefers-reduced-motion`. Framer Motion a été retiré : il
+  rendait le contenu invisible côté serveur (opacity 0 jusqu'à l'hydratation) et dégradait le LCP.
 
 ## Commandes
 
@@ -62,7 +64,7 @@ src/
     sections/   Hero, About, Skills, Projects, Experience, Contact (CTA final dans le Footer)
     ui/         composants shadcn
   data/         projects.ts, experience.ts, skills.ts, site.ts — source unique du contenu
-  lib/          utils, constants, variants Framer Motion
+  lib/          utils, constants, icônes techno, helpers projets
   types/        types partagés du contenu
 public/images   visuels réels (captures, profil, logo)
 ```

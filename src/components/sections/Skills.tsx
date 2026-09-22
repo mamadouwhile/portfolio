@@ -20,7 +20,7 @@ export function Skills() {
       lead="Les outils que j'utilise en projet, regroupés par rôle — et ceux que je renforce en ce moment."
     >
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {skillGroups.map((group, index) => {
+        {skillGroups.map((group) => {
           const CategoryIcon = categoryIcons[group.id];
           const isWide = group.id !== "backend" && group.id !== "database";
 
@@ -28,7 +28,6 @@ export function Skills() {
             <Reveal
               as="li"
               key={group.id}
-              delay={index * 0.05}
               className={cn(
                 "flex flex-col rounded-2xl border border-border bg-surface p-5",
                 layout[group.id],

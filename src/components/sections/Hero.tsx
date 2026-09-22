@@ -1,7 +1,6 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-import { Reveal } from "@/components/motion/Reveal";
 import { HeroSpotlight } from "@/components/sections/HeroSpotlight";
 import { projects } from "@/data/projects";
 import { site } from "@/data/site";
@@ -34,12 +33,12 @@ export function Hero() {
         className="mx-auto grid max-w-6xl gap-10 px-4 pt-10 pb-10 md:px-6 md:pt-14 md:pb-12 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-12 lg:pt-16"
       >
         <div className="min-w-0">
-          <Reveal>
+          <div className="animate-enter">
             <p className="font-mono text-xs tracking-widest text-accent uppercase">
               {site.role} · {site.location}
             </p>
-          </Reveal>
-          <Reveal delay={0.05}>
+          </div>
+          <div className="animate-enter">
             <h1
               id="hero-title"
               className="mt-4 text-4xl leading-[1.05] font-semibold text-balance sm:text-5xl lg:text-6xl"
@@ -54,13 +53,13 @@ export function Hero() {
               </span>
               .
             </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
+          </div>
+          <div className="animate-enter">
             <p className="mt-5 max-w-xl text-base text-pretty text-muted md:text-lg">
               Développeur fullstack, du code à la mise en production. {site.description}
             </p>
-          </Reveal>
-          <Reveal delay={0.15}>
+          </div>
+          <div className="animate-enter" style={{ animationDelay: "180ms" }}>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/projects"
@@ -79,8 +78,8 @@ export function Hero() {
                 Discuter d&apos;un projet
               </Link>
             </div>
-          </Reveal>
-          <Reveal delay={0.2}>
+          </div>
+          <div className="animate-enter" style={{ animationDelay: "240ms" }}>
             <dl className="mt-8 grid max-w-lg grid-cols-3 gap-4 border-t border-border pt-5">
               {stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col gap-1">
@@ -89,10 +88,10 @@ export function Hero() {
                 </div>
               ))}
             </dl>
-          </Reveal>
+          </div>
         </div>
 
-        <Reveal delay={0.2} className="min-w-0">
+        <div className="min-w-0 animate-enter" style={{ animationDelay: "240ms" }}>
           <figure className="overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl shadow-black/20">
             <div className="flex items-center gap-2 border-b border-border px-4 py-3">
               <span aria-hidden="true" className="size-2.5 rounded-full bg-border" />
@@ -133,7 +132,7 @@ export function Hero() {
               </a>
             ) : null}
           </figure>
-        </Reveal>
+        </div>
       </section>
       <div className="border-y border-border bg-surface/50">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-4 md:px-6">

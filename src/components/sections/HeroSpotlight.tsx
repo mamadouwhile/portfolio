@@ -22,7 +22,7 @@ export function HeroSpotlight({ children }: { children: ReactNode }) {
       ref={ref}
       data-hero=""
       onPointerMove={handlePointerMove}
-      className="group/hero relative isolate overflow-hidden [--x:70%] [--y:30%]"
+      className="group/hero grain relative isolate overflow-hidden [--x:70%] [--y:30%]"
     >
       <div
         aria-hidden="true"
@@ -36,7 +36,6 @@ export function HeroSpotlight({ children }: { children: ReactNode }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)] bg-[size:56px_56px] opacity-40"
       />
-      <div aria-hidden="true" className="grain pointer-events-none absolute inset-0 -z-10" />
       {children}
     </div>
   );

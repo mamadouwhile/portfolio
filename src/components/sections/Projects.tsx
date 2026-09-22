@@ -39,12 +39,7 @@ export function Projects() {
           const variant = project.featured ? "featured" : isLast ? "wide" : "default";
 
           return (
-            <Reveal
-              as="li"
-              key={project.slug}
-              delay={(index % 3) * 0.06}
-              className={cn(placement[index])}
-            >
+            <Reveal as="li" key={project.slug} className={cn(placement[index])}>
               <ProjectCard project={project} variant={variant} />
             </Reveal>
           );

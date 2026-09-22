@@ -17,16 +17,11 @@ export function Experience() {
           aria-hidden="true"
           className="absolute top-2 bottom-2 left-[15px] w-px bg-gradient-to-b from-accent via-border to-transparent"
         />
-        {experience.map((item, index) => {
+        {experience.map((item) => {
           const Icon = item.organization === "Indépendant" ? Briefcase : GraduationCap;
 
           return (
-            <Reveal
-              as="li"
-              key={item.title}
-              delay={index * 0.08}
-              className="relative pb-8 pl-12 last:pb-0"
-            >
+            <Reveal as="li" key={item.title} className="relative pb-8 pl-12 last:pb-0">
               <span
                 aria-hidden="true"
                 className="absolute top-0 left-0 inline-flex size-8 items-center justify-center rounded-full border border-border bg-background text-accent"
