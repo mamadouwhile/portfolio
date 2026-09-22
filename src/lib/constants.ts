@@ -4,7 +4,7 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:30
 
 export const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Accueil" },
-  { href: "/about", label: "À propos" },
   { href: "/projects", label: "Projets" },
+  { href: "/about", label: "À propos" },
   { href: "/contact", label: "Contact" },
 ];

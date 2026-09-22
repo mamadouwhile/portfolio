@@ -8,13 +8,13 @@ export function Projects() {
     <Section id="projects" title="Projets">
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
-          <li key={project.slug} className="border-border rounded-lg border p-4">
+          <li key={project.slug} className="rounded-lg border border-border p-4">
             <h3 className="font-medium">
               <Link href={`/projects/${project.slug}`} className="hover:underline">
                 {project.name}
               </Link>
             </h3>
-            <p className="text-muted mt-1 text-sm">{project.tagline}</p>
+            <p className="mt-1 text-sm text-muted">{project.tagline}</p>
           </li>
         ))}
       </ul>

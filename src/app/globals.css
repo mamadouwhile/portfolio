@@ -1,22 +1,91 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens — accent unique « orange brûlé ».
+ * Clair : accent assombri pour garder un contraste AA sur fond blanc.
+ */
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --muted: #a1a1aa;
-  --border: #27272a;
+  --background: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f2f2f0;
+  --foreground: #111113;
+  --muted: #56565c;
+  --border: #e3e3e0;
+  --accent: #c2410c;
+  --accent-foreground: #ffffff;
+  --accent-soft: rgb(194 65 12 / 0.1);
+  --success: #15803d;
+}
+
+.dark {
+  --background: #0b0b0c;
+  --surface: #131315;
+  --surface-2: #1a1a1d;
+  --foreground: #f2f2f0;
+  --muted: #a1a1a8;
+  --border: #26262b;
+  --accent: #ff6b2c;
+  --accent-foreground: #0b0b0c;
+  --accent-soft: rgb(255 107 44 / 0.12);
+  --success: #34d399;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --font-sans: var(--font-geist-sans);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
   --font-mono: var(--font-geist-mono);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -27,11 +27,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-16">
-      <Link href="/projects" className="text-muted hover:text-foreground text-sm">
+      <Link href="/projects" className="text-sm text-muted hover:text-foreground">
         ← Tous les projets
       </Link>
       <h1 className="mt-4 text-3xl font-bold">{project.name}</h1>
-      <p className="text-muted mt-2">{project.tagline}</p>
+      <p className="mt-2 text-muted">{project.tagline}</p>
       {project.liveUrl ? (
         <a
           href={project.liveUrl}

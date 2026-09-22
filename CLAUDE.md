@@ -18,6 +18,20 @@ chaque push déclenche un déploiement (preview sur les branches, production sur
 - Zod pour la validation (formulaire de contact, côté client et serveur)
 - Hébergement : Vercel
 
+## Design system
+
+- **Accent unique : orange brûlé** — `#ff6b2c` en sombre, `#c2410c` en clair (assombri pour
+  un contraste AA sur blanc). Choisi pour se démarquer des dégradés violet/bleu génériques et
+  rester chaleureux sur fond quasi noir. Le vert (`--success`) est réservé à l'indicateur de
+  disponibilité.
+- Tokens CSS dans `globals.css` (`--background`, `--surface`, `--surface-2`, `--foreground`,
+  `--muted`, `--border`, `--accent`…) exposés en classes Tailwind (`bg-surface`, `text-accent`…).
+  Jamais de couleur en dur dans les composants.
+- Typographie : Space Grotesk (titres, `font-display`), Inter (texte), Geist Mono (code/labels).
+- Thème sombre par défaut via `next-themes` (classe `.dark`, persistance localStorage `theme`).
+- Animations : Framer Motion sous `MotionConfig reducedMotion="user"` ; transitions de page dans
+  `src/app/template.tsx`.
+
 ## Commandes
 
 ```bash
