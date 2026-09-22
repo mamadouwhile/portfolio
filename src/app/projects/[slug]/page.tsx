@@ -7,6 +7,7 @@ import { ProjectLinks } from "@/components/projects/ProjectLinks";
 import { ProjectStatusBadge } from "@/components/projects/ProjectStatusBadge";
 import { ProjectVisual } from "@/components/projects/ProjectVisual";
 import { getProjectBySlug, projects } from "@/data/projects";
+import { pageMetadata } from "@/lib/metadata";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -21,7 +22,16 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   const project = getProjectBySlug(slug);
   if (!project) return {};
 
-  return { title: project.name, description: project.tagline };
+  return pageMetadata({
+    title: project.name,
+    description: [
+      project.tagline,
+      project.stack.length > 0 ? `Stack : ${project.stack.join(", ")}.` : "",
+    ]
+      .join(" ")
+      .trim(),
+    path: `/projects/${project.slug}`,
+  });
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {

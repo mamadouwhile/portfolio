@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
 
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Providers } from "@/components/layout/Providers";
 import { site } from "@/data/site";
-import { SITE_URL } from "@/lib/constants";
+import { OG_IMAGE, SITE_URL } from "@/lib/constants";
 
 import "./globals.css";
 
@@ -23,13 +23,54 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+const description =
+  "Mahamadou Dembele, développeur fullstack freelance à Angers : sites, plateformes web et applications mobiles React Native, du code à la mise en production.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: `${site.name} — ${site.role}`,
     template: `%s — ${site.name}`,
   },
-  description: site.description,
+  description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: SITE_URL }],
+  creator: site.name,
+  keywords: [
+    site.name,
+    "développeur fullstack",
+    "développeur freelance",
+    "Angers",
+    "Next.js",
+    "React",
+    "React Native",
+    "NestJS",
+    "TypeScript",
+  ],
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "profile",
+    locale: "fr_FR",
+    siteName: site.name,
+    url: "/",
+    title: `${site.name} — ${site.role}`,
+    description,
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — ${site.role}`,
+    description,
+    images: [OG_IMAGE.url],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0c" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
+  ],
 };
 
 export default function RootLayout({
