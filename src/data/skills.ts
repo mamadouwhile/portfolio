@@ -16,7 +16,7 @@ export const skillGroups: SkillGroup[] = [
   {
     id: "backend",
     category: "Backend",
-    summary: "APIs structurées et séparées du frontend.",
+    summary: "API structurées et séparées du frontend.",
     skills: [{ name: "NestJS" }, { name: "Node.js" }, { name: "Architecture API REST" }],
   },
   {
