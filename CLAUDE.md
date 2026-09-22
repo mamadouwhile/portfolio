@@ -6,7 +6,7 @@ Portfolio personnel de Mahamadou Dembele, étudiant en Licence Informatique à A
 développeur web/mobile freelance. Le site présente un positionnement clair, des preuves
 concrètes (projets réels, stack, parcours) et un formulaire de contact fonctionnel. Design
 contemporain : dark mode natif, bento grid, micro-interactions sobres. Déployé sur Vercel,
-chaque push déclenche un déploiement (preview sur les branches, production sur `main`).
+chaque push déclenche un déploiement (preview sur les branches, production sur `master`).
 
 ## Stack
 
