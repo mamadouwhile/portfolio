@@ -10,11 +10,16 @@ import { site } from "@/data/site";
 
 const socialIcons = { github: SiGithub, linkedin: FaLinkedin };
 
-export function Contact() {
+type ContactProps = {
+  headingLevel?: "h1" | "h2";
+};
+
+export function Contact({ headingLevel }: ContactProps = {}) {
   const socials = site.socials.filter((social) => social.href);
 
   return (
     <Section
+      headingLevel={headingLevel}
       id="contact"
       eyebrow="05 — Contact"
       title="Un projet en tête ? Parlons-en."

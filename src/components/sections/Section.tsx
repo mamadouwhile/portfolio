@@ -9,11 +9,21 @@ type SectionProps = {
   eyebrow: string;
   title: string;
   lead?: string;
+  /** `h1` quand la section est le contenu principal de sa page (ex. /projects). */
+  headingLevel?: "h1" | "h2";
   className?: string;
   children: ReactNode;
 };
 
-export function Section({ id, eyebrow, title, lead, className, children }: SectionProps) {
+export function Section({
+  id,
+  eyebrow,
+  title,
+  lead,
+  headingLevel: Heading = "h2",
+  className,
+  children,
+}: SectionProps) {
   const headingId = `${id}-title`;
 
   return (
@@ -27,12 +37,12 @@ export function Section({ id, eyebrow, title, lead, className, children }: Secti
     >
       <Reveal className="max-w-2xl">
         <p className="font-mono text-xs tracking-widest text-accent uppercase">{eyebrow}</p>
-        <h2
+        <Heading
           id={headingId}
           className="mt-2 text-3xl leading-[1.1] font-semibold text-balance md:text-4xl"
         >
           {title}
-        </h2>
+        </Heading>
         {lead ? <p className="mt-3 text-base text-pretty text-muted md:text-lg">{lead}</p> : null}
       </Reveal>
       <div className="mt-8 md:mt-10">{children}</div>

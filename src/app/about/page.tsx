@@ -15,7 +15,7 @@ export const metadata: Metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <>
-      <About />
+      <About headingLevel="h1" />
       <Skills />
       <Experience />
     </>

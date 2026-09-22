@@ -11,5 +11,5 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function ProjectsPage() {
-  return <Projects />;
+  return <Projects headingLevel="h1" />;
 }

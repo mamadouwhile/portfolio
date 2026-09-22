@@ -21,13 +21,18 @@ const placement = [
   "lg:col-span-6",
 ];
 
-export function Projects() {
+type ProjectsProps = {
+  headingLevel?: "h1" | "h2";
+};
+
+export function Projects({ headingLevel }: ProjectsProps = {}) {
   const featured = projects.find((project) => project.featured);
   const others = projects.filter((project) => !project.featured);
   const ordered = featured ? [featured, ...others] : others;
 
   return (
     <Section
+      headingLevel={headingLevel}
       id="projects"
       eyebrow="03 — Projets"
       title="Des projets réels, du prototype à la production."
@@ -40,7 +45,11 @@ export function Projects() {
 
           return (
             <Reveal as="li" key={project.slug} className={cn(placement[index])}>
-              <ProjectCard project={project} variant={variant} />
+              <ProjectCard
+                project={project}
+                variant={variant}
+                headingLevel={headingLevel === "h1" ? "h2" : "h3"}
+              />
             </Reveal>
           );
         })}

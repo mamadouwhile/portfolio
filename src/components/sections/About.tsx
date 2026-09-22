@@ -35,9 +35,18 @@ const roles = [
 
 const steps = ["Développer par étapes", "Tester chaque itération", "Corriger, puis avancer"];
 
-export function About() {
+type AboutProps = {
+  headingLevel?: "h1" | "h2";
+};
+
+export function About({ headingLevel = "h2" }: AboutProps = {}) {
+  // Sous-titres un niveau sous le titre de section (h1 → h2 sur /about, h2 → h3 sur l'accueil).
+  const Sub = headingLevel === "h1" ? "h2" : "h3";
+  const SubSub = headingLevel === "h1" ? "h3" : "h4";
+
   return (
     <Section
+      headingLevel={headingLevel}
       id="about"
       eyebrow="01 — À propos"
       title="Étudiant en informatique, développeur freelance sur le terrain."
@@ -53,7 +62,7 @@ export function About() {
             <p className="mt-4 font-mono text-xs tracking-widest text-muted uppercase">
               {role.label}
             </p>
-            <h3 className="mt-2 text-xl font-semibold">{role.title}</h3>
+            <Sub className="mt-2 text-xl font-semibold">{role.title}</Sub>
             <p className="mt-3 text-pretty text-muted">{role.text}</p>
           </Reveal>
         ))}
@@ -61,7 +70,7 @@ export function About() {
 
       <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-10">
         <Reveal>
-          <h3 className="text-2xl font-semibold">Ce que je fais</h3>
+          <Sub className="text-2xl font-semibold">Ce que je fais</Sub>
           <p className="mt-2 text-muted">
             Des missions web et mobile, de la première maquette à la mise en production.
           </p>
@@ -72,7 +81,7 @@ export function About() {
             return (
               <li key={service.title} className="bg-background p-5">
                 <Icon className="size-5 text-accent" aria-hidden />
-                <h4 className="mt-3 font-display font-semibold">{service.title}</h4>
+                <SubSub className="mt-3 font-display font-semibold">{service.title}</SubSub>
                 <p className="mt-2 text-sm text-muted">{service.description}</p>
               </li>
             );
@@ -82,7 +91,7 @@ export function About() {
 
       <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-10">
         <Reveal>
-          <h3 className="text-2xl font-semibold">Ma façon de travailler</h3>
+          <Sub className="text-2xl font-semibold">Ma façon de travailler</Sub>
           <p className="mt-2 text-muted">{workingMethod}</p>
         </Reveal>
         <ol className="grid gap-4 sm:grid-cols-3">

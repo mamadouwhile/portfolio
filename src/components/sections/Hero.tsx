@@ -99,7 +99,7 @@ export function Hero() {
               <span aria-hidden="true" className="size-2.5 rounded-full bg-border" />
               <figcaption className="ml-2 font-mono text-xs text-muted">profil.ts</figcaption>
             </div>
-            <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed">
+            <pre className="p-5 font-mono text-[13px] leading-relaxed break-words whitespace-pre-wrap">
               <code>
                 <span className="text-muted">{"// du code à la mise en production\n"}</span>
                 <span className="text-accent">const</span>

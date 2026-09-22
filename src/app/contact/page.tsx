@@ -11,5 +11,5 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function ContactPage() {
-  return <Contact />;
+  return <Contact headingLevel="h1" />;
 }

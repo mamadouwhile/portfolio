@@ -84,6 +84,7 @@ export function ContactForm() {
       noValidate
       onSubmit={handleSubmit}
       aria-describedby="contact-feedback"
+      aria-busy={isSubmitting}
       className="relative rounded-2xl border border-border bg-surface p-5 md:p-6"
     >
       <div className="grid gap-4 sm:grid-cols-2">
