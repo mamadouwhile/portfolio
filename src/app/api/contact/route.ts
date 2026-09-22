@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 import { contactSchema } from "@/lib/contact-schema";
 
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
   const parsed = contactSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Données invalides", fields: parsed.error.flatten().fieldErrors },
+      { error: "Données invalides", fields: z.flattenError(parsed.error).fieldErrors },
       { status: 422 },
     );
   }
