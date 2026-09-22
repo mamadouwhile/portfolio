@@ -1,5 +1,4 @@
 import { About } from "@/components/sections/About";
-import { CTA } from "@/components/sections/CTA";
 import { Contact } from "@/components/sections/Contact";
 import { Experience } from "@/components/sections/Experience";
 import { Hero } from "@/components/sections/Hero";
@@ -15,7 +14,6 @@ export default function HomePage() {
       <Projects />
       <Experience />
       <Contact />
-      <CTA />
     </>
   );
 }
