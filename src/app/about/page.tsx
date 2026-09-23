@@ -9,7 +9,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = pageMetadata({
   title: "À propos",
   description:
-    "Étudiant en Licence Informatique à Angers et développeur web/mobile freelance : double positionnement, stack technique, parcours et façon de travailler.",
+    "Étudiant en Licence 3 Informatique à Angers, développeur fullstack freelance et ancien testeur automaticien : stack, tests & QA, automatisation IA, parcours et certifications.",
   path: "/about",
 });
 

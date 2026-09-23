@@ -18,7 +18,7 @@ import { StatsCard } from "@/components/home/StatsCard";
  */
 export function HomeBento() {
   return (
-    <div className="mx-auto grid max-w-6xl gap-3 px-4 py-4 sm:grid-cols-2 md:px-6 lg:min-h-[calc(100dvh-4rem-3.1rem)] lg:grid-cols-4 lg:grid-rows-[auto_repeat(3,minmax(min-content,1fr))] lg:gap-3 lg:py-4">
+    <div className="mx-auto grid max-w-6xl gap-3 px-4 py-4 sm:grid-cols-2 md:px-6 lg:min-h-[calc(100dvh-4rem-3.1rem)] lg:grid-cols-4 lg:grid-rows-[auto_repeat(3,minmax(min-content,1fr))] lg:gap-3 lg:py-3">
       <MarqueeCard className="sm:col-span-2 lg:col-span-4" />
       <ProfileCard className="sm:col-span-2" />
       <ProjectsCard />

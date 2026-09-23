@@ -10,18 +10,19 @@ export function ProjectsCard({ className }: { className?: string }) {
     <BentoCard label="Réalisations" title="Projets" href="/projects" className={className}>
       <ul className="space-y-1.5">
         {featured.map((project) => (
-          <li key={project.slug} className="flex items-center justify-between gap-3 text-sm">
+          <li key={project.slug} className="flex items-center gap-2.5 text-sm">
+            <span
+              aria-hidden="true"
+              title={statusLabels[project.status]}
+              className={cn(
+                "size-2 shrink-0 rounded-full",
+                project.status === "production" && "bg-success",
+                project.status === "en-developpement" && "bg-accent",
+                project.status === "exploration" && "border border-muted",
+              )}
+            />
             <span className="truncate font-medium">{project.name}</span>
-            <span className="flex shrink-0 items-center gap-1.5 font-mono text-[10px] text-muted">
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "size-1.5 rounded-full",
-                  project.status === "production" ? "bg-success" : "bg-accent",
-                )}
-              />
-              {statusLabels[project.status]}
-            </span>
+            <span className="sr-only"> — {statusLabels[project.status]}</span>
           </li>
         ))}
       </ul>

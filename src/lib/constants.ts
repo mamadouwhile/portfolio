@@ -17,7 +17,7 @@ export const OG_IMAGE = {
   url: "/og-image.png",
   width: 1200,
   height: 630,
-  alt: "Mahamadou Dembele — Développeur fullstack freelance",
+  alt: "Mahamadou Dembele — Développeur fullstack & automatisation",
 };
 
 export const NAV_LINKS: NavLink[] = [

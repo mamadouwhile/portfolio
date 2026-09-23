@@ -1,35 +1,33 @@
-import {
-  Code2,
-  GraduationCap,
-  LayoutTemplate,
-  Layers,
-  Palette,
-  Smartphone,
-  type LucideIcon,
-} from "lucide-react";
+import { Code2, GraduationCap, TestTube2 } from "lucide-react";
 
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/sections/Section";
 import { experience, workingMethod } from "@/data/experience";
 import { services } from "@/data/services";
+import { serviceIcons } from "@/lib/service-icons";
 
-const serviceIcons: LucideIcon[] = [LayoutTemplate, Smartphone, Layers, Palette];
-
-const study = experience.find((item) => item.title.startsWith("Licence"));
+const study = experience.find((item) => item.kind === "education");
 const freelance = experience.find((item) => item.organization === "Indépendant");
+const qa = experience.find((item) => item.title === "Testeur automaticien");
 
 const roles = [
   {
     icon: GraduationCap,
     label: "Côté études",
     title: study?.title ?? "",
-    text: `À ${study?.organization ?? ""}, je consolide les fondamentaux : ${study?.highlights.join(", ").toLowerCase() ?? ""}.`,
+    text: `À l'${study?.organization ?? ""}, je consolide les fondamentaux : ${study?.highlights.join(", ").toLowerCase() ?? ""}.`,
   },
   {
     icon: Code2,
     label: "Côté terrain",
     title: freelance?.title ?? "",
     text: `${freelance?.period ?? ""}, je conçois et livre des projets concrets : ${freelance?.description.charAt(0).toLowerCase() ?? ""}${freelance?.description.slice(1) ?? ""}`,
+  },
+  {
+    icon: TestTube2,
+    label: "Côté qualité & automatisation",
+    title: `${qa?.title ?? ""} — ${qa?.organization ?? ""}`,
+    text: `${qa?.period ?? ""} : tests automatisés (Selenium, TestNG), tests de charge (JMeter) et recette. Aujourd'hui, j'automatise aussi des processus métier avec l'IA (n8n, Python).`,
   },
 ];
 
@@ -49,10 +47,10 @@ export function About({ headingLevel = "h2" }: AboutProps = {}) {
       headingLevel={headingLevel}
       id="about"
       eyebrow="01 — À propos"
-      title="Étudiant en informatique, développeur freelance sur le terrain."
-      lead="Deux casquettes qui se nourrissent l'une l'autre : la rigueur des fondamentaux d'un côté, des projets réels à livrer de l'autre."
+      title="Développeur fullstack, avec un réflexe qualité et automatisation."
+      lead="Étudiant en Licence 3 Informatique à Angers, développeur freelance et ancien testeur automaticien : je conçois des produits, je les teste et j'automatise ce qui peut l'être."
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         {roles.map((role) => (
           <Reveal key={role.label} className="bento-card p-5 md:p-6">
             <role.icon className="size-5 text-accent" aria-hidden />
@@ -72,7 +70,7 @@ export function About({ headingLevel = "h2" }: AboutProps = {}) {
             Des missions web et mobile, de la première maquette à la mise en production.
           </p>
         </Reveal>
-        <ul className="grid gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border sm:grid-cols-2">
+        <ul className="grid gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border sm:grid-cols-2 xl:grid-cols-3">
           {services.map((service, index) => {
             const Icon = serviceIcons[index] ?? Code2;
             return (

@@ -11,15 +11,15 @@ export function ExperienceCard({ className }: { className?: string }) {
       href="/about#experience"
       className={className}
     >
-      <ul className="space-y-2.5">
-        {experience.map((item) => {
-          const Icon = item.organization === "Indépendant" ? Briefcase : GraduationCap;
+      <ul className="space-y-1">
+        {experience.slice(0, 3).map((item) => {
+          const Icon = item.kind === "work" ? Briefcase : GraduationCap;
           return (
-            <li key={item.title} className="flex gap-3">
+            <li key={`${item.title}-${item.period}`} className="flex gap-3">
               <Icon className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
               <div className="min-w-0">
-                <p className="text-sm leading-snug font-medium">{item.title}</p>
-                <p className="text-xs text-muted">{item.period}</p>
+                <p className="truncate text-sm leading-snug font-medium">{item.shortTitle}</p>
+                <p className="truncate text-xs text-muted">{item.period}</p>
               </div>
             </li>
           );

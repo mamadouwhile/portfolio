@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 const description =
-  "Mahamadou Dembele, développeur fullstack freelance à Angers : sites, plateformes web et applications mobiles React Native, du code à la mise en production.";
+  "Mahamadou Dembele, développeur fullstack à Angers : sites, plateformes web et applications mobiles, tests automatisés (Selenium, JMeter) et automatisation de processus avec l'IA (n8n, Python).";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -40,6 +40,10 @@ export const metadata: Metadata = {
     site.name,
     "développeur fullstack",
     "développeur freelance",
+    "tests automatisés",
+    "automatisation",
+    "n8n",
+    "Selenium",
     "Angers",
     "Next.js",
     "React",

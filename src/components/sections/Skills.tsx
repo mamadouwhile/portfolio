@@ -3,26 +3,28 @@ import { Section } from "@/components/sections/Section";
 import { skillGroups } from "@/data/skills";
 import { categoryIcons, techIcons } from "@/lib/tech-icons";
 import { cn } from "@/lib/utils";
+import type { SkillCategoryId } from "@/types/content";
 
 /** Bento : le frontend (cœur de métier) et les groupes les plus fournis prennent plus de place. */
-const layout: Record<string, string> = {
-  frontend: "md:col-span-2",
-  tools: "lg:col-span-2",
-  learning: "md:col-span-2 border-dashed bg-transparent",
+const layout: Partial<Record<SkillCategoryId, string>> = {
+  web: "md:col-span-2",
+  automation: "md:col-span-2",
+  learning: "md:col-span-2 lg:col-span-4 border-dashed bg-transparent",
 };
+const wide: SkillCategoryId[] = ["web", "automation", "learning"];
 
 export function Skills() {
   return (
     <Section
       id="stack"
       eyebrow="02 — Stack"
-      title="Une stack JavaScript/TypeScript, du navigateur au serveur."
-      lead="Les outils que j'utilise en projet, regroupés par rôle — et ceux que je renforce en ce moment."
+      title="Du développement web aux tests automatisés et à l'IA."
+      lead="Les outils que j'utilise en projet et en entreprise, regroupés par rôle — et ceux que je renforce en ce moment."
     >
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {skillGroups.map((group) => {
           const CategoryIcon = categoryIcons[group.id];
-          const isWide = group.id !== "backend" && group.id !== "database";
+          const isWide = wide.includes(group.id);
 
           return (
             <Reveal

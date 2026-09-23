@@ -2,16 +2,19 @@ import type { SiteConfig } from "@/types/content";
 
 export const site: SiteConfig = {
   name: "Mahamadou Dembele",
-  role: "Développeur fullstack freelance",
+  role: "Développeur fullstack & automatisation",
   positioning:
     "Développeur fullstack qui transforme des idées en produits numériques déployés — du code à la mise en production.",
   description:
-    "Étudiant en Licence Informatique à Angers et développeur web/mobile freelance indépendant.",
+    "Étudiant en Licence 3 Informatique à Angers et développeur web/mobile freelance, avec une expérience de testeur automaticien et d'automatisation de processus par l'IA.",
   location: "Angers, France",
   availableForFreelance: true,
   socials: [
     { platform: "github", label: "GitHub", href: "https://github.com/mamadouwhile" },
-    // TODO: remplacer null par l'URL LinkedIn réelle (le lien s'affiche automatiquement ensuite).
-    { platform: "linkedin", label: "LinkedIn", href: null },
+    {
+      platform: "linkedin",
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/mahamadou-dembele-56a699253/",
+    },
   ],
 };

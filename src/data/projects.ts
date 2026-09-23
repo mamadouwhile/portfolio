@@ -22,6 +22,32 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: "ai-resume-analyzer",
+    name: "Analyseur intelligent de CV",
+    tagline: "Mesurer en quelques secondes si un CV correspond vraiment à une offre d'emploi.",
+    description:
+      "Application web qui analyse automatiquement la compatibilité d'un CV avec une offre : score ATS calculé avec BERT, extraction des mots-clés par TF-IDF, rapport rédigé via l'API Groq et export PDF. Un projet centré sur la qualité des données, les algorithmes de scoring et l'automatisation de processus.",
+    status: "exploration",
+    stack: ["Python", "NLP (BERT, TF-IDF)", "Groq API", "Export PDF"],
+    // TODO: ajouter l'URL du dépôt GitHub (AI-Resume-Analyzer).
+    repos: [],
+    screenshot: "/images/projects/ai-resume-analyzer-screenshot.png",
+  },
+  {
+    slug: "assistant-messagerie-ia",
+    name: "Assistant de messagerie IA",
+    tagline:
+      "Automatiser les réponses aux e-mails clients, et passer la main à un humain quand il le faut.",
+    description:
+      "Automatisation de la gestion des e-mails clients avec n8n : classification des messages et réponses pilotées par l'IA, appuyées sur une base de connaissances, avec remontée vers un humain lorsque la demande le nécessite.",
+    // TODO: confirmer le statut.
+    status: "exploration",
+    stack: ["n8n", "IA", "Automatisation"],
+    // TODO: ajouter l'URL du dépôt GitHub.
+    repos: [],
+    screenshot: "/images/projects/assistant-messagerie-ia-screenshot.png",
+  },
+  {
     slug: "westafine",
     name: "Westafine",
     tagline: "Un frontend et une API séparés pour que chaque couche évolue sans casser l'autre.",
@@ -71,31 +97,6 @@ export const projects: Project[] = [
     // TODO: ajouter l'URL du dépôt GitHub de BotArena.
     repos: [],
     screenshot: "/images/projects/botarena-screenshot.png",
-  },
-  {
-    slug: "ai-resume-analyzer",
-    name: "AI-Resume-Analyzer",
-    tagline: "Confier la lecture et l'analyse de CV à une IA plutôt qu'à un tri manuel.",
-    description: "Projet Python autour de l'intelligence artificielle appliquée à l'analyse de CV.",
-    status: "exploration",
-    stack: ["Python", "IA"],
-    // TODO: ajouter l'URL du dépôt GitHub d'AI-Resume-Analyzer.
-    repos: [],
-    screenshot: "/images/projects/ai-resume-analyzer-screenshot.png",
-  },
-  {
-    slug: "assistant-messagerie-ia",
-    name: "Assistant de messagerie IA",
-    tagline:
-      "Automatiser les réponses aux e-mails clients, et passer la main à un humain quand il le faut.",
-    description:
-      "Assistance client basée sur l'IA : automatisation des e-mails, base de connaissances et remontée d'informations vers un humain lorsque la demande le nécessite.",
-    // TODO: confirmer le statut et la stack.
-    status: "exploration",
-    stack: ["IA"],
-    // TODO: ajouter l'URL du dépôt GitHub.
-    repos: [],
-    screenshot: "/images/projects/assistant-messagerie-ia-screenshot.png",
   },
 ];
 

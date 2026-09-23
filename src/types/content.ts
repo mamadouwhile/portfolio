@@ -45,12 +45,15 @@ export type Project = {
   featured?: boolean;
 };
 
-export type SkillCategoryId = "frontend" | "backend" | "database" | "tools" | "learning";
+export type SkillCategoryId =
+  "web" | "backend" | "qa" | "automation" | "languages" | "tools" | "learning";
 
 export type Skill = {
   name: string;
   /** Précision affichée à côté du nom (ex. « en apprentissage »). */
   note?: string;
+  /** Affichée dans la carte « Stack » de l'accueil. */
+  featured?: boolean;
 };
 
 export type SkillGroup = {
@@ -60,15 +63,34 @@ export type SkillGroup = {
   skills: Skill[];
 };
 
+export type ExperienceKind = "work" | "education";
+
 export type ExperienceItem = {
+  kind: ExperienceKind;
   title: string;
+  /** Libellé court pour la carte de l'accueil. */
+  shortTitle: string;
   organization: string;
+  location?: string;
   period: string;
   description: string;
   highlights: string[];
 };
 
+export type Certification = {
+  title: string;
+  issuer: string;
+  year: string;
+};
+
+export type SpokenLanguage = {
+  name: string;
+  level: string;
+};
+
 export type Service = {
   title: string;
+  /** Libellé court pour la carte de l'accueil. */
+  shortTitle: string;
   description: string;
 };
