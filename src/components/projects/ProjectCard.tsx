@@ -25,7 +25,7 @@ export function ProjectCard({
   return (
     <article
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-colors hover:border-accent/60 has-[a[data-card-link]:focus-visible]:outline-2 has-[a[data-card-link]:focus-visible]:outline-offset-2 has-[a[data-card-link]:focus-visible]:outline-accent",
+        "group bento-card flex h-full flex-col transition-colors hover:border-accent/60 has-[a[data-card-link]:focus-visible]:outline-2 has-[a[data-card-link]:focus-visible]:outline-offset-2 has-[a[data-card-link]:focus-visible]:outline-accent",
         isWide && "lg:flex-row",
       )}
     >
@@ -62,7 +62,7 @@ export function ProjectCard({
           <Link
             href={`/projects/${project.slug}`}
             data-card-link=""
-            className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+            className="after:absolute after:inset-0 after:z-10 after:rounded-[1.75rem] after:content-[''] focus-visible:outline-none"
           >
             {project.name}
           </Link>

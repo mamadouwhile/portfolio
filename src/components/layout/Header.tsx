@@ -1,6 +1,6 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-import { AvailabilityBadge } from "@/components/layout/AvailabilityBadge";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Navbar } from "@/components/layout/Navbar";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
@@ -22,19 +22,21 @@ export function Header() {
           <span className="sr-only"> {site.name} — accueil</span>
         </Link>
 
-        <AvailabilityBadge className="hidden lg:inline-flex" />
+        <div className="hidden md:block">
+          <Navbar />
+        </div>
 
         <div className="flex items-center gap-2">
-          <div className="hidden md:block">
-            <Navbar />
-          </div>
           <ThemeToggle />
+          <Link
+            href="/contact"
+            className="hidden items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-opacity hover:opacity-90 sm:inline-flex"
+          >
+            Discutons
+            <ArrowUpRight className="size-4" aria-hidden />
+          </Link>
           <MobileMenu />
         </div>
-      </div>
-
-      <div className="hidden justify-center border-t border-border py-2 md:flex lg:hidden">
-        <AvailabilityBadge />
       </div>
     </header>
   );

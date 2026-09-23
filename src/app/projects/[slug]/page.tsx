@@ -59,7 +59,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         project={project}
         priority
         sizes="(min-width: 896px) 896px, 100vw"
-        className="mt-8 aspect-[16/9] rounded-2xl border border-border"
+        className="mt-8 aspect-[16/9] rounded-[1.75rem] border border-border"
       />
 
       <div className="mt-8 grid gap-8 md:grid-cols-[2fr_1fr]">

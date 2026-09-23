@@ -54,10 +54,7 @@ export function About({ headingLevel = "h2" }: AboutProps = {}) {
     >
       <div className="grid gap-4 md:grid-cols-2">
         {roles.map((role) => (
-          <Reveal
-            key={role.label}
-            className="rounded-2xl border border-border bg-surface p-5 md:p-6"
-          >
+          <Reveal key={role.label} className="bento-card p-5 md:p-6">
             <role.icon className="size-5 text-accent" aria-hidden />
             <p className="mt-4 font-mono text-xs tracking-widest text-muted uppercase">
               {role.label}
@@ -68,14 +65,14 @@ export function About({ headingLevel = "h2" }: AboutProps = {}) {
         ))}
       </div>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-10">
+      <div id="services" className="mt-12 grid scroll-mt-20 gap-6 lg:grid-cols-[1fr_2fr] lg:gap-10">
         <Reveal>
           <Sub className="text-2xl font-semibold">Ce que je fais</Sub>
           <p className="mt-2 text-muted">
             Des missions web et mobile, de la première maquette à la mise en production.
           </p>
         </Reveal>
-        <ul className="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+        <ul className="grid gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border sm:grid-cols-2">
           {services.map((service, index) => {
             const Icon = serviceIcons[index] ?? Code2;
             return (

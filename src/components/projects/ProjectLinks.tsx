@@ -16,7 +16,7 @@ export function ProjectLinks({ project, className }: ProjectLinksProps) {
     project.repos.length > 0 ? project.repos : [{ label: "Profil GitHub", href: GITHUB_PROFILE }];
 
   return (
-    <ul className={cn("relative z-10 flex flex-wrap gap-2", className)}>
+    <ul className={cn("relative z-20 flex flex-wrap gap-2", className)}>
       {project.liveUrl ? (
         <li>
           <a

@@ -31,7 +31,7 @@ export function Section({
       id={id}
       aria-labelledby={headingId}
       className={cn(
-        "mx-auto max-w-6xl scroll-mt-20 border-t border-border/60 px-4 py-10 first:border-t-0 md:px-6 md:py-14 lg:py-16 [[data-hero]+&]:border-t-0",
+        "mx-auto max-w-6xl scroll-mt-20 border-t border-border/60 px-4 py-10 first:border-t-0 md:px-6 md:py-14 lg:py-16",
         className,
       )}
     >

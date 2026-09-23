@@ -28,10 +28,7 @@ export function Skills() {
             <Reveal
               as="li"
               key={group.id}
-              className={cn(
-                "flex flex-col rounded-2xl border border-border bg-surface p-5",
-                layout[group.id],
-              )}
+              className={cn("bento-card flex flex-col p-5", layout[group.id])}
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex size-9 items-center justify-center rounded-lg bg-accent-soft text-accent">

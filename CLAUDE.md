@@ -5,7 +5,8 @@
 Portfolio personnel de Mahamadou Dembele, étudiant en Licence Informatique à Angers et
 développeur web/mobile freelance. Le site présente un positionnement clair, des preuves
 concrètes (projets réels, stack, parcours) et un formulaire de contact fonctionnel. Design
-contemporain : dark mode natif, bento grid, micro-interactions sobres. Déployé sur Vercel,
+contemporain : dark mode natif, **accueil « tableau de bord » en cartes bento qui tient sur un
+seul écran**, chaque carte menant à une partie du site (DA inspirée d'abderrahmanemouzoune.com). Déployé sur Vercel,
 chaque push déclenche un déploiement (preview sur les branches, production sur `master`).
 
 **Workflow** : travailler et pousser directement sur `master` (pas de branche séparée sauf
@@ -38,11 +39,14 @@ demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
   - Sous-blocs d'une même section : `mt-12` ; grilles de cards : `gap-4` ; colonnes texte/grille :
     `gap-6 lg:gap-10`.
   - Cards : `p-5` (`md:p-6` pour les grandes) ; timeline : `pb-8` entre items.
-  - Hero : `pt-10 md:pt-14 lg:pt-16`, `pb-10 md:pb-12`, suivi du bandeau « Stack principale ».
-  - Footer : CTA `py-12 md:py-14`, colonnes `py-10`.
+  - Accueil : grille `HomeBento` 4 colonnes × (bandeau + 3 rangées), `gap-3`, hauteur min
+    `100dvh − header − footer` ; rangées `minmax(min-content, 1fr)` → jamais de carte coupée.
+  - Footer : une seule ligne `py-4` (l'accueil doit tenir sur un écran).
 - **Typographie** : titres `leading-[1.1]` (hero `leading-[1.05]`), H2 `text-3xl md:text-4xl`,
   hero `text-4xl sm:text-5xl lg:text-6xl`, lead `text-base md:text-lg`.
-- Animations : CSS uniquement. Entrée du hero `animate-enter`, transition de page
+- **Cartes** : utilitaire `bento-card` (dégradé `surface-2 → surface`, bordure, rayon `1.75rem`) ;
+  `BentoCard` = libellé + titre + flèche ronde, carte entière cliquable (lien étiré).
+- Animations : CSS uniquement. Bandeau défilant `.marquee`, transition de page
   `animate-page-enter` (`src/app/template.tsx`), apparition au scroll `.reveal` (mouvement seul,
   sans fondu). Tout est coupé par `prefers-reduced-motion`. Framer Motion a été retiré : il
   rendait le contenu invisible côté serveur (opacity 0 jusqu'à l'hydratation) et dégradait le LCP.
@@ -50,10 +54,14 @@ demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
 ## Décisions d'architecture
 
 - **Contenu** : `src/data/*` est l'unique source ; les composants ne contiennent que du texte
-  d'interface. Chiffres du hero calculés depuis les données (jamais écrits en dur).
+  d'interface. Chiffres de l'accueil calculés depuis les données (`src/lib/home-stats.ts`).
+- **Accueil** : uniquement `HomeBento` (profil → /about, projets → /projects, parcours →
+  /about#experience, stack → /about#stack, services → /about#services, réseaux, chiffres,
+  contact → /contact). Les pages intérieures gardent les sections détaillées et finissent par
+  `ContactStrip`.
 - **Server Components par défaut**. Composants client limités à : `MobileMenu`, `Navbar`
-  (lien actif), `ThemeToggle`, `Providers` (next-themes), `HeroSpotlight` (halo au curseur),
-  `FooterCta` (masqué sur `/` et `/contact`), `ContactForm`. Le `Header` reste serveur.
+  (lien actif), `ThemeToggle`, `Providers` (next-themes), `ContactForm`. Le `Header` et toutes
+  les cartes de l'accueil sont serveur.
 - **Animations CSS, pas de Framer Motion** : retiré car il rendait le contenu en `opacity: 0`
   côté serveur jusqu'à l'hydratation (LCP mobile 3,8 s → ~2,6 s, −40 kB de JS sur l'accueil).
   Apparition au scroll = `.reveal` (scroll-driven, mouvement seul, sans fondu pour garder un
@@ -68,7 +76,7 @@ demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
   layout (conflit avec le `noindex` automatique des 404).
 - **Image Open Graph** : `public/og-image.png` (1200×630) statique, rendue depuis le site avec
   ses polices ; à régénérer si le positionnement ou le design change.
-- **Titres** : un seul `h1` par page. `Section` accepte `headingLevel` (`h1` sur /about,
+- **Titres** : un seul `h1` par page (sur l'accueil : le nom dans `ProfileCard`). `Section` accepte `headingLevel` (`h1` sur /about,
   /projects, /contact) ; les sous-titres (About, ProjectCard) descendent d'un niveau en conséquence.
 - **Captures de projets** : `public/images/projects/<slug>-screenshot.png`, détectées au build
   (`getScreenshot`, `server-only`) ; à défaut, illustration géométrique déterministe (slug).
@@ -94,8 +102,11 @@ npm run format     # Prettier (écriture)
 src/
   app/          routes, api/contact, sitemap.ts, robots.ts, icon.svg, template.tsx
   components/
-    layout/     Header, Navbar, MobileMenu, ThemeToggle, AvailabilityBadge, Footer, FooterCta
-    sections/   Section, Hero, HeroSpotlight, About, Skills, Projects, Experience, Contact
+    layout/     Header, Navbar, MobileMenu, ThemeToggle, AvailabilityBadge, Footer
+    bento/      BentoCard
+    home/       HomeBento + cartes (Profile, Projects, Experience, Stack, Services, Socials,
+                Stats, Contact, Marquee), ContactStrip
+    sections/   Section, About, Skills, Projects, Experience, Contact (pages intérieures)
     projects/   ProjectCard, ProjectVisual, ProjectStatusBadge, ProjectLinks
     contact/    ContactForm
     motion/     Reveal (CSS)

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { ContactStrip } from "@/components/home/ContactStrip";
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
 import { Skills } from "@/components/sections/Skills";
@@ -18,6 +19,7 @@ export default function AboutPage() {
       <About headingLevel="h1" />
       <Skills />
       <Experience />
+      <ContactStrip />
     </>
   );
 }

@@ -19,8 +19,10 @@ production._
 
 - **Contenu réel uniquement** : 7 projets, stack, parcours et services viennent de `src/data/` ;
   toute information manquante est marquée `TODO` dans les données, jamais inventée.
-- **Design system dense et sobre** : thème sombre par défaut (bascule clair/sombre persistante),
-  accent unique orange brûlé, bento grids, typographie Space Grotesk / Inter / Geist Mono.
+- **Accueil « tableau de bord »** : toute la page d'accueil tient sur un écran, en cartes bento
+  cliquables menant chacune à une partie du site (profil, projets, parcours, stack, services,
+  contact). Thème sombre par défaut (bascule persistante), accent orange brûlé, Space Grotesk /
+  Inter / Geist Mono.
 - **Performance** : animations 100 % CSS (aucune librairie d'animation JS), composants serveur
   par défaut, pages statiques. Lighthouse local : 95–97 en performance mobile, 100 sur desktop,
   CLS 0.
@@ -50,7 +52,7 @@ production._
 ```
 src/
 ├── app/                    Routes (App Router)
-│   ├── page.tsx            Accueil : hero + toutes les sections
+│   ├── page.tsx            Accueil : grille de cartes bento sur un écran
 │   ├── about/ projects/ contact/
 │   ├── projects/[slug]/    Fiche projet (générée statiquement)
 │   ├── api/contact/        Endpoint du formulaire (Zod + Resend)
@@ -58,7 +60,8 @@ src/
 │   └── globals.css         Design tokens, animations, thème
 ├── components/
 │   ├── layout/             Header, Navbar, MobileMenu, Footer, ThemeToggle…
-│   ├── sections/           Hero, About, Skills, Projects, Experience, Contact
+│   ├── bento/ home/        Carte bento générique et cartes de l'accueil
+│   ├── sections/           Sections détaillées des pages (About, Skills, Projects…)
 │   ├── projects/           Cartes, visuels, badges de statut, liens
 │   ├── contact/            Formulaire
 │   ├── motion/             Reveal (apparition au scroll en CSS)

@@ -137,3 +137,31 @@
   opacity: 0.06;
   mix-blend-mode: overlay;
 }
+
+/* Cartes « bento » : dégradé discret, bordure fine, grand rayon. */
+@utility bento-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1.75rem;
+  background: linear-gradient(160deg, var(--surface-2) 0%, var(--surface) 55%);
+}
+
+/* Bandeau défilant (carte d'accueil). Mis en pause au survol et sans animation si
+   l'utilisateur préfère réduire les mouvements. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
