@@ -31,7 +31,7 @@ export const projects: Project[] = [
     status: "en-developpement",
     stack: ["TypeScript", "Next.js", "S3 / R2", "n8n", "Bun", "Vitest"],
     repos: [{ label: "colis", href: `${GITHUB}/colis` }],
-    // TODO: ajouter l'URL de démo une fois le déploiement en ligne.
+    liveUrl: "https://colis-site.vercel.app",
     screenshot: "/images/projects/colis-screenshot.png",
   },
   {
