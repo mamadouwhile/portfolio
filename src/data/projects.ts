@@ -22,6 +22,19 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: "colis",
+    name: "colis",
+    tagline:
+      "Livrer un fichier à un client, savoir quand il l'ouvre et recevoir sa validation horodatée.",
+    description:
+      "Outil open source de livraison pour freelances, fork de s3nd (MIT) que j'ai renommé et réorienté. Le fichier part dans un stockage S3 que l'on possède, sous un code de huit caractères imprimé comme un bordereau d'expédition. Le client l'ouvre, le valide ou demande des corrections avec un commentaire, et chaque étape déclenche un webhook signé, avec un nœud n8n dédié. Gros fichiers envoyés directement au stockage par morceaux, avec reprise en cas de coupure. CLI en français : colis envoyer, recevoir, statut.",
+    status: "en-developpement",
+    stack: ["TypeScript", "Next.js", "S3 / R2", "n8n", "Bun", "Vitest"],
+    repos: [{ label: "colis", href: `${GITHUB}/colis` }],
+    // TODO: ajouter l'URL de démo une fois le déploiement en ligne.
+    screenshot: "/images/projects/colis-screenshot.png",
+  },
+  {
     slug: "ai-resume-analyzer",
     name: "Analyseur intelligent de CV",
     tagline: "Mesurer en quelques secondes si un CV correspond vraiment à une offre d'emploi.",
