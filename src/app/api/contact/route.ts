@@ -30,25 +30,39 @@ export async function POST(request: Request) {
   const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>";
 
   if (!apiKey || !to) {
+    const missing = [!apiKey && "RESEND_API_KEY", !to && "CONTACT_TO_EMAIL"].filter(Boolean);
+    console.error(`[contact] Envoi désactivé : variable(s) manquante(s) ${missing.join(", ")}`);
     return NextResponse.json(
       { error: "Envoi indisponible pour le moment", fallback: "mailto" },
       { status: 503 },
     );
   }
 
-  const response = await fetch(RESEND_ENDPOINT, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from,
-      to,
-      reply_to: email,
-      subject: `Portfolio — message de ${name}`,
-      text: message,
-    }),
-  });
+  let response: Response;
+  try {
+    response = await fetch(RESEND_ENDPOINT, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to,
+        reply_to: email,
+        subject: `Portfolio — message de ${name}`,
+        text: message,
+      }),
+    });
+  } catch (error) {
+    console.error("[contact] Resend injoignable :", error);
+    return NextResponse.json({ error: "Échec de l'envoi" }, { status: 502 });
+  }
 
   if (!response.ok) {
+    // Motif exact renvoyé par Resend (clé invalide, domaine non vérifié, destinataire refusé…),
+    // visible dans Vercel → Logs.
+    console.error(
+      `[contact] Resend a refusé l'envoi (${response.status}) :`,
+      await response.text(),
+    );
     return NextResponse.json({ error: "Échec de l'envoi" }, { status: 502 });
   }
 
