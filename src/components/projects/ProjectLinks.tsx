@@ -1,7 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 
-import { GITHUB_PROFILE } from "@/data/projects";
 import { cn } from "@/lib/utils";
 import type { Project } from "@/types/content";
 
@@ -10,11 +9,8 @@ type ProjectLinksProps = {
   className?: string;
 };
 
-/** Liens GitHub + démo. Sans dépôt connu, renvoie vers le profil GitHub. */
+/** Liens démo + GitHub. Un projet sans dépôt public (projet pro) n'affiche que la démo. */
 export function ProjectLinks({ project, className }: ProjectLinksProps) {
-  const repos =
-    project.repos.length > 0 ? project.repos : [{ label: "Profil GitHub", href: GITHUB_PROFILE }];
-
   return (
     <ul className={cn("relative z-20 flex flex-wrap gap-2", className)}>
       {project.liveUrl ? (
@@ -31,7 +27,7 @@ export function ProjectLinks({ project, className }: ProjectLinksProps) {
           </a>
         </li>
       ) : null}
-      {repos.map((repo) => (
+      {project.repos.map((repo) => (
         <li key={repo.href}>
           <a
             href={repo.href}

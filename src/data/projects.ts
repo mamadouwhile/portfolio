@@ -15,8 +15,9 @@ export const projects: Project[] = [
       "Plateforme qui aide les étudiants à gérer leurs démarches (logement, aides financières, santé, échéances) avec des checklists guidées, des documents privés et des rappels intelligents. Monorepo Turborepo : application web Next.js 14, application mobile Expo, API NestJS + Fastify + Prisma sur PostgreSQL, types et schémas Zod partagés. Espaces étudiant, établissement et super-admin, offres Free et Premium, interface FR/EN. Bêta ouverte aux étudiants.",
     status: "en-developpement",
     stack: ["Next.js", "Expo", "NestJS", "Prisma", "PostgreSQL", "Turborepo", "Zod"],
-    // Dépôt privé : pas de lien GitHub public. TODO: ajouter liveUrl quand le site est en ligne.
+    // Projet professionnel : dépôt privé, volontairement sans lien GitHub.
     repos: [],
+    liveUrl: "https://interuni-staging.vercel.app",
     screenshot: "/images/projects/interuni-screenshot.webp",
     featured: true,
   },
@@ -81,8 +82,6 @@ export const projects: Project[] = [
     screenshot: "/images/projects/botarena-screenshot.webp",
   },
 ];
-
-export const GITHUB_PROFILE = GITHUB;
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
