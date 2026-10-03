@@ -44,7 +44,7 @@ export function ProjectVisual({
           fill
           sizes={sizes}
           priority={priority}
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+          className="object-cover object-left-top transition-transform duration-500 group-hover:scale-[1.02]"
         />
       </div>
     );

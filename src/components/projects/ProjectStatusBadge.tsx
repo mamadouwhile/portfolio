@@ -5,6 +5,7 @@ import type { ProjectStatus } from "@/types/content";
 const dotStyles: Record<ProjectStatus, string> = {
   production: "bg-success",
   "en-developpement": "bg-accent",
+  termine: "bg-muted",
   exploration: "border border-muted",
 };
 

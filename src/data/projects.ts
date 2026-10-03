@@ -8,17 +8,29 @@ const GITHUB = "https://github.com/mamadouwhile";
  */
 export const projects: Project[] = [
   {
+    slug: "interuni",
+    name: "InterUni",
+    tagline: "Moins de temps dans les démarches administratives, plus de temps pour ses études.",
+    description:
+      "Plateforme qui aide les étudiants à gérer leurs démarches (logement, aides financières, santé, échéances) avec des checklists guidées, des documents privés et des rappels intelligents. Monorepo Turborepo : application web Next.js 14, application mobile Expo, API NestJS + Fastify + Prisma sur PostgreSQL, types et schémas Zod partagés. Espaces étudiant, établissement et super-admin, offres Free et Premium, interface FR/EN. Bêta ouverte aux étudiants.",
+    status: "en-developpement",
+    stack: ["Next.js", "Expo", "NestJS", "Prisma", "PostgreSQL", "Turborepo", "Zod"],
+    // Dépôt privé : pas de lien GitHub public. TODO: ajouter liveUrl quand le site est en ligne.
+    repos: [],
+    screenshot: "/images/projects/interuni-screenshot.webp",
+    featured: true,
+  },
+  {
     slug: "2dk-it",
     name: "2DK IT",
-    tagline: "Une plateforme web pensée, développée et mise en production de bout en bout.",
+    tagline: "Un site vitrine pensé, développé et mis en production de bout en bout.",
     description:
-      "Projet personnel abouti : une plateforme web développée en TypeScript avec Next.js et déployée en production sur Vercel. C'est mon projet le plus complet, et il est accessible publiquement.",
+      "Projet personnel abouti : une plateforme web développée en TypeScript avec Next.js et déployée en production sur Vercel. Il est accessible publiquement.",
     status: "production",
     stack: ["TypeScript", "Next.js", "Vercel"],
     repos: [{ label: "2dk-it", href: `${GITHUB}/2dk-it` }],
     liveUrl: "https://2dk-it.vercel.app",
     screenshot: "/images/projects/2dk-it-screenshot.webp",
-    featured: true,
   },
   {
     slug: "colis",
@@ -58,25 +70,12 @@ export const projects: Project[] = [
     screenshot: "/images/projects/westafine-screenshot.webp",
   },
   {
-    slug: "interuni",
-    name: "Interuni",
-    tagline: "Un produit construit par itérations courtes, testé et corrigé à chaque étape.",
-    description:
-      "Projet TypeScript en développement actif, avec de nombreuses itérations récentes.",
-    status: "en-developpement",
-    stack: ["TypeScript"],
-    // TODO: ajouter l'URL du dépôt GitHub d'Interuni.
-    repos: [],
-    // TODO: fournir une capture (public/images/projects/interuni-screenshot.webp).
-    screenshot: "/images/projects/interuni-screenshot.webp",
-  },
-  {
     slug: "botarena",
     name: "BotArena",
     tagline: "Déposer un bot, le compiler en sandbox et l'affronter en match ou en tournoi.",
     description:
       "Plateforme web universitaire de gestion de bots : dépôt et compilation isolée dans des conteneurs Docker, matchs, tournois round-robin avec classements, et supervision admin. Authentification JWT avec trois rôles (étudiant, relecteur, admin), frontend React/TypeScript, API FastAPI avec workers, et moteur de jeu en C++.",
-    status: "exploration",
+    status: "termine",
     stack: ["React", "TypeScript", "FastAPI", "SQLAlchemy", "C++", "Docker"],
     repos: [{ label: "BotArena", href: `${GITHUB}/BotArena` }],
     screenshot: "/images/projects/botarena-screenshot.webp",

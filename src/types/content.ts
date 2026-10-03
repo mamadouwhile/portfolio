@@ -23,7 +23,7 @@ export type SiteConfig = {
   socials: SocialLink[];
 };
 
-export type ProjectStatus = "production" | "en-developpement" | "exploration";
+export type ProjectStatus = "production" | "en-developpement" | "termine" | "exploration";
 
 export type ProjectLink = {
   label: string;

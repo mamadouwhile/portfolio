@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = pageMetadata({
   title: "Projets",
-  description: `${projects.length} projets réels, dont 2DK IT en production : accroche, stack, statut et liens GitHub de chaque réalisation.`,
+  description: `${projects.length} projets réels, dont InterUni (plateforme étudiante web, mobile et API) : accroche, stack, statut et liens de chaque réalisation.`,
   path: "/projects",
 });
 

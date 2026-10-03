@@ -18,6 +18,7 @@ export function ProjectsCard({ className }: { className?: string }) {
                 "size-2 shrink-0 rounded-full",
                 project.status === "production" && "bg-success",
                 project.status === "en-developpement" && "bg-accent",
+                project.status === "termine" && "bg-muted",
                 project.status === "exploration" && "border border-muted",
               )}
             />

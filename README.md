@@ -17,7 +17,7 @@ production._
 
 ## Points clés
 
-- **Contenu réel uniquement** : 7 projets, stack, parcours et services viennent de `src/data/` ;
+- **Contenu réel uniquement** : 6 projets, stack, parcours et services viennent de `src/data/` ;
   toute information manquante est marquée `TODO` dans les données, jamais inventée.
 - **Accueil « tableau de bord »** : toute la page d'accueil tient sur un écran, en cartes bento
   cliquables menant chacune à une partie du site (profil, projets, parcours, stack, services,
@@ -72,7 +72,7 @@ src/
 └── types/                  Types du contenu
 public/
 ├── og-image.png            Image Open Graph 1200×630
-├── images/projects/        Captures des projets (<slug>-screenshot.png)
+├── images/projects/        Captures des projets (<slug>-screenshot.webp)
 └── documents/              CV
 ```
 
