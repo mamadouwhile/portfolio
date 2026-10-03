@@ -3,7 +3,7 @@ import type { Project } from "@/types/content";
 const GITHUB = "https://github.com/mamadouwhile";
 
 /*
- * Captures : déposer les fichiers dans /public/images/projects/<slug>-screenshot.png.
+ * Captures : /public/images/projects/<slug>-screenshot.webp (1600 px de large, WebP).
  * Tant qu'un fichier est absent, une illustration géométrique est affichée à la place.
  */
 export const projects: Project[] = [
@@ -15,10 +15,9 @@ export const projects: Project[] = [
       "Projet personnel abouti : une plateforme web développée en TypeScript avec Next.js et déployée en production sur Vercel. C'est mon projet le plus complet, et il est accessible publiquement.",
     status: "production",
     stack: ["TypeScript", "Next.js", "Vercel"],
-    // TODO: ajouter l'URL du dépôt GitHub de 2DK IT.
-    repos: [],
+    repos: [{ label: "2dk-it", href: `${GITHUB}/2dk-it` }],
     liveUrl: "https://2dk-it.vercel.app",
-    screenshot: "/images/projects/2dk-it-screenshot.png",
+    screenshot: "/images/projects/2dk-it-screenshot.webp",
     featured: true,
   },
   {
@@ -41,52 +40,22 @@ export const projects: Project[] = [
     description:
       "Application web qui analyse automatiquement la compatibilité d'un CV avec une offre : score ATS calculé avec BERT, extraction des mots-clés par TF-IDF, rapport rédigé via l'API Groq et export PDF. Un projet centré sur la qualité des données, les algorithmes de scoring et l'automatisation de processus.",
     status: "exploration",
-    stack: ["Python", "NLP (BERT, TF-IDF)", "Groq API", "Export PDF"],
-    // TODO: ajouter l'URL du dépôt GitHub (AI-Resume-Analyzer).
-    repos: [],
-    screenshot: "/images/projects/ai-resume-analyzer-screenshot.png",
-  },
-  {
-    slug: "assistant-messagerie-ia",
-    name: "Assistant de messagerie IA",
-    tagline:
-      "Automatiser les réponses aux e-mails clients, et passer la main à un humain quand il le faut.",
-    description:
-      "Automatisation de la gestion des e-mails clients avec n8n : classification des messages et réponses pilotées par l'IA, appuyées sur une base de connaissances, avec remontée vers un humain lorsque la demande le nécessite.",
-    // TODO: confirmer le statut.
-    status: "exploration",
-    stack: ["n8n", "IA", "Automatisation"],
-    // TODO: ajouter l'URL du dépôt GitHub.
-    repos: [],
-    screenshot: "/images/projects/assistant-messagerie-ia-screenshot.png",
+    stack: ["Python", "Streamlit", "SentenceTransformers", "scikit-learn", "Groq API"],
+    repos: [{ label: "AI-Resume-Analyzer", href: `${GITHUB}/AI-Resume-Analyzer` }],
+    screenshot: "/images/projects/ai-resume-analyzer-screenshot.webp",
   },
   {
     slug: "westafine",
     name: "Westafine",
-    tagline: "Un frontend et une API séparés pour que chaque couche évolue sans casser l'autre.",
+    tagline: "Le site d'une marque de boissons premium inspirées des saveurs africaines.",
     description:
-      "Projet TypeScript en architecture fullstack séparée : le frontend et l'API dédiée (westafine-api) vivent dans des dépôts distincts.",
-    // TODO: confirmer le statut.
-    status: "en-developpement",
+      "Site de la marque Westafine (bissap, gingembre, ananas), en ligne sur westafinedrinks.com. Projet TypeScript en architecture fullstack séparée : le frontend et l'API dédiée (westafine-api) vivent dans des dépôts distincts.",
+    status: "production",
     stack: ["TypeScript", "API REST"],
     // TODO: ajouter le dépôt du frontend Westafine.
     repos: [{ label: "westafine-api", href: `${GITHUB}/westafine-api` }],
-    screenshot: "/images/projects/westafine-screenshot.png",
-  },
-  {
-    slug: "black-sphere",
-    name: "Black Sphere",
-    tagline: "Une application et son API découplées, chacune avec une responsabilité claire.",
-    description:
-      "Projet fullstack TypeScript composé d'une application (black_sphere_app) et d'une API dédiée (black-sphere-api), avec une séparation nette des responsabilités entre les deux.",
-    // TODO: confirmer le statut.
-    status: "en-developpement",
-    stack: ["TypeScript", "API REST"],
-    repos: [
-      { label: "black_sphere_app", href: `${GITHUB}/black_sphere_app` },
-      { label: "black-sphere-api", href: `${GITHUB}/black-sphere-api` },
-    ],
-    screenshot: "/images/projects/black-sphere-screenshot.png",
+    liveUrl: "https://www.westafinedrinks.com",
+    screenshot: "/images/projects/westafine-screenshot.webp",
   },
   {
     slug: "interuni",
@@ -98,18 +67,19 @@ export const projects: Project[] = [
     stack: ["TypeScript"],
     // TODO: ajouter l'URL du dépôt GitHub d'Interuni.
     repos: [],
-    screenshot: "/images/projects/interuni-screenshot.png",
+    // TODO: fournir une capture (public/images/projects/interuni-screenshot.webp).
+    screenshot: "/images/projects/interuni-screenshot.webp",
   },
   {
     slug: "botarena",
     name: "BotArena",
-    tagline: "Un terrain d'expérimentation pour se confronter à des problèmes algorithmiques.",
-    description: "Projet Python d'exploration technique et algorithmique.",
+    tagline: "Déposer un bot, le compiler en sandbox et l'affronter en match ou en tournoi.",
+    description:
+      "Plateforme web universitaire de gestion de bots : dépôt et compilation isolée dans des conteneurs Docker, matchs, tournois round-robin avec classements, et supervision admin. Authentification JWT avec trois rôles (étudiant, relecteur, admin), frontend React/TypeScript, API FastAPI avec workers, et moteur de jeu en C++.",
     status: "exploration",
-    stack: ["Python"],
-    // TODO: ajouter l'URL du dépôt GitHub de BotArena.
-    repos: [],
-    screenshot: "/images/projects/botarena-screenshot.png",
+    stack: ["React", "TypeScript", "FastAPI", "SQLAlchemy", "C++", "Docker"],
+    repos: [{ label: "BotArena", href: `${GITHUB}/BotArena` }],
+    screenshot: "/images/projects/botarena-screenshot.webp",
   },
 ];
 

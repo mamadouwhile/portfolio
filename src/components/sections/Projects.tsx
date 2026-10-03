@@ -9,8 +9,9 @@ import { cn } from "@/lib/utils";
  * [ projet phare 4×2 ][ 2 ]
  * [                  ][ 2 ]
  * [ 2 ][ 2 ][ 2 ]
- * [ carte large 6    ]
+ * [ carte large 6    ]   (si 7 projets)
  */
+const WIDE = "lg:col-span-6";
 const placement = [
   "md:col-span-2 lg:col-span-4 lg:row-span-2",
   "lg:col-span-2",
@@ -18,7 +19,7 @@ const placement = [
   "lg:col-span-2",
   "lg:col-span-2",
   "lg:col-span-2",
-  "lg:col-span-6",
+  WIDE,
 ];
 
 type ProjectsProps = {
@@ -40,8 +41,9 @@ export function Projects({ headingLevel }: ProjectsProps = {}) {
     >
       <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
         {ordered.map((project, index) => {
-          const isLast = index === ordered.length - 1;
-          const variant = project.featured ? "featured" : isLast ? "wide" : "default";
+          // La carte large (pleine ligne) n'existe que s'il reste un 7ᵉ projet après la grille.
+          const isWide = placement[index] === WIDE;
+          const variant = project.featured ? "featured" : isWide ? "wide" : "default";
 
           return (
             <Reveal as="li" key={project.slug} className={cn(placement[index])}>

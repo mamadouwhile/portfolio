@@ -117,7 +117,7 @@ Tout le texte affiché vient de `src/data/` :
 - `projects.ts` : projets, liens GitHub/démo, statut, stack ;
 - `skills.ts`, `experience.ts`, `services.ts` : stack, parcours, offres.
 
-Pour afficher la capture d'un projet, déposer `public/images/projects/<slug>-screenshot.png` :
+Pour afficher la capture d'un projet, déposer `public/images/projects/<slug>-screenshot.webp` :
 elle remplace automatiquement l'illustration géométrique générée.
 
 ## Licence

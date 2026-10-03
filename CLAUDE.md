@@ -78,7 +78,7 @@ demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
   ses polices ; à régénérer si le positionnement ou le design change.
 - **Titres** : un seul `h1` par page (sur l'accueil : le nom dans `ProfileCard`). `Section` accepte `headingLevel` (`h1` sur /about,
   /projects, /contact) ; les sous-titres (About, ProjectCard) descendent d'un niveau en conséquence.
-- **Captures de projets** : `public/images/projects/<slug>-screenshot.png`, détectées au build
+- **Captures de projets** : `public/images/projects/<slug>-screenshot.webp`, détectées au build
   (`getScreenshot`, `server-only`) ; à défaut, illustration géométrique déterministe (slug).
 - **Contact** : schéma Zod partagé client/serveur (`src/lib/contact-schema.ts`) ; API Resend en
   `fetch` (sans SDK) ; 503 si non configurée ; champ piège `website` → 200 silencieux.
