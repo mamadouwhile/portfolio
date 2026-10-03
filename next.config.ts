@@ -1,3 +1,4 @@
+import { withSentryConfig } from "@sentry/nextjs/config";
 import type { NextConfig } from "next";
 
 const securityHeaders = [
@@ -24,4 +25,11 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  // Pas de projet/organisation ni de jeton : aucun envoi de source maps au build.
+  silent: true,
+  telemetry: false,
+  sourcemaps: { disable: true },
+  // Fait transiter les rapports par le site pour éviter les bloqueurs de pubs.
+  tunnelRoute: "/monitoring",
+});

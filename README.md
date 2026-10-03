@@ -36,16 +36,17 @@ production._
 
 ## Stack
 
-| Domaine     | Choix                                                          |
-| ----------- | -------------------------------------------------------------- |
-| Framework   | Next.js 15 (App Router, Server Components), React 19           |
-| Langage     | TypeScript strict (`noUncheckedIndexedAccess`)                 |
-| Style       | Tailwind CSS v4 (tokens CSS dans `globals.css`), `next-themes` |
-| Validation  | Zod                                                            |
-| Icônes      | lucide-react, react-icons (logos des technologies)             |
-| E-mails     | Resend (API HTTP, sans SDK)                                    |
-| Qualité     | ESLint strict, Prettier, Husky + lint-staged, GitHub Actions   |
-| Hébergement | Vercel (déploiement continu sur `master`)                      |
+| Domaine     | Choix                                                               |
+| ----------- | ------------------------------------------------------------------- |
+| Framework   | Next.js 15 (App Router, Server Components), React 19                |
+| Langage     | TypeScript strict (`noUncheckedIndexedAccess`)                      |
+| Style       | Tailwind CSS v4 (tokens CSS dans `globals.css`), `next-themes`      |
+| Validation  | Zod                                                                 |
+| Icônes      | lucide-react, react-icons (logos des technologies)                  |
+| Monitoring  | Sentry (erreurs, chargé uniquement en cas d'erreur côté navigateur) |
+| E-mails     | Resend (API HTTP, sans SDK)                                         |
+| Qualité     | ESLint strict, Prettier, Husky + lint-staged, GitHub Actions        |
+| Hébergement | Vercel (déploiement continu sur `master`)                           |
 
 ## Structure
 
@@ -100,12 +101,13 @@ Actions lance lint, typecheck, format et build à chaque push et pull request.
 
 ## Variables d'environnement
 
-| Variable               | Requise                 | Rôle                                                                   |
-| ---------------------- | ----------------------- | ---------------------------------------------------------------------- |
-| `RESEND_API_KEY`       | Oui, pour le formulaire | Clé API Resend. Sans elle, `/api/contact` répond 503.                  |
-| `CONTACT_TO_EMAIL`     | Oui, pour le formulaire | Adresse qui reçoit les messages.                                       |
-| `CONTACT_FROM_EMAIL`   | Non                     | Expéditeur vérifié dans Resend (défaut : `onboarding@resend.dev`).     |
-| `NEXT_PUBLIC_SITE_URL` | Non                     | Domaine personnalisé. Sur Vercel, l'URL de production est automatique. |
+| Variable                 | Requise                 | Rôle                                                                   |
+| ------------------------ | ----------------------- | ---------------------------------------------------------------------- |
+| `RESEND_API_KEY`         | Oui, pour le formulaire | Clé API Resend. Sans elle, `/api/contact` répond 503.                  |
+| `CONTACT_TO_EMAIL`       | Oui, pour le formulaire | Adresse qui reçoit les messages.                                       |
+| `CONTACT_FROM_EMAIL`     | Non                     | Expéditeur vérifié dans Resend (défaut : `onboarding@resend.dev`).     |
+| `NEXT_PUBLIC_SITE_URL`   | Non                     | Domaine personnalisé. Sur Vercel, l'URL de production est automatique. |
+| `NEXT_PUBLIC_SENTRY_DSN` | Non                     | DSN Sentry alternatif (un DSN par défaut est déjà configuré).          |
 
 ## Modifier le contenu
 

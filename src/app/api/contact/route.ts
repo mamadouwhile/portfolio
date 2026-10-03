@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -32,6 +33,10 @@ export async function POST(request: Request) {
   if (!apiKey || !to) {
     const missing = [!apiKey && "RESEND_API_KEY", !to && "CONTACT_TO_EMAIL"].filter(Boolean);
     console.error(`[contact] Envoi désactivé : variable(s) manquante(s) ${missing.join(", ")}`);
+    Sentry.captureMessage(
+      `Formulaire de contact désactivé : ${missing.join(", ")} manquant(s)`,
+      "error",
+    );
     return NextResponse.json(
       { error: "Envoi indisponible pour le moment", fallback: "mailto" },
       { status: 503 },
@@ -53,16 +58,16 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[contact] Resend injoignable :", error);
+    Sentry.captureException(error);
     return NextResponse.json({ error: "Échec de l'envoi" }, { status: 502 });
   }
 
   if (!response.ok) {
     // Motif exact renvoyé par Resend (clé invalide, domaine non vérifié, destinataire refusé…),
     // visible dans Vercel → Logs.
-    console.error(
-      `[contact] Resend a refusé l'envoi (${response.status}) :`,
-      await response.text(),
-    );
+    const detail = await response.text();
+    console.error(`[contact] Resend a refusé l'envoi (${response.status}) :`, detail);
+    Sentry.captureMessage(`Resend a refusé l'envoi (${response.status}) : ${detail}`, "error");
     return NextResponse.json({ error: "Échec de l'envoi" }, { status: 502 });
   }
 

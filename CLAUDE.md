@@ -83,6 +83,13 @@ demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
 - **Contact** : schéma Zod partagé client/serveur (`src/lib/contact-schema.ts`) ; API Resend en
   `fetch` (sans SDK) ; 503 si non configurée ; champ piège `website` → 200 silencieux.
 - **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
+- **Sentry** (offre Student Pack, DSN dans `src/lib/sentry.ts`, surchargeable par
+  `NEXT_PUBLIC_SENTRY_DSN`) : actif uniquement sur Vercel (`VERCEL_ENV`), erreurs seulement (ni
+  tracing, ni replay, ni sessions). Serveur : `src/instrumentation.ts` (`onRequestError`) +
+  captures explicites dans `/api/contact`. Navigateur : `src/instrumentation-client.ts` ne charge
+  le SDK **qu'à la première erreur** (0 octet sinon) — ne pas l'importer statiquement côté client,
+  cela coûte ~60 kB et fait passer Lighthouse mobile sous 95. Rapports via le tunnel `/monitoring`
+  (contourne les bloqueurs de pub). Pas d'upload de source maps (pas de jeton Sentry).
 - **Budgets qualité** : Lighthouse mobile ≥ 95 perf, 100 a11y / best practices / SEO ; CLS 0 ;
   axe-core sans violation en thèmes clair et sombre.
 
