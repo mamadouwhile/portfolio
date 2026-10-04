@@ -84,6 +84,10 @@ demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.
   `fetch` (sans SDK) ; 503 si non configurée ; champ piège `website` → 200 silencieux.
   Expéditeur `contact@mamadouwhile.dev` (domaine vérifié dans Resend, enregistrements DNS chez
   Name.com), surchargeable par `CONTACT_FROM_EMAIL`.
+  Deux e-mails HTML (`src/lib/emails/`, tableaux + styles en ligne, sans dépendance) :
+  notification à Mahamadou (`reply_to` = visiteur), puis accusé de réception au visiteur, envoyé
+  seulement si la notification est partie, non bloquant, et **sans copie du message** (sinon le
+  formulaire public servirait à envoyer n'importe quel texte à n'importe qui depuis le domaine).
 - **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
 - **Domaine** : `mamadouwhile.dev` est l'adresse canonique ; l'ancienne adresse de production
   `portfolio-one-chi-igpe905f4o.vercel.app` est redirigée en 308 (`redirects` de `next.config.ts`,
@@ -125,7 +129,7 @@ src/
     seo/        JsonLd
     ui/         composants shadcn (à la demande)
   data/         site, projects, skills, experience, services — source unique du contenu
-  lib/          constants, metadata, structured-data, contact-schema, tech-icons, utils…
+  lib/          constants, metadata, structured-data, contact-schema, emails/, tech-icons, utils…
   types/        types partagés du contenu
 public/         og-image.png, images/projects/, documents/ (CV)
 docs/           captures d'écran du README

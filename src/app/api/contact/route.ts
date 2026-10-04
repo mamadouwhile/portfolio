@@ -3,8 +3,23 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { contactSchema } from "@/lib/contact-schema";
+import {
+  contactConfirmationEmail,
+  contactNotificationEmail,
+  type RenderedEmail,
+} from "@/lib/emails/contact-emails";
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+
+type SendOptions = { apiKey: string; from: string; to: string; replyTo?: string };
+
+function sendEmail({ apiKey, from, to, replyTo }: SendOptions, email: RenderedEmail) {
+  return fetch(RESEND_ENDPOINT, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ from, to, reply_to: replyTo, ...email }),
+  });
+}
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -43,19 +58,13 @@ export async function POST(request: Request) {
     );
   }
 
+  const contact = { name, email, message };
   let response: Response;
   try {
-    response = await fetch(RESEND_ENDPOINT, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to,
-        reply_to: email,
-        subject: `Portfolio — message de ${name}`,
-        text: message,
-      }),
-    });
+    response = await sendEmail(
+      { apiKey, from, to, replyTo: email },
+      contactNotificationEmail(contact, new Date()),
+    );
   } catch (error) {
     console.error("[contact] Resend injoignable :", error);
     Sentry.captureException(error);
@@ -69,6 +78,26 @@ export async function POST(request: Request) {
     console.error(`[contact] Resend a refusé l'envoi (${response.status}) :`, detail);
     Sentry.captureMessage(`Resend a refusé l'envoi (${response.status}) : ${detail}`, "error");
     return NextResponse.json({ error: "Échec de l'envoi" }, { status: 502 });
+  }
+
+  // Accusé de réception : envoyé seulement une fois le message transmis, et sans bloquer la
+  // réponse s'il échoue (le message, lui, est bien arrivé).
+  try {
+    const confirmation = await sendEmail(
+      { apiKey, from, to: email },
+      contactConfirmationEmail(contact),
+    );
+    if (!confirmation.ok) {
+      const detail = await confirmation.text();
+      console.error(`[contact] Accusé de réception refusé (${confirmation.status}) :`, detail);
+      Sentry.captureMessage(
+        `Accusé de réception refusé (${confirmation.status}) : ${detail}`,
+        "warning",
+      );
+    }
+  } catch (error) {
+    console.error("[contact] Accusé de réception non envoyé :", error);
+    Sentry.captureException(error);
   }
 
   return NextResponse.json({ ok: true });
