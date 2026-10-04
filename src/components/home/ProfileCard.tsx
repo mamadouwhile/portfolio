@@ -1,11 +1,8 @@
+import Image from "next/image";
+
 import { AvailabilityBadge } from "@/components/layout/AvailabilityBadge";
 import { BentoCard } from "@/components/bento/BentoCard";
 import { site } from "@/data/site";
-
-const initials = site.name
-  .split(" ")
-  .map((part) => part.charAt(0))
-  .join("");
 
 export function ProfileCard({ className }: { className?: string }) {
   return (
@@ -16,13 +13,15 @@ export function ProfileCard({ className }: { className?: string }) {
       className={className}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        {/* TODO: remplacer le monogramme par une vraie photo (public/images/). */}
-        <div
-          aria-hidden="true"
-          className="flex size-16 shrink-0 items-center justify-center rounded-[1.25rem] border border-border bg-gradient-to-br from-accent/90 to-accent/40 font-display text-xl font-semibold text-accent-foreground sm:size-20 sm:text-2xl"
-        >
-          {initials}
-        </div>
+        <Image
+          src={site.photo}
+          alt={`Photo de ${site.name}`}
+          width={80}
+          height={80}
+          sizes="(min-width: 640px) 80px, 64px"
+          priority
+          className="size-16 shrink-0 rounded-[1.25rem] border border-border object-cover sm:size-20"
+        />
         <div className="min-w-0">
           <p className="font-mono text-[11px] tracking-widest text-accent uppercase">{site.role}</p>
           <h1 className="mt-2 font-display text-3xl leading-[1.05] font-semibold whitespace-nowrap max-sm:whitespace-normal">

@@ -1,7 +1,7 @@
 import { certifications } from "@/data/certifications";
 import { site } from "@/data/site";
 import { skillGroups } from "@/data/skills";
-import { OG_IMAGE, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 /** JSON-LD ProfilePage + Person, construit uniquement à partir de src/data. */
 export function profilePageJsonLd(): Record<string, unknown> {
@@ -23,7 +23,7 @@ export function profilePageJsonLd(): Record<string, unknown> {
       jobTitle: site.role,
       description: site.positioning,
       url: SITE_URL,
-      image: `${SITE_URL}${OG_IMAGE.url}`,
+      image: `${SITE_URL}${site.photo}`,
       address: {
         "@type": "PostalAddress",
         addressLocality: "Angers",

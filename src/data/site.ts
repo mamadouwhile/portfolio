@@ -9,6 +9,7 @@ export const site: SiteConfig = {
     "Étudiant en Licence 3 Informatique à Angers et développeur web/mobile freelance, avec une expérience de testeur automaticien et d'automatisation de processus par l'IA.",
   location: "Angers, France",
   availableForFreelance: true,
+  photo: "/images/profile.webp",
   socials: [
     { platform: "github", label: "GitHub", href: "https://github.com/mamadouwhile" },
     {

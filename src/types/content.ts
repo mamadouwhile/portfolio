@@ -20,6 +20,8 @@ export type SiteConfig = {
   description: string;
   location: string;
   availableForFreelance: boolean;
+  /** Photo de profil carrée, dans /public. */
+  photo: string;
   socials: SocialLink[];
 };
 

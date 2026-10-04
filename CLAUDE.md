@@ -90,8 +90,9 @@ demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.
   formulaire public servirait à envoyer n'importe quel texte à n'importe qui depuis le domaine).
   Limites en mémoire (`src/lib/rate-limit.ts`, par instance de fonction) : 5 messages / IP / 10 min
   (429 + message dédié dans le formulaire), 1 accusé de réception / destinataire / 24 h.
-  À doubler par une règle Vercel Firewall → Rate limiting (POST `/api/contact`, 5 req / 600 s / IP)
-  à créer dans le tableau de bord (l'API Vercel n'y a pas accès depuis Claude).
+  Doublées par une règle Vercel Firewall → Rate limiting (POST `/api/contact`, 5 req / 600 s / IP),
+  gérée dans le tableau de bord Vercel. Réponses à `contact@mamadouwhile.dev` transférées vers
+  Gmail par Name.com (transfert d'e-mails).
 - **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
 - **Domaine** : `mamadouwhile.dev` est l'adresse canonique ; l'ancienne adresse de production
   `portfolio-one-chi-igpe905f4o.vercel.app` est redirigée en 308 (`redirects` de `next.config.ts`,
