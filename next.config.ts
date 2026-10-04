@@ -13,6 +13,10 @@ const securityHeaders = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
 ];
 
+/** Ancienne adresse de production : redirigée vers le domaine (les previews ne sont pas touchées). */
+const LEGACY_HOST = "portfolio-one-chi-igpe905f4o.vercel.app";
+const CANONICAL_ORIGIN = "https://mamadouwhile.dev";
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
@@ -22,6 +26,16 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: LEGACY_HOST }],
+        destination: `${CANONICAL_ORIGIN}/:path*`,
+        permanent: true,
+      },
+    ];
   },
 };
 

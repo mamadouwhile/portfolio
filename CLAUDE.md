@@ -83,6 +83,9 @@ demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.
 - **Contact** : schéma Zod partagé client/serveur (`src/lib/contact-schema.ts`) ; API Resend en
   `fetch` (sans SDK) ; 503 si non configurée ; champ piège `website` → 200 silencieux.
 - **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
+- **Domaine** : `mamadouwhile.dev` est l'adresse canonique ; l'ancienne adresse de production
+  `portfolio-one-chi-igpe905f4o.vercel.app` est redirigée en 308 (`redirects` de `next.config.ts`,
+  filtré par hôte : les previews Vercel restent accessibles).
 - **Sentry** (offre Student Pack, DSN dans `src/lib/sentry.ts`, surchargeable par
   `NEXT_PUBLIC_SENTRY_DSN`) : actif uniquement sur Vercel (`VERCEL_ENV`), erreurs seulement (ni
   tracing, ni replay, ni sessions). Serveur : `src/instrumentation.ts` (`onRequestError`) +
