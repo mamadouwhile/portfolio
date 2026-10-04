@@ -82,6 +82,8 @@ demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.
   (`getScreenshot`, `server-only`) ; à défaut, illustration géométrique déterministe (slug).
 - **Contact** : schéma Zod partagé client/serveur (`src/lib/contact-schema.ts`) ; API Resend en
   `fetch` (sans SDK) ; 503 si non configurée ; champ piège `website` → 200 silencieux.
+  Expéditeur `contact@mamadouwhile.dev` (domaine vérifié dans Resend, enregistrements DNS chez
+  Name.com), surchargeable par `CONTACT_FROM_EMAIL`.
 - **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
 - **Domaine** : `mamadouwhile.dev` est l'adresse canonique ; l'ancienne adresse de production
   `portfolio-one-chi-igpe905f4o.vercel.app` est redirigée en 308 (`redirects` de `next.config.ts`,

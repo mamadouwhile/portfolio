@@ -105,7 +105,7 @@ Actions lance lint, typecheck, format et build à chaque push et pull request.
 | ------------------------ | ----------------------- | ---------------------------------------------------------------------- |
 | `RESEND_API_KEY`         | Oui, pour le formulaire | Clé API Resend. Sans elle, `/api/contact` répond 503.                  |
 | `CONTACT_TO_EMAIL`       | Oui, pour le formulaire | Adresse qui reçoit les messages.                                       |
-| `CONTACT_FROM_EMAIL`     | Non                     | Expéditeur vérifié dans Resend (défaut : `onboarding@resend.dev`).     |
+| `CONTACT_FROM_EMAIL`     | Non                     | Expéditeur vérifié dans Resend (défaut : `contact@mamadouwhile.dev`).  |
 | `NEXT_PUBLIC_SITE_URL`   | Non                     | Domaine personnalisé. Sur Vercel, l'URL de production est automatique. |
 | `NEXT_PUBLIC_SENTRY_DSN` | Non                     | DSN Sentry alternatif (un DSN par défaut est déjà configuré).          |
 

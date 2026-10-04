@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL;
-  const from = process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>";
+  const from = process.env.CONTACT_FROM_EMAIL || "Portfolio <contact@mamadouwhile.dev>";
 
   if (!apiKey || !to) {
     const missing = [!apiKey && "RESEND_API_KEY", !to && "CONTACT_TO_EMAIL"].filter(Boolean);
