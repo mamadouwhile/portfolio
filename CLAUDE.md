@@ -10,7 +10,7 @@ seul écran**, chaque carte menant à une partie du site (DA inspirée d'abderra
 chaque push déclenche un déploiement (preview sur les branches, production sur `master`).
 
 **Workflow** : travailler et pousser directement sur `master` (pas de branche séparée sauf
-demande explicite). Démo : https://portfolio-one-chi-igpe905f4o.vercel.app
+demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.76.21.21, `www` redirigé en 308)
 
 ## Stack
 

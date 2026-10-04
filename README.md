@@ -4,7 +4,7 @@ Portfolio de **Mahamadou Dembele**, développeur fullstack freelance et étudian
 Informatique à Angers : _des idées aux produits numériques déployés — du code à la mise en
 production._
 
-**Démo : [portfolio-one-chi-igpe905f4o.vercel.app](https://portfolio-one-chi-igpe905f4o.vercel.app)**
+**Site : [mamadouwhile.dev](https://mamadouwhile.dev)**
 
 ![Page d'accueil, thème sombre](docs/screenshots/home-desktop.png)
 
