@@ -77,10 +77,22 @@ export type ExperienceItem = {
   highlights: string[];
 };
 
+export type CertificationCategoryId = "qa" | "web" | "languages" | "tools";
+
+export type CertificationCategory = {
+  id: CertificationCategoryId;
+  title: string;
+};
+
 export type Certification = {
   title: string;
   issuer: string;
-  year: string;
+  /** Mois d'obtention, au format AAAA-MM. */
+  issued: string;
+  credentialId: string;
+  url: string;
+  category: CertificationCategoryId;
+  skills: string[];
 };
 
 export type SpokenLanguage = {

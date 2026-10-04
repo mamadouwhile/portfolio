@@ -1,4 +1,4 @@
-import type { Certification, ExperienceItem, SpokenLanguage } from "@/types/content";
+import type { ExperienceItem, SpokenLanguage } from "@/types/content";
 
 export const experience: ExperienceItem[] = [
   {
@@ -60,16 +60,6 @@ export const experience: ExperienceItem[] = [
     description: "Formation aux systèmes d'information.",
     highlights: [],
   },
-];
-
-export const certifications: Certification[] = [
-  {
-    title: "Initiation au test et à la qualité logicielle",
-    issuer: "OpenClassrooms",
-    year: "2024",
-  },
-  { title: "Concevez votre site web avec PHP et MySQL", issuer: "OpenClassrooms", year: "2024" },
-  { title: "Découvrez l'univers de la cybersécurité", issuer: "OpenClassrooms", year: "2022" },
 ];
 
 export const spokenLanguages: SpokenLanguage[] = [

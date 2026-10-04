@@ -137,7 +137,7 @@ src/
     motion/     Reveal (CSS)
     seo/        JsonLd
     ui/         composants shadcn (à la demande)
-  data/         site, projects, skills, experience, services — source unique du contenu
+  data/         site, projects, skills, experience, certifications, services — source unique du contenu
   lib/          constants, metadata, structured-data, contact-schema, emails/, tech-icons, utils…
   types/        types partagés du contenu
 public/         og-image.png, images/projects/, documents/ (CV)

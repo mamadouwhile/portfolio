@@ -115,7 +115,8 @@ Tout le texte affiché vient de `src/data/` :
 
 - `site.ts` : identité, positionnement, disponibilité, réseaux (LinkedIn à compléter) ;
 - `projects.ts` : projets, liens GitHub/démo, statut, stack ;
-- `skills.ts`, `experience.ts`, `services.ts` : stack, parcours, offres.
+- `skills.ts`, `experience.ts`, `services.ts` : stack, parcours, offres ;
+- `certifications.ts` : certifications (thème, date, identifiant et lien de vérification).
 
 Pour afficher la capture d'un projet, déposer `public/images/projects/<slug>-screenshot.webp` :
 elle remplace automatiquement l'illustration géométrique générée.

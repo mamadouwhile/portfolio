@@ -1,3 +1,4 @@
+import { certifications } from "@/data/certifications";
 import { site } from "@/data/site";
 import { skillGroups } from "@/data/skills";
 import { OG_IMAGE, SITE_URL } from "@/lib/constants";
@@ -29,6 +30,14 @@ export function profilePageJsonLd(): Record<string, unknown> {
         addressCountry: "FR",
       },
       knowsAbout,
+      hasCredential: certifications.map((certification) => ({
+        "@type": "EducationalOccupationalCredential",
+        name: certification.title,
+        credentialCategory: "certificate",
+        dateCreated: certification.issued,
+        url: certification.url,
+        recognizedBy: { "@type": "Organization", name: certification.issuer },
+      })),
       sameAs,
     },
   };

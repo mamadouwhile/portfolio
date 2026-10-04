@@ -1,8 +1,9 @@
-import { Award, Briefcase, GraduationCap, Languages } from "lucide-react";
+import { Briefcase, GraduationCap, Languages } from "lucide-react";
 
 import { Reveal } from "@/components/motion/Reveal";
+import { Certifications } from "@/components/sections/Certifications";
 import { Section } from "@/components/sections/Section";
-import { certifications, experience, spokenLanguages } from "@/data/experience";
+import { experience, spokenLanguages } from "@/data/experience";
 
 export function Experience() {
   return (
@@ -62,22 +63,6 @@ export function Experience() {
         <div className="space-y-4">
           <Reveal className="bento-card p-5">
             <h3 className="flex items-center gap-2 font-semibold">
-              <Award className="size-4 text-accent" aria-hidden />
-              Certifications
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {certifications.map((certification) => (
-                <li key={certification.title}>
-                  <p className="text-sm leading-snug font-medium">{certification.title}</p>
-                  <p className="text-xs text-muted">
-                    {certification.issuer} · {certification.year}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-          <Reveal className="bento-card p-5">
-            <h3 className="flex items-center gap-2 font-semibold">
               <Languages className="size-4 text-accent" aria-hidden />
               Langues
             </h3>
@@ -92,6 +77,7 @@ export function Experience() {
           </Reveal>
         </div>
       </div>
+      <Certifications />
     </Section>
   );
 }
