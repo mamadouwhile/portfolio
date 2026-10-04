@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+// Pas de compilation à la volée (new Function) : compatible avec la CSP sans 'unsafe-eval'.
+z.config({ jitless: true });
+
 export const contactSchema = z.object({
   name: z
     .string()

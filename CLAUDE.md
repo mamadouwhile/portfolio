@@ -88,6 +88,10 @@ demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.
   notification à Mahamadou (`reply_to` = visiteur), puis accusé de réception au visiteur, envoyé
   seulement si la notification est partie, non bloquant, et **sans copie du message** (sinon le
   formulaire public servirait à envoyer n'importe quel texte à n'importe qui depuis le domaine).
+  Limites en mémoire (`src/lib/rate-limit.ts`, par instance de fonction) : 5 messages / IP / 10 min
+  (429 + message dédié dans le formulaire), 1 accusé de réception / destinataire / 24 h.
+  À doubler par une règle Vercel Firewall → Rate limiting (POST `/api/contact`, 5 req / 600 s / IP)
+  à créer dans le tableau de bord (l'API Vercel n'y a pas accès depuis Claude).
 - **Vercel** : `vercel.json` force le preset Next.js (le projet était configuré pour Vite).
 - **Domaine** : `mamadouwhile.dev` est l'adresse canonique ; l'ancienne adresse de production
   `portfolio-one-chi-igpe905f4o.vercel.app` est redirigée en 308 (`redirects` de `next.config.ts`,
@@ -99,6 +103,11 @@ demande explicite). Site : https://mamadouwhile.dev (domaine Name.com, A → 76.
   le SDK **qu'à la première erreur** (0 octet sinon) — ne pas l'importer statiquement côté client,
   cela coûte ~60 kB et fait passer Lighthouse mobile sous 95. Rapports via le tunnel `/monitoring`
   (contourne les bloqueurs de pub). Pas d'upload de source maps (pas de jeton Sentry).
+- **En-têtes de sécurité** (`next.config.ts`) : CSP statique (sans nonce pour garder les pages
+  pré-rendues ; `'unsafe-inline'` requis par les scripts en ligne de Next et next-themes,
+  `vercel.live` pour la barre d'outils des previews), HSTS preload, `X-Frame-Options: DENY`,
+  `nosniff`, Referrer/Permissions-Policy, COOP. Zod en `jitless` (`contact-schema.ts`) pour ne pas
+  déclencher la CSP avec `new Function`. Toute nouvelle ressource externe doit être ajoutée à la CSP.
 - **Budgets qualité** : Lighthouse mobile ≥ 95 perf, 100 a11y / best practices / SEO ; CLS 0 ;
   axe-core sans violation en thèmes clair et sombre.
 

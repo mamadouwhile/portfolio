@@ -8,8 +8,14 @@ import {
   contactNotificationEmail,
   type RenderedEmail,
 } from "@/lib/emails/contact-emails";
+import { clientIp, createRateLimiter } from "@/lib/rate-limit";
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+
+// 5 messages par IP et par 10 minutes ; un seul accusé de réception par adresse et par jour,
+// pour que le formulaire ne serve pas à inonder la boîte d'un tiers.
+const messagesPerIp = createRateLimiter({ limit: 5, windowMs: 10 * 60 * 1000 });
+const confirmationsPerRecipient = createRateLimiter({ limit: 1, windowMs: 24 * 60 * 60 * 1000 });
 
 type SendOptions = { apiKey: string; from: string; to: string; replyTo?: string };
 
@@ -22,6 +28,13 @@ function sendEmail({ apiKey, from, to, replyTo }: SendOptions, email: RenderedEm
 }
 
 export async function POST(request: Request) {
+  if (!messagesPerIp.consume(clientIp(request))) {
+    return NextResponse.json(
+      { error: "Trop de messages envoyés" },
+      { status: 429, headers: { "Retry-After": "600" } },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -82,6 +95,9 @@ export async function POST(request: Request) {
 
   // Accusé de réception : envoyé seulement une fois le message transmis, et sans bloquer la
   // réponse s'il échoue (le message, lui, est bien arrivé).
+  if (!confirmationsPerRecipient.consume(email.toLowerCase())) {
+    return NextResponse.json({ ok: true });
+  }
   try {
     const confirmation = await sendEmail(
       { apiKey, from, to: email },

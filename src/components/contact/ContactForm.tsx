@@ -69,7 +69,9 @@ export function ContactForm() {
       setFeedback(
         response.status === 503
           ? "L'envoi par formulaire est momentanément indisponible. Vous pouvez me contacter via GitHub en attendant."
-          : "L'envoi a échoué. Réessayez dans un instant.",
+          : response.status === 429
+            ? "Vous avez envoyé plusieurs messages d'affilée. Réessayez dans une dizaine de minutes."
+            : "L'envoi a échoué. Réessayez dans un instant.",
       );
     } catch {
       setStatus("error");
