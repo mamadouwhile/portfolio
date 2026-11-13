@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Atelier bogolan et wax</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout : le tissu est posé sur la table à gauche ; les réglages de l'atelier tiennent dans une colonne à droite, sous le tissu sur téléphone. */
+:root{
+  color-scheme:dark;
+  --table:#1d1a18;
+  --table-2:#272321;
+  --chalk:#f1e9dc;
+  --dim:#b3a898;
+  --line:rgba(241,233,220,.16);
+  --accent:#f08a1c;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+}
+html,body{min-height:100%}
+body{background:var(--table);color:var(--chalk);font-family:var(--body);font-size:15px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 20px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start}
+.cloth{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));min-width:0}
+#cv{width:100%;height:auto;display:block;border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(241,233,220,.1)}
+.meta{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-size:13px;color:var(--dim);flex-wrap:wrap}
+.panel{display:flex;flex-direction:column;gap:18px;min-width:0}
+h1{font-family:var(--display);font-weight:800;font-size:30px;line-height:1;margin:0;letter-spacing:-.02em;text-wrap:balance}
+.lead{margin:8px 0 0;color:var(--dim);line-height:1.5}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+legend,.lab{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:0;margin:0 0 8px;display:block}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;font:600 15px var(--body);color:var(--chalk);background:none;border:0;border-radius:7px;padding:9px 8px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#17110a}
+.pals{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pals button{height:44px;border-radius:9px;border:2px solid transparent;cursor:pointer;padding:0;overflow:hidden;display:flex}
+.pals button span{flex:1}
+.pals button[aria-pressed="true"]{border-color:var(--chalk)}
+.sl{display:flex;align-items:center;gap:10px}
+.sl input{flex:1;min-width:0;accent-color:var(--accent)}
+.sl small{font-size:13px;color:var(--dim);min-width:4.6em}
+.chk{display:flex;align-items:center;gap:9px;font-size:15px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--accent)}
+input[type=text]{width:100%;font:500 15px var(--body);color:var(--chalk);background:var(--table-2);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button.b{font:600 14px var(--body);color:var(--chalk);background:var(--table-2);border:1px solid var(--line);border-radius:9px;padding:10px 13px;cursor:pointer}
+button.b:hover{border-color:var(--accent)}
+#again{flex:1 1 100%;background:var(--accent);color:#17110a;border-color:transparent;font-size:16px;padding:13px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--chalk);outline-offset:2px}
+.hint{font-size:13px;color:var(--dim);line-height:1.45;margin:0}
+#sheet{position:fixed;inset:0;z-index:20;background:rgba(12,10,9,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+#sheet img{max-width:100%;max-height:72vh;border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+#sheet p{margin:0;text-align:center;max-width:44ch;line-height:1.45}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}.cloth{position:static}h1{font-size:25px}}
+</style>
+
+<div class="wrap">
+  <div class="cloth">
+    <canvas id="cv" width="1200" height="1200" aria-label="Motif de tissu généré"></canvas>
+    <div class="meta"><span id="name">Motif</span><span id="info"></span></div>
+  </div>
+  <div class="panel">
+    <div><h1>Atelier bogolan, wax et kente</h1><p class="lead">Chaque réglage dessine un tissu unique. Écris un prénom ou un mot pour obtenir son motif.</p></div>
+    <fieldset><legend>Tissu</legend><div class="seg"><button id="sBogo" type="button" aria-pressed="true">Bogolan</button><button id="sWax" type="button" aria-pressed="false">Wax</button><button id="sKen" type="button" aria-pressed="false">Kente</button></div></fieldset>
+    <fieldset><legend>Couleurs</legend><div class="pals" id="pals"></div></fieldset>
+    <div><label class="lab" for="seed">Mot du motif</label><input id="seed" type="text" maxlength="40" placeholder="Un prénom, une ville, un mot…" autocomplete="off"></div>
+    <div><label class="lab" for="size">Taille des motifs</label><div class="sl"><input id="size" type="range" min="0" max="100" value="45"><small id="sizeV">moyenne</small></div></div>
+    <div><label class="lab" for="dens">Richesse du dessin</label><div class="sl"><input id="dens" type="range" min="0" max="100" value="55"><small id="densV">moyenne</small></div></div>
+    <label class="chk"><input id="sym" type="checkbox" checked> Symétrie gauche-droite</label>
+    <div class="btns">
+      <button id="again" class="b" type="button">Nouveau motif</button>
+      <button class="b" type="button" data-f="phone">Fond d'écran téléphone</button>
+      <button class="b" type="button" data-f="desk">Fond d'écran ordinateur</button>
+      <button class="b" type="button" data-f="square">Carré</button>
+    </div>
+    <p class="hint" id="about"></p>
+  </div>
+</div>
+<div id="sheet" hidden><img id="out" alt="Motif prêt à enregistrer"><p id="sheetP">Appui long sur l'image, ou clic droit, puis « Enregistrer l'image ».</p><button id="close" class="b" type="button">Fermer</button></div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),lerp=(a,b,t)=>a+(b-a)*t;
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const PAL={
+ bogolan:[{n:'Noir de boue',bg:'#1b1410',fg:'#efe3c8',mid:'#8a5a34'},{n:'Terre',bg:'#5a3a22',fg:'#f1e4c6',mid:'#d0a56c'},{n:'Rouille',bg:'#7d301c',fg:'#f4e7cf',mid:'#1f1410'},{n:'Indigo',bg:'#18213f',fg:'#ece6d6',mid:'#7189bd'}],
+ kente:[{n:'Or et vert',a:'#f2b61b',b:'#1f8a3c',c:'#c8281e',d:'#141414'},{n:'Bleu royal',a:'#1b3f9c',b:'#f2b61b',c:'#f4f1e6',d:'#c8281e'},{n:'Noir et or',a:'#141414',b:'#f2b61b',c:'#c8281e',d:'#1f8a3c'},{n:'Rouge de fête',a:'#b81f1a',b:'#f2b61b',c:'#141414',d:'#1f8a3c'}],
+ wax:[{n:'Indigo et orange',a:'#1d2a6b',b:'#f08a1c',c:'#f7c531',d:'#fdf6e3',k:'#0b1030'},{n:'Bordeaux et turquoise',a:'#7a1230',b:'#19a7a0',c:'#f6c343',d:'#fff4dc',k:'#2a0612'},{n:'Vert et fuchsia',a:'#0e7a4f',b:'#d4267a',c:'#f6d23a',d:'#fdf3e0',k:'#05301f'},{n:'Jaune et bleu roi',a:'#f2b20c',b:'#1f4fb0',c:'#d83a2a',d:'#fff8e6',k:'#14204a'}]};
+const ST={style:'bogolan',pal:0,size:45,dens:55,sym:true,seed:String(Math.floor(10000+Math.random()*89999)),typed:false};
+
+/* ---------- bogolan ---------- */
+function bogolan(c,W,H,R,P,u,dens){
+  c.fillStyle=P.bg;c.fillRect(0,0,W,H);c.lineCap='round';c.lineJoin='round';
+  const J=v=>v+(R()-.5)*u*.06,lw=()=>u*(.085+R()*.035);
+  const path=(pts,close,fill)=>{c.beginPath();pts.forEach((p,i)=>i?c.lineTo(J(p[0]),J(p[1])):c.moveTo(J(p[0]),J(p[1])));if(close)c.closePath();if(fill){c.fill();}else{c.lineWidth=lw();c.stroke();}};
+  const dot=(x,y,r)=>{c.beginPath();c.arc(J(x),J(y),r*(.85+R()*.3),0,7);c.fill();};
+  const rich=dens/100;
+  const M={
+   zig(x,y,w,h){const m=h*.16,n=2;for(let k=0;k<(rich>.5?2:1);k++){const pts=[];for(let i=0;i<=n*2;i++)pts.push([x+w*i/(n*2),y+(i%2?m:h-m)+(k?(i%2?h*.2:-h*.2):0)]);path(pts);}},
+   diam(x,y,w,h){const cx=x+w/2,cy=y+h/2,n=rich>.6?3:2;for(let k=1;k<=n;k++){const s=k/n*.44;path([[cx,cy-h*s],[cx+w*s,cy],[cx,cy+h*s],[cx-w*s,cy]],true);}dot(cx,cy,u*.09);},
+   cross(x,y,w,h){const m=h*.18;path([[x+m,y+m],[x+w-m,y+h-m]]);path([[x+w-m,y+m],[x+m,y+h-m]]);if(rich>.35){dot(x+w/2,y+m*.9,u*.07);dot(x+w/2,y+h-m*.9,u*.07);dot(x+m*.7,y+h/2,u*.07);dot(x+w-m*.7,y+h/2,u*.07);}},
+   plus(x,y,w,h){const cx=x+w/2,cy=y+h/2,a=h*.3;path([[cx,cy-a],[cx,cy+a]]);path([[cx-a,cy],[cx+a,cy]]);if(rich>.4)for(const sx of[-1,1])for(const sy of[-1,1])path([[cx+sx*a*.9,cy+sy*a*.9],[cx+sx*a*.55,cy+sy*a*.9],[cx+sx*a*.55,cy+sy*a*.55],[cx+sx*a*.9,cy+sy*a*.55]],true,true);},
+   dots(x,y,w,h){const n=Math.max(2,Math.round(h/(u*.55)));for(let i=0;i<n;i++)for(let j=0;j<n;j++)dot(x+w*(j+.5)/n,y+h*(i+.5)/n,u*.085);},
+   comb(x,y,w,h){const m=h*.16,n=3+Math.round(rich*2),up=R()<.5;path([[x+w*.08,up?y+m:y+h-m],[x+w*.92,up?y+m:y+h-m]]);for(let i=0;i<n;i++){const px=x+w*(.12+.76*i/(n-1));path([[px,y+m],[px,y+h-m]]);}},
+   chev(x,y,w,h){const n=rich>.5?3:2;for(let k=0;k<n;k++){const yy=y+h*(.2+.28*k*(2/n));path([[x+w*.12,yy],[x+w/2,yy+h*.24],[x+w*.88,yy]]);}},
+   circ(x,y,w,h){const cx=x+w/2,cy=y+h/2,r=h*.3;c.lineWidth=lw();c.beginPath();c.arc(J(cx),J(cy),r,0,7);c.stroke();dot(cx,cy,u*.1);if(rich>.45)for(let i=0;i<8;i++){const a=i/8*6.283;path([[cx+Math.cos(a)*r*1.18,cy+Math.sin(a)*r*1.18],[cx+Math.cos(a)*r*1.48,cy+Math.sin(a)*r*1.48]]);}},
+   tri(x,y,w,h){const m=h*.14;path([[x+w*.06,y+h-m],[x+w*.5,y+m],[x+w*.94,y+h-m]],true,true);},
+   check(x,y,w,h){const m=h*.14,s=(h-2*m)/2;for(let i=0;i<2;i++)for(let j=0;j<Math.floor(w/s);j++)if((i+j)%2===0)path([[x+j*s,y+m+i*s],[x+j*s+s,y+m+i*s],[x+j*s+s,y+m+i*s+s],[x+j*s,y+m+i*s+s]],true,true);},
+   herr(x,y,w,h){const m=h*.14,n=4;for(let i=0;i<n;i++){const yy=y+m+(h-2*m)*i/(n-1)*.75;path([[x+w*.1,yy],[x+w*.5,yy+h*.16]]);path([[x+w*.9,yy],[x+w*.5,yy+h*.16]]);}}
+  };
+  const types=Object.keys(M),ratio={zig:1.6,diam:1,cross:1,plus:1,dots:1,comb:1.1,chev:.9,circ:1,tri:.9,check:2,herr:.8};
+  let y=u*.35,last='';c.strokeStyle=P.fg;c.fillStyle=P.fg;
+  const rule=(yy,n)=>{for(let i=0;i<n;i++){c.strokeStyle=i===1&&n===3?P.mid:P.fg;c.lineWidth=u*(.07+R()*.03);c.beginPath();const y2=yy+i*u*.2;c.moveTo(0,J(y2));for(let x=u;x<=W+u;x+=u)c.lineTo(x,J(y2));c.stroke();}c.strokeStyle=P.fg;return n*u*.2;};
+  y+=rule(y,2)+u*.2;
+  while(y<H){let t;do{t=types[Math.floor(R()*types.length)];}while(t===last);last=t;
+    const bh=u*[1.2,1.6,1.6,2.2,2.8][Math.floor(R()*5)],cw=bh*ratio[t],n=Math.ceil(W/cw)+2,x0=W/2-Math.ceil(n/2)*cw+(R()<.5?cw/2:0);
+    const alt=R()<.3?types[Math.floor(R()*types.length)]:null,useMid=R()<.22;
+    c.strokeStyle=c.fillStyle=useMid?P.mid:P.fg;
+    for(let i=0;i<n;i++)M[alt&&i%2?alt:t](x0+i*cw,y,cw,bh);
+    c.strokeStyle=c.fillStyle=P.fg;y+=bh+u*.15;y+=rule(y,1+Math.floor(R()*(1+rich*2.4)))+u*.22;}
+}
+/* ---------- wax ---------- */
+function wax(c,W,H,R,P,u,dens){
+  const rich=dens/100;c.fillStyle=P.a;c.fillRect(0,0,W,H);c.lineCap='round';c.lineJoin='round';
+  /* fond : petit semis */
+  const fil=Math.floor(R()*4),fg=u*.62;
+  if(fil===0){c.fillStyle=P.d;for(let j=0;j*fg<H+fg;j++)for(let i=0;i*fg<W+fg;i++){c.beginPath();c.arc(i*fg+(j%2?fg/2:0),j*fg,u*.075,0,7);c.fill();}}
+  else if(fil===1){c.strokeStyle=P.c;c.lineWidth=u*.05;for(let j=0;j*fg*.6<H+fg;j++)for(let i=-1;i*fg<W+fg;i++){c.beginPath();c.arc(i*fg+(j%2?fg/2:0),j*fg*.6,fg/2,0,Math.PI);c.stroke();}}
+  else if(fil===2){c.strokeStyle=P.k;c.globalAlpha=.3;c.lineWidth=u*.09;for(let i=-H;i<W;i+=u*.5){c.beginPath();c.moveTo(i,0);c.lineTo(i+H,H);c.stroke();}c.globalAlpha=1;}
+  else{c.strokeStyle=P.d;c.lineWidth=u*.05;c.globalAlpha=.8;for(let yy=0;yy<H+u;yy+=u*.5){c.beginPath();for(let x=0;x<=W;x+=u*.12)c.lineTo(x,yy+Math.sin(x/u*2.4)*u*.12);c.stroke();}c.globalAlpha=1;}
+  /* craquelures de la cire */
+  const crack=(n,col,al,w)=>{c.strokeStyle=col;c.globalAlpha=al;for(let i=0;i<n;i++){let x=R()*W,y=R()*H,a=R()*6.283;c.lineWidth=w*(.5+R());c.beginPath();c.moveTo(x,y);const st=6+Math.floor(R()*16);for(let k=0;k<st;k++){a+=(R()-.5)*1.1;x+=Math.cos(a)*u*.32;y+=Math.sin(a)*u*.32;c.lineTo(x,y);}c.stroke();}c.globalAlpha=1;};
+  const area=W*H/(u*u);crack(Math.round(area*(.35+rich*.5)),P.k,.4,u*.03);crack(Math.round(area*.2),P.d,.3,u*.025);
+  /* grands motifs en quinconce */
+  const s=u*4.3,RR=s*.43,ox=u*.07*(R()<.5?1:-1),oy=u*.06,ow=u*.075;
+  const ring=(x,y,r,f)=>{c.fillStyle=f;c.beginPath();c.arc(x,y,r,0,7);c.fill();},out=(x,y,r)=>{c.strokeStyle=P.k;c.lineWidth=ow;c.beginPath();c.arc(x,y,r,0,7);c.stroke();};
+  const D={
+   disque(x,y){const cs=[P.b,P.d,P.c,P.b,P.k],rs=[1,.78,.56,.34,.14];rs.forEach((q,i)=>ring(x+ox,y+oy,RR*q,cs[i]));rs.forEach(q=>out(x,y,RR*q));
+     c.strokeStyle=P.k;c.lineWidth=ow*.8;const n=rich>.5?36:24;for(let i=0;i<n;i++){const a=i/n*6.283;c.beginPath();c.moveTo(x+Math.cos(a)*RR*.8,y+Math.sin(a)*RR*.8);c.lineTo(x+Math.cos(a)*RR*.98,y+Math.sin(a)*RR*.98);c.stroke();}},
+   fleur(x,y,rot){const n=rich>.55?12:8;for(let pass=0;pass<2;pass++)for(let i=0;i<n;i++){const a=i/n*6.283+rot;c.save();c.translate(x+(pass?0:ox),y+(pass?0:oy));c.rotate(a);c.beginPath();c.ellipse(RR*.58,0,RR*.42,RR*(n>8?.15:.2),0,0,7);
+       if(pass){c.strokeStyle=P.k;c.lineWidth=ow;c.stroke();c.beginPath();c.moveTo(RR*.25,0);c.lineTo(RR*.85,0);c.lineWidth=ow*.6;c.stroke();}else{c.fillStyle=i%2?P.c:P.b;c.fill();}c.restore();}
+     ring(x+ox,y+oy,RR*.24,P.d);out(x,y,RR*.24);ring(x,y,RR*.1,P.k);},
+   soleil(x,y,rot){const n=16;c.fillStyle=P.c;c.beginPath();for(let i=0;i<n*2;i++){const a=i/(n*2)*6.283+rot,r=i%2?RR*.62:RR;c.lineTo(x+ox+Math.cos(a)*r,y+oy+Math.sin(a)*r);}c.closePath();c.fill();
+     c.strokeStyle=P.k;c.lineWidth=ow;c.beginPath();for(let i=0;i<n*2;i++){const a=i/(n*2)*6.283+rot,r=i%2?RR*.62:RR;c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}c.closePath();c.stroke();
+     ring(x+ox,y+oy,RR*.52,P.b);out(x,y,RR*.52);ring(x+ox,y+oy,RR*.3,P.d);out(x,y,RR*.3);ring(x,y,RR*.1,P.k);
+     if(rich>.5)for(let i=0;i<12;i++){const a=i/12*6.283;ring(x+Math.cos(a)*RR*.41,y+Math.sin(a)*RR*.41,u*.05,P.k);}},
+   eventail(x,y,rot,q){c.save();c.translate(x,y);c.rotate(q*Math.PI/2);c.translate(0,RR*.45);
+     c.fillStyle=P.b;c.beginPath();c.moveTo(ox,oy);c.arc(ox,oy,RR*1.15,Math.PI*1.12,Math.PI*1.88);c.closePath();c.fill();
+     const n=9;for(let i=0;i<n;i++){const a=Math.PI*(1.15+.7*i/(n-1));ring(Math.cos(a)*RR*1.15+ox,Math.sin(a)*RR*1.15+oy,RR*.12,P.c);c.strokeStyle=P.k;c.lineWidth=ow*.8;c.beginPath();c.moveTo(0,0);c.lineTo(Math.cos(a)*RR*1.15,Math.sin(a)*RR*1.15);c.stroke();out(Math.cos(a)*RR*1.15,Math.sin(a)*RR*1.15,RR*.12);}
+     c.strokeStyle=P.k;c.lineWidth=ow;c.beginPath();c.arc(0,0,RR*.6,Math.PI*1.12,Math.PI*1.88);c.stroke();ring(ox,oy,RR*.16,P.d);out(0,0,RR*.16);c.restore();},
+   feuilles(x,y,rot){for(let i=0;i<4;i++){c.save();c.translate(x,y);c.rotate(i*Math.PI/2+Math.PI/4);const L=RR*1.02,w=RR*.34;
+       c.fillStyle=i%2?P.c:P.b;c.beginPath();c.moveTo(RR*.12+ox,oy);c.quadraticCurveTo(L*.55+ox,-w+oy,L+ox,oy);c.quadraticCurveTo(L*.55+ox,w+oy,RR*.12+ox,oy);c.fill();
+       c.strokeStyle=P.k;c.lineWidth=ow;c.beginPath();c.moveTo(RR*.12,0);c.quadraticCurveTo(L*.55,-w,L,0);c.quadraticCurveTo(L*.55,w,RR*.12,0);c.stroke();c.lineWidth=ow*.6;c.beginPath();c.moveTo(RR*.2,0);c.lineTo(L*.92,0);c.stroke();
+       if(rich>.45)for(let k=1;k<5;k++){const px=RR*.2+(L*.72)*k/5;c.beginPath();c.moveTo(px,0);c.lineTo(px+L*.1,-w*.5*(1-Math.abs(k-2.5)/4));c.moveTo(px,0);c.lineTo(px+L*.1,w*.5*(1-Math.abs(k-2.5)/4));c.stroke();}
+       c.restore();}ring(x+ox,y+oy,RR*.15,P.d);out(x,y,RR*.15);}
+  };
+  const names=Object.keys(D),t1=names[Math.floor(R()*names.length)];let t2=names[Math.floor(R()*names.length)];if(R()<.4)t2=t1;const rot=R()*6.283,small=Math.floor(R()*3);
+  for(let r=-1;r*s*.86<H+s;r++)for(let q=-1;q*s<W+s;q++){const x=(q+(r%2?.5:0))*s+s*.5,y=r*s*.86+s*.4;
+    /* petit motif entre les grands */
+    const sx=x+s*.5,sy=y;if(small===0){ring(sx+ox*.6,sy+oy*.6,u*.34,P.c);out(sx,sy,u*.34);ring(sx,sy,u*.12,P.k);}
+    else if(small===1){c.fillStyle=P.d;c.beginPath();for(let i=0;i<10;i++){const a=i/10*6.283-Math.PI/2,rr=i%2?u*.18:u*.44;c.lineTo(sx+Math.cos(a)*rr,sy+Math.sin(a)*rr);}c.closePath();c.fill();c.strokeStyle=P.k;c.lineWidth=ow*.7;c.stroke();}
+    else{for(let i=0;i<6;i++){const a=i/6*6.283;ring(sx+Math.cos(a)*u*.3,sy+Math.sin(a)*u*.3,u*.09,P.d);}ring(sx,sy,u*.1,P.c);}
+    D[(r+q)%2?t2:t1](x,y,rot,((r+q)%4+4)%4);}
+  crack(Math.round(area*.16*(.5+rich)),P.k,.22,u*.025);
+}
+/* ---------- kente ---------- */
+function kente(c,W,H,R,P,u,dens){
+  const rich=dens/100,sw=u*2.6,bh=sw*1.25,cols=[P.a,P.b,P.c,P.d],ns=Math.ceil(W/sw)+1,x00=(W-ns*sw)/2;
+  const motifs=['damier','zigzag','losange','escalier','barres'],m1=motifs[Math.floor(R()*5)],m2=motifs[Math.floor(R()*5)];
+  const stripe=[];let acc=0;while(acc<1){const w=.06+R()*.16;stripe.push([acc,Math.min(w,1-acc),cols[1+Math.floor(R()*3)]]);acc+=w+.04+R()*.1;}
+  for(let s=0;s<ns;s++){const x=x00+s*sw;let y=-(s%2)*bh*.5-bh,k=s;
+    while(y<H){const warp=k%2===0;c.fillStyle=warp?P.a:P.d;c.fillRect(x,y,sw,bh);
+      if(warp){for(const st of stripe){c.fillStyle=st[2];c.fillRect(x+st[0]*sw,y,st[1]*sw,bh);}}
+      else{const n=4+Math.round(rich*4),cell=sw/ (2*n),rows=Math.round(bh/cell),mt=(Math.floor(k/2)%2)?m2:m1,ca=cols[(k>>1)%3===0?1:(k>>1)%3===1?0:2],cb=cols[(k>>1)%3===0?2:1];
+        for(let j=0;j<rows;j++)for(let i=0;i<2*n;i++){let on=false;const ci=i<n?i:2*n-1-i,cj=j%(2*n),dj=cj<n?cj:2*n-1-cj;
+          if(mt==='damier')on=(Math.floor(i/2)+Math.floor(j/2))%2===0;else if(mt==='zigzag')on=(ci+j)%n<n/2;else if(mt==='losange')on=(ci+dj)%n<Math.max(1,n/2-1)||ci+dj===n-1;else if(mt==='escalier')on=Math.floor(j/2)%n===ci||Math.floor(j/2)%n===n-1-ci;else on=j%4<2;
+          c.fillStyle=on?ca:(mt==='barres'&&j%8>3?cb:P.d);if(on||mt==='barres')c.fillRect(x+i*cell,y+j*cell,cell+.6,cell+.6);}
+        c.fillStyle=cb;c.fillRect(x,y,sw,cell*.9);c.fillRect(x,y+bh-cell*.9,sw,cell*.9);}
+      y+=bh;k++;}
+    c.fillStyle='rgba(0,0,0,.4)';c.fillRect(x-Math.max(1,u*.03),0,Math.max(2,u*.06),H);}
+  c.globalAlpha=.12;c.fillStyle='#000';for(let y=0;y<H;y+=Math.max(2,u*.09))c.fillRect(0,y,W,1);c.globalAlpha=1;
+}
+/* ---------- rendu ---------- */
+function render(cv,W,H){cv.width=W;cv.height=H;const c=cv.getContext('2d'),R=rng(hash(ST.style+'|'+ST.seed.trim().toLowerCase())),P=PAL[ST.style][ST.pal],u=Math.min(W,H)*lerp(.032,.1,ST.size/100)*(ST.style==='wax'?.62:1);
+  ({bogolan,wax,kente})[ST.style](c,W,H,R,P,u,ST.dens);
+  if(ST.sym){c.save();c.translate(W,0);c.scale(-1,1);c.drawImage(cv,0,0,W/2,H,0,0,W/2,H);c.restore();}
+  /* trame du coton */
+  const T=rng(7),n=Math.round(W*H/260);c.globalAlpha=.07;for(let i=0;i<n;i++){c.fillStyle=T()<.5?'#000':'#fff';c.fillRect(T()*W,T()*H,1+T()*2.2,1+T()*2.2);}
+  c.globalAlpha=.05;c.fillStyle='#000';for(let y=0;y<H;y+=3)c.fillRect(0,y,W,1);for(let x=0;x<W;x+=3)c.fillRect(x,0,1,H);c.globalAlpha=1;
+  if(ST.style==='bogolan'){c.globalAlpha=.35;c.fillStyle='#000';const ns=5;for(let i=1;i<ns;i++)c.fillRect(Math.round(W*i/ns),0,Math.max(1,W/700),H);c.globalAlpha=1;}
+}
+const cv=$('cv');
+const word=v=>v<34?'petite':v<67?'moyenne':'grande',word2=v=>v<34?'sobre':v<67?'moyenne':'riche';
+function update(){render(cv,1200,1200);const P=PAL[ST.style][ST.pal];document.documentElement.style.setProperty('--accent',ST.style!=='bogolan'?(P.b==='#1f8a3c'?'#f2b61b':P.b):P.mid==='#1f1410'?'#e9a25a':P.mid);
+  $('name').textContent=({wax:'Wax',bogolan:'Bogolan',kente:'Kente'})[ST.style]+' · '+P.n;$('info').textContent=ST.typed?'Motif de « '+ST.seed.trim()+' »':'Motif n° '+ST.seed;
+  $('sizeV').textContent=word(ST.size);$('densV').textContent=word2(ST.dens);
+  $('about').textContent=ST.style==='kente'?"Le kente est tissé au Ghana par les Ashanti et les Éwé, en bandes étroites cousues bord à bord. Chaque couleur et chaque motif y porte un sens.":ST.style==='bogolan'?"Le bogolan vient du Mali : un coton teint à la boue fermentée, où les motifs clairs sont réservés sur fond sombre, bande après bande.":"Le wax est un coton imprimé à la cire, adopté et réinventé en Afrique de l'Ouest. Ses craquelures viennent de la cire qui se fend pendant la teinture.";
+  $('sBogo').setAttribute('aria-pressed',ST.style==='bogolan');$('sWax').setAttribute('aria-pressed',ST.style==='wax');$('sKen').setAttribute('aria-pressed',ST.style==='kente');
+  $('pals').innerHTML=PAL[ST.style].map((p,i)=>{const cs=ST.style!=='bogolan'?[p.a,p.b,p.c,p.d]:[p.bg,p.mid,p.fg];return`<button type="button" data-p="${i}" aria-pressed="${i===ST.pal}" aria-label="${p.n}" title="${p.n}">${cs.map(x=>`<span style="background:${x}"></span>`).join('')}</button>`;}).join('');
+  try{localStorage.setItem('atelier',JSON.stringify(ST));}catch(e){}}
+$('pals').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ST.pal=+b.dataset.p;update();});
+$('sBogo').addEventListener('click',()=>{ST.style='bogolan';ST.pal=0;update();});$('sWax').addEventListener('click',()=>{ST.style='wax';ST.pal=0;update();});$('sKen').addEventListener('click',()=>{ST.style='kente';ST.pal=0;update();});
+$('size').addEventListener('input',e=>{ST.size=+e.target.value;update();});$('dens').addEventListener('input',e=>{ST.dens=+e.target.value;update();});
+$('sym').addEventListener('change',e=>{ST.sym=e.target.checked;update();});
+$('seed').addEventListener('input',e=>{const v=e.target.value;if(v.trim()){ST.seed=v;ST.typed=true;}else{ST.seed=String(Math.floor(10000+Math.random()*89999));ST.typed=false;}update();});
+$('again').addEventListener('click',()=>{ST.seed=String(Math.floor(10000+Math.random()*89999));ST.typed=false;$('seed').value='';update();});
+let url=null;
+document.querySelectorAll('button[data-f]').forEach(b=>b.addEventListener('click',()=>{const f=b.dataset.f,sz=f==='phone'?[1290,2796]:f==='desk'?[2560,1440]:[2000,2000],o=document.createElement('canvas');render(o,sz[0],sz[1]);
+  const show=u=>{$('out').src=u;$('sheet').hidden=false;$('sheetP').textContent="Image de "+sz[0]+" × "+sz[1]+" pixels. Appui long sur l'image, ou clic droit, puis « Enregistrer l'image ».";$('close').focus();};
+  if(o.toBlob)o.toBlob(bl=>{if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(bl);show(url);},'image/jpeg',.92);else show(o.toDataURL('image/jpeg',.92));}));
+$('close').addEventListener('click',()=>{$('sheet').hidden=true;});
+addEventListener('keydown',e=>{if(e.key==='Escape')$('sheet').hidden=true;});
+try{const s=JSON.parse(localStorage.getItem('atelier')||'null');if(s&&PAL[s.style]&&PAL[s.style][s.pal]){Object.assign(ST,s);$('size').value=ST.size;$('dens').value=ST.dens;$('sym').checked=ST.sym;if(ST.typed)$('seed').value=ST.seed;}}catch(e){}
+update();
+window.__atelier={ST,update};
+})();
+</script>
+
+</html>

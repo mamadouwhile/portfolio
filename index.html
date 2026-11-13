@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sept créations en une soirée</title>
+<meta name="description" content="Un monde 3D, un film, des jeux, des instruments et une simulation, autour du Mali et de l'Afrique de l'Ouest.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#0e0c12;--card:#18151e;--text:#f4ecdf;--dim:#b4a999;--gold:#ffc24d;--line:rgba(244,236,223,.14);
+  --display:"Syne","Arial Black",system-ui,sans-serif;--body:"Figtree","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding:calc(40px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+main{max-width:1120px;margin:0 auto}
+.eyebrow{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(38px,8vw,84px);line-height:.95;letter-spacing:-.02em;margin:0 0 18px;text-wrap:balance}
+.lead{max-width:56ch;color:var(--dim);margin:0 0 40px;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+a.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;color:inherit;text-decoration:none;transition:transform .2s,border-color .2s}
+a.card:hover,a.card:focus-visible{transform:translateY(-3px);border-color:var(--gold);outline:none}
+a.card img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#221d2a}
+.in{padding:16px 18px 20px;display:flex;flex-direction:column;gap:6px}
+.kind{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h2{font-family:var(--display);font-weight:700;font-size:23px;line-height:1.1;margin:0}
+.in p{margin:0;color:var(--dim);font-size:15px}
+footer{margin-top:44px;color:var(--dim);font-size:14px}
+footer a{color:var(--text)}
+@media (prefers-reduced-motion:reduce){a.card{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Mali · Afrique de l'Ouest</p>
+  <h1>Sept créations en une soirée</h1>
+  <p class="lead">Un monde à explorer, un film, deux jeux, un studio de musique, un atelier de tissus et une simulation. Tout tourne dans le navigateur, sans rien installer.</p>
+  <div class="grid">
+    <a class="card" href="tombouctou/"><img src="img/tombouctou.jpg" alt="Tombouctou vue du ciel au coucher du soleil" loading="lazy"><div class="in"><span class="kind">Monde 3D</span><h2>Tombouctou au crépuscule</h2><p>La ville de terre vers 1500, à explorer à pied, avec une quête, une mosquée à visiter et le fleuve.</p></div></a>
+    <a class="card" href="bamako-2150/"><img src="img/bamako-2150.jpg" alt="Des lumières dessinent l'Afrique au-dessus de Bamako la nuit" loading="lazy"><div class="in"><span class="kind">Court-métrage</span><h2>Bamako 2150</h2><p>Une journée dans la capitale du futur, du Niger aux sotramas volants, en une minute.</p></div></a>
+    <a class="card" href="caravane/"><img src="img/caravane.jpg" alt="Carte ancienne du trajet du Mali à La Mecque" loading="lazy"><div class="in"><span class="kind">Jeu de gestion</span><h2>La caravane de Mansa Moussa</h2><p>Mène l'empereur du Mali jusqu'à La Mecque en 1324, à travers le Sahara.</p></div></a>
+    <a class="card" href="awale/"><img src="img/awale.jpg" alt="Plateau d'awalé en bois avec ses graines" loading="lazy"><div class="in"><span class="kind">Jeu de stratégie</span><h2>Awalé</h2><p>Le jeu de graines contre un ordinateur qui calcule jusqu'à 14 coups à l'avance, ou à deux.</p></div></a>
+    <a class="card" href="studio/"><img src="img/studio.jpg" alt="Un balafon aux lames de bois" loading="lazy"><div class="in"><span class="kind">Musique</span><h2>Studio kora et balafon</h2><p>Deux instruments jouables au doigt ou au clavier, avec un enregistreur de boucles.</p></div></a>
+    <a class="card" href="atelier/"><img src="img/atelier.jpg" alt="Motifs de tissus bogolan et wax" loading="lazy"><div class="in"><span class="kind">Création</span><h2>Atelier bogolan, wax et kente</h2><p>Écris un mot, obtiens son tissu, et garde-le en fond d'écran.</p></div></a>
+    <a class="card" href="trou-noir/"><img src="img/trou-noir.jpg" alt="Un trou noir entouré de son disque de matière" loading="lazy"><div class="in"><span class="kind">Science</span><h2>Trou noir interactif</h2><p>Tourne autour d'un trou noir et vois la gravité courber la lumière.</p></div></a>
+  </div>
+  <footer>Réalisé avec Claude. Le film existe aussi en <a href="bamako-2150/bamako-2150.mp4">vidéo verticale</a>.</footer>
+</main>
+</body>
+</html>

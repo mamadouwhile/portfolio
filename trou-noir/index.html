@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Trou noir interactif</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout : la simulation plein écran ; un seul panneau en bas regroupe les réglages et l'explication en cours. */
+:root{
+  color-scheme:dark;
+  --void:#05060a;
+  --panel:rgba(10,11,18,.74);
+  --text:#eef0f6;
+  --dim:#a3a8b8;
+  --line:rgba(238,240,246,.16);
+  --hot:#ffb347;
+  --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Inter","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{background:var(--void);color:var(--text);font-family:var(--body);font-size:14px;overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+canvas#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas#gl:active{cursor:grabbing}
+#head{position:fixed;z-index:3;top:calc(14px + env(safe-area-inset-top,0px));left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));pointer-events:none}
+#head h1{font-family:var(--display);font-weight:700;font-size:26px;margin:0;line-height:1;letter-spacing:-.01em;text-shadow:0 2px 16px #000}
+#head p{margin:6px 0 0;color:var(--dim);font-size:13px;text-shadow:0 1px 8px #000}
+#dock{position:fixed;z-index:3;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(760px,calc(100% - 32px));
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;flex-wrap:nowrap;gap:7px;align-items:center;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
+.row::-webkit-scrollbar{display:none}
+#dock.min #exp,#dock.min .row2{display:none}
+.row .lab{display:none}
+button.t{font:600 13px var(--body);color:var(--text);background:rgba(238,240,246,.06);border:1px solid var(--line);border-radius:999px;padding:7px 12px;cursor:pointer;white-space:nowrap}
+button.t:hover{border-color:var(--hot)}
+button.t[aria-pressed="true"]{background:var(--hot);color:#191005;border-color:transparent}
+button:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+#exp{border-top:1px solid var(--line);padding-top:10px}
+#exp h2{font-family:var(--display);font-weight:700;font-size:17px;margin:0 0 4px}
+#exp p{margin:0;line-height:1.45;color:var(--text);max-width:none;font-size:13.5px}
+#fail{position:fixed;inset:0;z-index:30;display:grid;place-items:center;text-align:center;padding:24px;background:var(--void)}
+@media (max-width:560px){#head h1{font-size:21px}button.t{padding:6px 10px;font-size:12px}#exp p{font-size:13px}.row .lab{display:none}}
+</style>
+
+<canvas id="gl" aria-label="Simulation d'un trou noir, à faire tourner"></canvas>
+<div id="head"><h1>Trou noir</h1><p>Fais glisser pour tourner autour, pince ou utilise la molette pour t'approcher.</p></div>
+<div id="dock">
+  <div class="row"><span class="lab">Ce que tu vois</span>
+    <button class="t" id="bMin" type="button" aria-pressed="false">Masquer le texte</button>
+    <button class="t" id="bLens" type="button" aria-pressed="true">Lumière déformée</button>
+    <button class="t" id="bDop" type="button" aria-pressed="true">Effet Doppler</button>
+    <button class="t" id="bDisk" type="button" aria-pressed="true">Disque de matière</button>
+    <button class="t" id="bSpin" type="button" aria-pressed="true">Rotation de la caméra</button>
+    <button class="t" data-v="side" type="button">Vue de côté</button>
+    <button class="t" data-v="top" type="button">Vue de dessus</button>
+    <button class="t" data-v="near" type="button">Tout près</button>
+  </div>
+  <div class="row row2" role="group" aria-label="Explications"><span class="lab">Comprendre</span>
+    <button class="t" data-e="0" type="button" aria-pressed="true">L'horizon</button>
+    <button class="t" data-e="1" type="button" aria-pressed="false">Le disque</button>
+    <button class="t" data-e="2" type="button" aria-pressed="false">Le halo au-dessus</button>
+    <button class="t" data-e="3" type="button" aria-pressed="false">Un côté plus brillant</button>
+    <button class="t" data-e="4" type="button" aria-pressed="false">L'anneau de lumière</button>
+    <button class="t" data-e="5" type="button" aria-pressed="false">Les vraies images</button>
+  </div>
+  <div id="exp" aria-live="polite"><h2></h2><p></p></div>
+</div>
+<div id="fail" hidden><p>Ton navigateur n'a pas pu démarrer l'affichage 3D (WebGL).<br>Essaie avec un autre navigateur ou un autre appareil.</p></div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const EXP=[
+ ["L'horizon des événements","La sphère noire au centre marque le point de non-retour : en dessous, rien ne ressort, pas même la lumière. Si le Soleil devenait un trou noir, son horizon ne ferait que 3 km de rayon. Pour la Terre, 9 millimètres."],
+ ["Le disque d'accrétion","Le trou noir lui-même est invisible. Ce qui brille, c'est le gaz qui tourne autour avant de tomber : il frotte, chauffe à des millions de degrés et rayonne. Le disque s'arrête net à trois fois le rayon de l'horizon, car plus près aucune orbite n'est stable."],
+ ["Le halo au-dessus et en dessous","Le disque est plat, pourtant il semble passer par-dessus le trou noir. C'est l'arrière du disque : sa lumière est courbée par la gravité et te parvient en contournant l'astre. Coupe « Lumière déformée » pour voir le disque tel qu'il est vraiment."],
+ ["Un côté plus brillant","Le gaz tourne à une bonne fraction de la vitesse de la lumière. Du côté où il fonce vers toi, sa lumière est concentrée et paraît plus vive et plus bleue ; de l'autre, plus faible et plus rouge. Coupe « Effet Doppler » pour comparer."],
+ ["L'anneau de lumière","Juste autour de l'ombre, un fin anneau brille. À une fois et demie le rayon de l'horizon, la lumière peut tourner en orbite autour du trou noir. Les rayons qui frôlent cette zone font plusieurs tours avant de repartir vers toi."],
+ ["Les vraies images","En 2019, le réseau de télescopes Event Horizon Telescope a publié la première image de l'ombre d'un trou noir, celui de la galaxie M87. En 2022, il a montré Sagittarius A*, au centre de notre galaxie, 4 millions de fois plus massif que le Soleil. Cette page est une simulation simplifiée, sans rotation du trou noir."]
+];
+const cv=$('gl'),gl=cv.getContext('webgl',{antialias:false,alpha:false,preserveDrawingBuffer:false});
+if(!gl){$('fail').hidden=false;$('dock').hidden=true;return;}
+const VS='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+const FS=`precision highp float;
+uniform vec2 res;uniform vec3 ro;uniform mat3 cam;uniform float time,lens,dop,disk,foc,off;
+const float RIN=3.,ROUT=12.5;
+float hash(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float vn(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
+ return mix(mix(mix(hash(i),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float fbm(vec3 p){float a=.5,s=0.;for(int i=0;i<4;i++){s+=a*vn(p);p*=2.03;a*=.5;}return s;}
+vec3 sky(vec3 d){vec3 c=vec3(0.);
+ for(int l=0;l<3;l++){float sc=l==0?70.:(l==1?130.:240.);vec3 p=d*sc,ip=floor(p);vec3 o=vec3(hash(ip+1.3),hash(ip+7.1),hash(ip+3.7))*.6+.2;
+  float dd=length(fract(p)-o),h=hash(ip+11.);c+=smoothstep(.11,0.,dd)*step(.9,h)*mix(vec3(1.,.82,.66),vec3(.72,.84,1.),hash(ip+5.))*(l==0?1.6:(l==1?.9:.5));}
+ vec3 n=normalize(vec3(.3,.92,.22));float b=exp(-pow(dot(d,n)*3.6,2.));
+ c+=b*(vec3(.42,.4,.66)*fbm(d*4.+3.)*fbm(d*9.)*2.2+vec3(.95,.68,.45)*pow(fbm(d*6.+1.),3.)*1.1);
+ return c;}
+void main(){
+ vec2 uv=(gl_FragCoord.xy-.5*res)/res.y-vec2(0.,off);vec3 v=normalize(cam*vec3(uv,-foc)),p=ro;
+ vec3 hc=cross(p,v);float h2=dot(hc,hc);vec3 col=vec3(0.);float al=0.;bool hole=false;
+ for(int i=0;i<230;i++){float r=length(p);if(r<1.){hole=true;break;}if(r>70.&&dot(p,v)>0.)break;
+  float dt=clamp(.1*(r-.55),.025,2.5);
+  v+=-1.5*h2*p/pow(r,5.)*lens*dt;vec3 pn=p+v*dt;
+  if(disk>.5&&p.y*pn.y<0.){float t=p.y/(p.y-pn.y);vec3 hp=mix(p,pn,t);float rr=length(hp.xz);
+   if(rr>RIN&&rr<ROUT){float edge=smoothstep(RIN,RIN+.5,rr)*smoothstep(ROUT,ROUT-4.,rr),a=time*3.2*pow(rr,-1.5),ca=cos(a),sa=sin(a);
+    vec2 q=vec2(ca*hp.x-sa*hp.z,sa*hp.x+ca*hp.z);float n=fbm(vec3(q*1.5,rr*.6))*.65+fbm(vec3(q*4.5,3.))*.35;n=pow(n,1.6)*2.1;
+    float beta=sqrt(.5/rr);vec3 vd=vec3(-hp.z,0.,hp.x)/rr;float cs=dot(vd,-normalize(v)),del=sqrt(1.-beta*beta)/(1.-beta*cs);del=mix(1.,del,dop);
+    float temp=pow(RIN/rr,.75)*del,I=pow(RIN/rr,2.)*n*edge*pow(del,3.)*sqrt(max(1.-1./rr,0.))*2.4;
+    vec3 tc=mix(vec3(1.,.22,.04),vec3(1.,.55,.16),smoothstep(.2,.5,temp));tc=mix(tc,vec3(1.,.88,.7),smoothstep(.5,.9,temp));tc=mix(tc,vec3(.78,.88,1.),smoothstep(.95,1.5,temp));
+    float ap=edge*clamp(n*1.25,0.,1.)*.93;col+=(1.-al)*tc*I;al+=(1.-al)*ap;}}
+  p=pn;}
+ if(!hole)col+=(1.-al)*sky(normalize(v));
+ col=1.-exp(-col*1.3);gl_FragColor=vec4(pow(col,vec3(.4545)),1.);}`;
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o;}
+let prog;try{prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog));}
+catch(e){$('fail').hidden=false;$('dock').hidden=true;console.error(e);return;}
+gl.useProgram(prog);const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+const loc=gl.getAttribLocation(prog,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+const U={};['res','ro','cam','time','lens','dop','disk','foc','off'].forEach(k=>U[k]=gl.getUniformLocation(prog,k));
+
+/* ---------- état ---------- */
+const S={yaw:.6,pitch:.13,dist:17,lens:1,dop:1,disk:1,spin:true};
+const tgt={yaw:.6,pitch:.13,dist:17},cur={lens:1,dop:1};
+let q=matchMedia('(pointer:coarse)').matches?.6:.8,W=0,H=0;
+function resize(){const d=Math.min(devicePixelRatio||1,1.5)*q;W=Math.max(2,Math.round(cv.clientWidth*d));H=Math.max(2,Math.round(cv.clientHeight*d));cv.width=W;cv.height=H;gl.viewport(0,0,W,H);}
+addEventListener('resize',resize);resize();
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;if(REDUCED){S.spin=false;$('bSpin').setAttribute('aria-pressed','false');}
+let last=performance.now(),tm=0,slow=0,frames=0;
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.1,(now-last)/1000);last=now;
+  if(document.hidden)return;
+  frames++;if(frames>20){if(dt>.045)slow++;else slow=Math.max(0,slow-1);if(slow>25&&q>.36){q*=.8;slow=0;resize();}}
+  if(S.spin&&!drag)tgt.yaw+=dt*.06;if(!REDUCED)tm+=dt;
+  const k=1-Math.exp(-dt*6);S.yaw+=(tgt.yaw-S.yaw)*k;S.pitch+=(tgt.pitch-S.pitch)*k;S.dist+=(tgt.dist-S.dist)*k;
+  cur.lens+=(S.lens-cur.lens)*(1-Math.exp(-dt*3.5));cur.dop+=(S.dop-cur.dop)*(1-Math.exp(-dt*4));
+  const cp=Math.cos(S.pitch),sp=Math.sin(S.pitch),cy=Math.cos(S.yaw),sy=Math.sin(S.yaw),ro=[S.dist*cp*sy,S.dist*sp,S.dist*cp*cy];
+  const b=[cp*sy,sp,cp*cy],r=[cy,0,-sy],u=[b[1]*r[2]-b[2]*r[1],b[2]*r[0]-b[0]*r[2],b[0]*r[1]-b[1]*r[0]];
+  gl.uniform2f(U.res,W,H);gl.uniform3fv(U.ro,ro);gl.uniformMatrix3fv(U.cam,false,[r[0],r[1],r[2],u[0],u[1],u[2],b[0],b[1],b[2]]);
+  gl.uniform1f(U.time,tm);gl.uniform1f(U.lens,cur.lens);gl.uniform1f(U.dop,cur.dop);gl.uniform1f(U.disk,S.disk);const dk=$('dock').getBoundingClientRect(),ch=cv.clientHeight||1,fr=clamp((ch-dk.top)/ch,0,.7);gl.uniform1f(U.off,fr/2);gl.uniform1f(U.foc,(W<H?1.05:1.5)*(1-fr*.55));
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);}
+requestAnimationFrame(frame);
+
+/* ---------- gestes ---------- */
+let drag=false;const pts=new Map();let pinch=0;
+cv.addEventListener('pointerdown',e=>{pts.set(e.pointerId,[e.clientX,e.clientY]);drag=true;try{cv.setPointerCapture(e.pointerId);}catch(_){}});
+cv.addEventListener('pointermove',e=>{const p=pts.get(e.pointerId);if(!p)return;
+  if(pts.size===1){tgt.yaw-=(e.clientX-p[0])*.006;tgt.pitch=clamp(tgt.pitch+(e.clientY-p[1])*.005,-1.5,1.5);}
+  pts.set(e.pointerId,[e.clientX,e.clientY]);
+  if(pts.size===2){const a=[...pts.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pinch)tgt.dist=clamp(tgt.dist*pinch/d,4.5,45);pinch=d;}});
+const up=e=>{pts.delete(e.pointerId);pinch=0;if(!pts.size)drag=false;};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+cv.addEventListener('wheel',e=>{e.preventDefault();tgt.dist=clamp(tgt.dist*Math.exp(e.deltaY*.0012),4.5,45);},{passive:false});
+addEventListener('keydown',e=>{if(e.key==='ArrowLeft')tgt.yaw-=.15;else if(e.key==='ArrowRight')tgt.yaw+=.15;else if(e.key==='ArrowUp')tgt.pitch=clamp(tgt.pitch+.08,-1.5,1.5);else if(e.key==='ArrowDown')tgt.pitch=clamp(tgt.pitch-.08,-1.5,1.5);else if(e.key==='+'||e.key==='=')tgt.dist=clamp(tgt.dist*.88,4.5,45);else if(e.key==='-')tgt.dist=clamp(tgt.dist/.88,4.5,45);});
+const tog=(id,k)=>$(id).addEventListener('click',()=>{const v=$(id).getAttribute('aria-pressed')!=='true';$(id).setAttribute('aria-pressed',v);S[k]=k==='spin'?v:(v?1:0);});
+$('bMin').addEventListener('click',()=>{const v=$('bMin').getAttribute('aria-pressed')!=='true';$('bMin').setAttribute('aria-pressed',v);$('dock').classList.toggle('min',v);$('bMin').textContent=v?'Afficher le texte':'Masquer le texte';});
+tog('bLens','lens');tog('bDop','dop');tog('bDisk','disk');tog('bSpin','spin');
+document.querySelectorAll('button[data-v]').forEach(b=>b.addEventListener('click',()=>{const v=b.dataset.v;if(v==='side'){tgt.pitch=.1;tgt.dist=17;}else if(v==='top'){tgt.pitch=1.35;tgt.dist=26;}else{tgt.pitch=.06;tgt.dist=6.2;}}));
+function explain(i){$('exp').firstElementChild.textContent=EXP[i][0];$('exp').lastElementChild.textContent=EXP[i][1];document.querySelectorAll('button[data-e]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.e===i));}
+document.querySelectorAll('button[data-e]').forEach(b=>b.addEventListener('click',()=>explain(+b.dataset.e)));explain(0);
+window.__bh={S,tgt,set(o){Object.assign(S,o);Object.assign(tgt,o);if(o.lens!=null)cur.lens=o.lens;if(o.dop!=null)cur.dop=o.dop;}};
+})();
+</script>
+
+</html>

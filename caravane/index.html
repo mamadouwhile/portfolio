@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>La caravane de Mansa Moussa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Spectral:wght@400;500;600&display=swap">
+<style>
+/* Layout : une carte de portulan sur vélin à gauche, le journal de route sur fond de nuit à droite ; empilés sur téléphone. */
+:root{
+  color-scheme:dark;
+  --vellum:#e4d5b5;
+  --vellum-deep:#cdb98f;
+  --ink:#2a2018;
+  --sea:#b4c6bd;
+  --vermilion:#a8392a;
+  --azurite:#2b4e7a;
+  --gold:#d2a038;
+  --night:#191520;
+  --night-2:#231d2c;
+  --line:rgba(226,205,160,.2);
+  --text:#efe4cb;
+  --dim:#b9aa8d;
+  --display:"IM Fell English SC","Palatino Linotype",Georgia,serif;
+  --italic:"IM Fell English",Georgia,serif;
+  --body:"Spectral",Georgia,serif;
+}
+html,body{height:100%}
+body{background:var(--night);color:var(--text);font-family:var(--body);font-size:16px;display:flex;overflow:hidden;
+  padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+#mapwrap{flex:1.35;min-width:0;background:var(--vellum-deep);position:relative;display:flex;align-items:center;justify-content:center}
+#map{width:100%;height:100%;display:block}
+#side{flex:1;min-width:0;max-width:480px;display:flex;flex-direction:column;border-left:1px solid var(--line);background:var(--night)}
+#res{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.r{background:var(--night-2);padding:8px 10px 9px;min-width:0}
+.r span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r b{font-family:var(--display);font-weight:400;font-size:21px;font-variant-numeric:tabular-nums;line-height:1.15}
+.r i{display:block;height:3px;margin-top:4px;background:rgba(226,205,160,.15);border-radius:2px;overflow:hidden}
+.r i u{display:block;height:100%;background:var(--gold);border-radius:2px;transition:width .4s}
+.r.low b{color:#ff8f6b}.r.low i u{background:#e0553a}
+.r.up b{animation:pop .5s}
+@keyframes pop{0%{color:var(--gold);transform:scale(1.15)}100%{transform:none}}
+#vig{width:100%;height:96px;display:block;border-bottom:1px solid var(--line)}
+#panel{flex:1;overflow-y:auto;padding-block:18px 24px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:1.1}
+h1{font-size:34px}h2{font-size:27px}
+p{margin:0;line-height:1.55;max-width:62ch}
+.note{font-family:var(--italic);font-style:italic;color:var(--dim);font-size:15px}
+.delta{font-size:14px;color:var(--gold);font-variant-numeric:tabular-nums}
+.acts{display:flex;flex-direction:column;gap:8px}
+.acts.row{flex-direction:row;flex-wrap:wrap}
+.acts.row button{flex:1 1 130px}
+button.a{font:500 15px var(--body);text-align:left;color:var(--text);background:var(--night-2);border:1px solid var(--line);border-radius:6px;padding:10px 13px;cursor:pointer;line-height:1.35}
+button.a small{display:block;font-size:13px;color:var(--dim);margin-top:1px}
+button.a:hover:not(:disabled){border-color:var(--gold);background:#2b2436}
+button.a:disabled{opacity:.42;cursor:not-allowed}
+button.go{font:600 16px var(--body);color:#1d140a;background:var(--gold);border:0;border-radius:6px;padding:12px 16px;cursor:pointer;text-align:center}
+button.go:hover{background:#e6b752}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+hr{border:0;border-top:1px solid var(--line);margin:2px 0;width:100%}
+.legend{position:absolute;left:12px;bottom:10px;font-family:var(--italic);font-style:italic;font-size:13px;color:var(--ink);opacity:.75;max-width:60%}
+@media (max-width:820px){
+  body{flex-direction:column}
+  #mapwrap{flex:none;height:34vh;min-height:170px}
+  #side{max-width:none;flex:1;min-height:0;border-left:0;border-top:1px solid var(--line)}
+  #vig{display:none}
+  .r{padding:6px 8px 7px}.r b{font-size:18px}.r span{font-size:10px}
+  h1{font-size:28px}h2{font-size:23px}
+  .legend{display:none}
+}
+@media (prefers-reduced-motion:reduce){.r.up b{animation:none}}
+</style>
+
+<div id="mapwrap"><canvas id="map" aria-label="Carte du trajet, du Mali à La Mecque"></canvas><div class="legend">Carte dessinée à la manière des portulans du 14e siècle.</div></div>
+<div id="side">
+  <div id="res" aria-label="Ressources de la caravane"></div>
+  <canvas id="vig" width="960" height="192" aria-hidden="true"></canvas>
+  <div id="panel" aria-live="polite"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ch=p=>Math.random()<p;
+const DEADLINE=215;
+
+/* ---------- monde ---------- */
+const N={
+ niani:{n:'Niani',lon:-8.4,lat:11.4,px:1,t:"Capitale de l'empire du Mali. En 1324, Mansa Moussa en part pour La Mecque avec une suite immense et des chameaux chargés d'or."},
+ oualata:{n:'Oualata',lon:-7,lat:17.3,px:1,t:"Dernière ville avant le grand désert. Les caravanes y remplissent leurs outres et y engagent leurs guides."},
+ taghaza:{n:'Taghaza',lon:-5,lat:23.6,px:2.2,t:"Une ville de mineurs où les maisons sont bâties en blocs de sel. L'eau y est saumâtre et tout s'y paie cher, sauf le sel."},
+ tombouctou:{n:'Tombouctou',lon:-3,lat:16.8,px:1,t:"Un carrefour entre le fleuve Niger et le Sahara. À ton retour, tu y feras bâtir la mosquée Djinguereber."},
+ touat:{n:'Touat',lon:-0.3,lat:27.6,px:1.8,t:"Un chapelet d'oasis au cœur du Sahara. On y répare les outres et on y soigne les bêtes."},
+ ghadames:{n:'Ghadamès',lon:9.5,lat:30.1,px:1.6,t:"Une oasis aux ruelles couvertes, porte du désert vers la Méditerranée."},
+ caire:{n:'Le Caire',lon:31.2,lat:30.05,px:1,t:"La plus grande ville que tes compagnons aient jamais vue. Le sultan mamelouk al-Nasir Muhammad y règne."},
+ aqaba:{n:'Aqaba',lon:35,lat:29.5,px:1.5,t:"Au bout du Sinaï, la route des pèlerins rejoint la mer Rouge et descend vers le Hedjaz."},
+ medine:{n:'Médine',lon:39.6,lat:24.5,px:1.2,t:"La ville du Prophète. Les pèlerins s'y recueillent avant la dernière étape."},
+ mecque:{n:'La Mecque',lon:39.8,lat:21.4,px:1,t:""}
+};
+const L={
+ a:{f:'niani',to:'oualata',terr:'sahel',steps:3,days:7,heat:.8,via:[]},
+ b:{f:'oualata',to:'taghaza',terr:'desert',steps:4,days:6,heat:1.4,via:[],label:'Par Taghaza',hint:'Court mais brûlant. On y achète le sel.'},
+ c:{f:'oualata',to:'tombouctou',terr:'sahel',steps:2,days:6,heat:.8,via:[],label:'Par Tombouctou',hint:'Un détour plus doux, mais un désert plus long ensuite.'},
+ d:{f:'taghaza',to:'touat',terr:'desert',steps:4,days:6,heat:1.3,via:[]},
+ e:{f:'tombouctou',to:'touat',terr:'desert',steps:6,days:6,heat:1.15,via:[[-3.6,22]]},
+ g:{f:'touat',to:'ghadames',terr:'desert',steps:3,days:7,heat:1.1,via:[]},
+ h:{f:'ghadames',to:'caire',terr:'egypte',steps:5,days:8,heat:1,via:[[20,29.4]]},
+ i:{f:'caire',to:'aqaba',terr:'egypte',steps:3,days:6,heat:1,via:[[32.7,29.9]]},
+ j:{f:'aqaba',to:'medine',terr:'arabie',steps:4,days:7,heat:1.3,via:[[37.2,26.5]]},
+ k:{f:'medine',to:'mecque',terr:'arabie',steps:2,days:6,heat:1.2,via:[]}
+};
+const NEXT={niani:['a'],oualata:['b','c'],taghaza:['d'],tombouctou:['e'],touat:['g'],ghadames:['h'],caire:['i'],aqaba:['j'],medine:['k']};
+const TERR={sahel:'Sahel',desert:'Sahara',egypte:"Vers l'Égypte",arabie:'Hedjaz'};
+
+/* ---------- état ---------- */
+let S;
+function fresh(){return{dl:DEADLINE,hard:false,or:100,eau:80,viv:80,moral:80,cham:100,sel:0,ren:0,jour:0,node:'niani',leg:null,step:0,guide:false,infl:1,done:[],seen:[],screen:'intro',caire:0,rested:false};}
+const LAB={or:'Or',eau:'Eau',viv:'Vivres',moral:'Moral',cham:'Chameaux',sel:'Sel',ren:'Renommée',jour:'Jours'};
+function fx(d){const out=[];for(const k in d){if(!d[k])continue;const v=d[k];S[k]+=v;
+    if(k==='eau'||k==='viv'||k==='moral')S[k]=clamp(S[k],0,100);if(k==='or'||k==='sel'||k==='cham')S[k]=Math.max(0,Math.round(S[k]));
+    out.push(LAB[k]+' '+(v>0?'+':'−')+Math.abs(Math.round(v)));flash[k]=true;}
+  return out.join(' · ');}
+const flash={};
+function drawRes(){
+  const left=S.dl-S.jour;
+  const cell=(k,lab,val,bar,low)=>`<div class="r${low?' low':''}${flash[k]?' up':''}"><span>${lab}</span><b>${val}</b>${bar!=null?`<i><u style="width:${clamp(bar,0,100)}%"></u></i>`:''}</div>`;
+  $('res').innerHTML=cell('or','Or',S.or,null,S.or<15)+cell('eau','Eau',Math.round(S.eau),S.eau,S.eau<25)+cell('viv','Vivres',Math.round(S.viv),S.viv,S.viv<20)+cell('moral','Moral',Math.round(S.moral),S.moral,S.moral<25)
+    +cell('cham','Chameaux',S.cham,null,S.cham<35)+cell('sel','Sel',S.sel,null,false)+cell('ren','Renommée',S.ren,null,false)+cell('jour','Délai',left+' j',null,left<30);
+  for(const k in flash)delete flash[k];
+}
+
+/* ---------- événements ---------- */
+const EV=[
+ {k:'village',terr:['sahel'],t:"L'hospitalité d'un village",x:"Les habitants d'un village sortent à ta rencontre avec du lait, du mil et des tambours.",c:[
+   {t:"Accepter la fête",f:()=>["On danse jusqu'à l'aube. La caravane repart le cœur léger, un jour plus tard.",{jour:1,moral:10,viv:5}]},
+   {t:"Remercier par de l'or",f:()=>["Tu fais distribuer de la poudre d'or. On parlera longtemps de ton passage.",{or:-3,ren:4,moral:5}]},
+   {t:"Saluer et continuer",f:()=>["Tu salues les anciens et la caravane poursuit sa route.",{}]}]},
+ {k:'gue',terr:['sahel'],t:"Le gué en crue",x:"Les pluies ont gonflé la rivière. Le gué habituel disparaît sous une eau brune et rapide.",c:[
+   {t:"Attendre la décrue",f:()=>["Deux jours plus tard, l'eau a baissé. Les bêtes traversent sans encombre.",{jour:2,viv:-4,eau:10}]},
+   {t:"Traverser maintenant",f:()=>ch(.6)?["Les chameliers guident les bêtes une à une. Tout le monde passe.",{moral:3}]:["Le courant emporte plusieurs bêtes et leurs charges.",{cham:-5,viv:-6,moral:-6}]}]},
+ {k:'griots',terr:['sahel','egypte'],t:"Les griots",x:"Une troupe de griots demande à suivre la caravane pour chanter ton voyage.",c:[
+   {t:"Les accueillir",f:()=>["Chaque soir, leurs chants racontent Soundiata et tes ancêtres. Les veillées sont plus douces.",{viv:-4,moral:12,ren:2}]},
+   {t:"Refuser poliment",f:()=>["Ils repartent déçus. La caravane garde ses vivres.",{moral:-2}]}]},
+ {k:'tempete',terr:['desert','arabie'],t:"La tempête de sable",x:"Un mur ocre se lève à l'horizon. En quelques minutes, on ne voit plus la bête qui marche devant soi.",c:[
+   {t:"Faire coucher les chameaux et attendre",f:()=>["La tempête dure deux jours. Personne ne manque à l'appel.",{jour:2,eau:-8}]},
+   {t:"Continuer d'avancer",f:()=>ch(S.guide?.7:.45)?["Le vent tombe plus vite que prévu. Tu as gagné du terrain.",{moral:3}]:["Des bêtes s'égarent dans le sable. On en retrouve peu.",{cham:-7,moral:-8,eau:-4}]}]},
+ {k:'puits',terr:['desert'],t:"Le puits à sec",x:"Le puits où tu comptais refaire de l'eau n'offre plus qu'une boue salée.",c:[
+   {t:"Creuser plus profond",f:()=>ch(.55)?["Au bout d'un jour de travail, l'eau remonte, fraîche.",{jour:1,eau:18}]:["On creuse un jour entier pour rien.",{jour:1,moral:-6,eau:-4}]},
+   {t:"Faire le détour vers un autre puits",f:()=>S.guide?["Ton guide connaît un puits à une journée. Les outres sont pleines.",{jour:1,eau:22}]:["Deux jours de détour, mais le second puits est bon.",{jour:2,eau:16,viv:-3}]},
+   {t:"Rationner et continuer",f:()=>["Une demi-ration pour chacun. Les visages se ferment.",{moral:-10}]}]},
+ {k:'pillards',terr:['desert','arabie'],t:"Les pillards",x:"Des cavaliers voilés suivent la caravane depuis l'aube. Leur chef demande un droit de passage.",c:[
+   {t:"Payer le droit de passage",f:()=>["L'or change de mains. Les cavaliers disparaissent derrière les dunes.",{or:-5}]},
+   {t:"Déployer ton escorte",f:()=>ch(.65)?["Devant tes centaines de gardes, ils renoncent. On en parlera dans tout le désert.",{ren:3,moral:4}]:["Ils attaquent l'arrière de la caravane avant de fuir.",{cham:-6,or:-3,moral:-6}]},
+   {t:"Laisser ton guide négocier",need:()=>S.guide,d:"Demande un guide",f:()=>["Ton guide reconnaît un cousin parmi eux. On partage le thé et chacun reprend sa route.",{moral:4}]}]},
+ {k:'malades',terr:['desert','egypte','arabie'],t:"Les bêtes malades",x:"Plusieurs chameaux refusent de se lever. Leurs pieds sont en sang.",c:[
+   {t:"S'arrêter pour les soigner",f:()=>["Un jour de repos, de la graisse et des bandages : la plupart repartent.",{jour:1,viv:-3,cham:-1}]},
+   {t:"Répartir leurs charges et les abandonner",f:()=>["La caravane continue, plus lourde sur chaque bête.",{cham:-5,moral:-4}]}]},
+ {k:'sel',terr:['desert'],t:"La caravane de sel",x:"Tu croises une file de chameaux chargés de barres de sel qui descend vers le sud.",c:[
+   {t:"Échanger de l'or contre de l'eau",f:()=>["Ils te cèdent quelques outres. Le prix est rude, l'eau est bonne.",{or:-3,eau:16}]},
+   {t:"Acheter du sel",f:()=>["Cinq barres de sel rejoignent tes charges. Tu les revendras plus loin.",{or:-2,sel:5}]},
+   {t:"Échanger des nouvelles et repartir",f:()=>["Ils t'indiquent un puits sûr sur ta route.",{eau:6}]}]},
+ {k:'oasis',terr:['desert','arabie'],t:"L'oasis",x:"Derrière une crête apparaissent des palmiers et une source claire que personne n'attendait.",c:[
+   {t:"S'y reposer un jour",f:()=>["Les bêtes boivent, les hommes dorment à l'ombre.",{jour:1,eau:25,moral:10}]},
+   {t:"Remplir les outres et repartir",f:()=>["Une heure de halte et les outres sont pleines.",{eau:20}]}]},
+ {k:'nuit',terr:['desert'],t:"La nuit glaciale",x:"Après une journée brûlante, le froid du désert saisit le campement.",c:[
+   {t:"Distribuer les couvertures de réserve",f:()=>["Chacun passe la nuit au chaud autour des feux.",{moral:5,viv:-2}]},
+   {t:"Marcher de nuit pour se réchauffer",f:()=>["La caravane avance sous les étoiles et gagne une demi-journée.",{jour:-1,moral:-4}]}]},
+ {k:'savant',terr:['desert','egypte'],t:"Le savant voyageur",x:"Un lettré de Fès voyage seul vers l'Orient. Il demande à se joindre à toi.",c:[
+   {t:"L'accueillir à ta table",f:()=>["Il connaît les étoiles et les routes. Ses récits te précéderont au Caire.",{viv:-3,ren:4,moral:3}]},
+   {t:"Lui offrir de l'eau et le laisser",f:()=>["Il te bénit et reprend son chemin.",{eau:-3,ren:1}]}]},
+ {k:'egare',terr:['desert'],t:"La piste effacée",x:"Le vent a effacé la piste. Les dunes se ressemblent toutes.",c:[
+   {t:"Suivre les étoiles",f:()=>S.guide||ch(.5)?["À l'aube, les repères connus réapparaissent.",{moral:3}]:["Tu tournes en rond deux jours avant de retrouver la piste.",{jour:2,eau:-10,moral:-6}]},
+   {t:"Envoyer des éclaireurs et attendre",f:()=>["Les éclaireurs reviennent le lendemain avec la bonne direction.",{jour:1,eau:-5}]}]},
+ {k:'douane',terr:['egypte'],t:"Les officiers du sultan",x:"Des officiers mamelouks arrêtent la caravane et réclament une taxe sur chaque charge.",c:[
+   {t:"Payer la taxe",f:()=>["Ils comptent, pèsent et laissent passer.",{or:-4}]},
+   {t:"Leur offrir des cadeaux princiers",f:()=>["Les officiers repartent éblouis. Ton nom arrive au Caire avant toi.",{or:-7,ren:6}]},
+   {t:"Refuser et parlementer",f:()=>["Deux jours de palabres, puis un ordre du sultan t'ouvre la route.",{jour:2,moral:-3}]}]},
+ {k:'pauvres',terr:['egypte','arabie'],t:"La foule des pauvres",x:"La rumeur de ton or a couru. Des centaines de pauvres attendent au bord de la route.",c:[
+   {t:"Faire l'aumône",f:()=>["Tu fais distribuer de l'or. Les bénédictions t'accompagnent.",{or:-4,ren:5,moral:4}]},
+   {t:"Donner des vivres",f:()=>["Tes gens partagent le mil et les dattes.",{viv:-10,ren:3,moral:2}]},
+   {t:"Passer sans s'arrêter",f:()=>["La foule s'écarte en silence. Tes compagnons baissent les yeux.",{moral:-5}]}]},
+ {k:'chaleur',terr:['arabie','desert'],t:"La fournaise",x:"Le soleil frappe la roche noire. Les outres se vident deux fois plus vite.",c:[
+   {t:"Marcher de nuit, dormir le jour",f:()=>["On avance moins vite, mais l'eau tient.",{jour:1,eau:-4}]},
+   {t:"Tenir le rythme",f:()=>["La caravane avance, la gorge sèche.",{eau:-14,moral:-4}]}]},
+ {k:'pelerins',terr:['arabie'],t:"Les pèlerins démunis",x:"Un groupe de pèlerins à pied n'a plus d'eau. La Mecque est encore loin.",c:[
+   {t:"Partager l'eau",f:()=>["Ils marcheront désormais avec toi. On dira que le roi du Mali ne laisse personne derrière lui.",{eau:-12,ren:6,moral:4}]},
+   {t:"Leur donner de l'or pour en acheter",f:()=>["Ils te remercient, même si l'or ne se boit pas ici.",{or:-2,ren:2}]},
+   {t:"Garder l'eau pour les tiens",f:()=>["Tu détournes le regard. La route est dure pour tous.",{moral:-6}]}]},
+ {k:'bedouins',terr:['arabie'],t:"Les guides bédouins",x:"Des Bédouins proposent de t'ouvrir une piste plus courte à travers les montagnes.",c:[
+   {t:"Les engager",f:()=>ch(.8)?["La piste est rude mais vraie. Tu gagnes deux jours.",{or:-3,jour:-2}]:["La piste se perd dans un ravin. Il faut rebrousser chemin.",{or:-3,jour:2,moral:-4}]},
+   {t:"Rester sur la route des pèlerins",f:()=>["Tu préfères la route connue.",{}]}]},
+ {k:'marchands',terr:['egypte'],t:"Les marchands d'Alexandrie",x:"Des marchands veulent acheter ton sel et te vendre des étoffes pour tes cadeaux.",c:[
+   {t:"Vendre du sel",need:()=>S.sel>0,d:"Demande du sel",f:()=>{const n=S.sel;return["Tes barres de sel partent à bon prix.",{sel:-n,or:Math.round(n*0.9)}];}},
+   {t:"Acheter des étoffes à offrir",f:()=>["Des soieries rejoignent tes coffres. Elles feront de beaux présents.",{or:-5,ren:4}]},
+   {t:"Décliner",f:()=>["Tu gardes ton or pour la route.",{}]}]}
+];
+function pickEvent(terr){let pool=EV.filter(e=>e.terr.includes(terr)&&!S.seen.includes(e.k));if(!pool.length){S.seen=S.seen.filter(k=>!EV.find(e=>e.k===k).terr.includes(terr));pool=EV.filter(e=>e.terr.includes(terr));}
+  const e=pool[Math.floor(Math.random()*pool.length)];S.seen.push(e.k);return e;}
+
+/* ---------- écrans ---------- */
+const P=$('panel');let handlers={};
+function show(html,h){P.innerHTML=html;handlers=h||{};P.scrollTop=0;drawRes();drawMap();save();const f=P.querySelector('button');if(f&&document.activeElement!==document.body)f.focus({preventScroll:true});}
+P.addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b||b.disabled)return;const h=handlers[b.dataset.a];if(h)h();});
+const btn=(a,t,d,dis)=>`<button class="a" data-a="${a}"${dis?' disabled':''}>${t}${d?`<small>${d}</small>`:''}</button>`;
+
+function intro(){S.screen='intro';vig('sahel',true);show(`<p class="eyebrow">Empire du Mali · 1324</p><h1>La caravane de Mansa Moussa</h1>
+  <p>Tu es Mansa Moussa, empereur du Mali. Tu pars pour La Mecque avec cent chameaux chargés d'or et des milliers de compagnons.</p>
+  <p>Traverse le Sahara, gère l'eau, les vivres et le moral, et arrive avant le pèlerinage. Tu as <b>${DEADLINE} jours</b>.</p>
+  <p class="note">Ta générosité fera ta légende, mais l'or que tu donnes ne reviendra pas.</p>
+  <button class="go" data-a="go">Quitter Niani</button>${btn('hard','Mode difficile','80 or et 195 jours seulement · score +15')}${best()?`<p class="note">Ton meilleur score : ${best()}.</p>`:''}`,{go:()=>city(),hard:()=>{S.hard=true;S.or=80;S.dl=195;city();}});}
+function best(){try{return +localStorage.getItem('caravane-best')||0;}catch(e){return 0;}}
+
+function price(k){const n=N[S.node];return Math.max(1,Math.round(n.px*S.infl*(k==='guide'?4:1)));}
+function city(msg){S.screen='city';S.leg=null;const n=N[S.node],pe=price('eau'),pg=price('guide'),nx=NEXT[S.node];
+  const sellP=S.node==='caire'?1:.8;
+  let h=`<p class="eyebrow">Halte · jour ${S.jour}</p><h2>${n.n}</h2><p>${n.t}</p>${msg?`<p class="delta">${msg}</p>`:''}<hr><div class="acts row">`
+   +btn('eau',`Eau +20`,`${pe*2} or`,S.or<pe*2||S.eau>=100)+btn('viv',`Vivres +20`,`${pe*2} or`,S.or<pe*2||S.viv>=100)
+   +btn('guide',S.guide?'Guide engagé':'Engager un guide',S.guide?'Pour la prochaine étape':`${pg} or · moins de risques`,S.guide||S.or<pg)
+   +btn('repos',S.rested?'Déjà reposés':'Se reposer',S.rested?'':'2 jours · moral +15',S.rested)
+   +btn('aumone',"Faire l'aumône",`5 or · renommée +4`,S.or<5);
+  if(S.node==='taghaza')h+=btn('sel','Acheter du sel +5','2 or',S.or<2);
+  else if(S.sel>0&&S.node!=='niani')h+=btn('vsel',`Vendre ${S.sel} sel`,`+${Math.round(S.sel*sellP)} or`);
+  h+=`</div><hr><div class="acts">`;
+  nx.forEach(id=>{const l=L[id];h+=`<button class="go" data-a="l_${id}">${l.label?l.label+' : ':''}Partir pour ${N[l.to].n}</button>${`<p class="note">${l.hint?l.hint+' ':''}Environ ${l.steps*l.days} jours de marche${l.terr==='desert'?' en plein Sahara':l.terr==='sahel'?' à travers le Sahel':l.terr==='arabie'?' dans le Hedjaz':''}. Eau nécessaire : environ ${Math.round(l.steps*8*l.heat)}.</p>`}`;});
+  h+='</div>';
+  const H={eau:()=>city(fx({or:-pe*2,eau:20})),viv:()=>city(fx({or:-pe*2,viv:20})),guide:()=>{S.guide=true;city(fx({or:-pg}));},
+    repos:()=>{S.rested=true;city(fx({jour:2,moral:15,viv:-4}));},aumone:()=>city(fx({or:-5,ren:4,moral:3})),sel:()=>city(fx({or:-2,sel:5})),vsel:()=>{const n=S.sel;city(fx({sel:-n,or:Math.round(n*sellP)}));}};
+  nx.forEach(id=>H['l_'+id]=()=>{S.leg=id;S.step=0;S.rested=false;travel();});
+  show(h,H);vig(S.node==='niani'||S.node==='tombouctou'||S.node==='oualata'?'sahel':S.node==='caire'||S.node==='ghadames'?'egypte':S.node==='aqaba'||S.node==='medine'?'arabie':'desert',true);}
+
+function travel(msg){S.screen='travel';const l=L[S.leg];vig(l.terr,false);
+  const w=p=>Math.round(8*l.heat*p);
+  show(`<p class="eyebrow">${TERR[l.terr]} · jour ${S.jour}</p><h2>En route vers ${N[l.to].n}</h2>
+   <p>Étape ${S.step+1} sur ${l.steps}.${S.guide?' Ton guide ouvre la marche.':''}</p>${msg?`<p class="delta">${msg}</p>`:''}
+   <p class="note">Choisis l'allure de la caravane pour cette étape.</p><div class="acts">
+   ${btn('p0','Marche prudente',`${Math.round(l.days*1.3)} jours · eau −${w(1.15)} · moins d'imprévus`)}
+   ${btn('p1','Marche normale',`${l.days} jours · eau −${w(1)}`)}
+   ${btn('p2','Marche forcée',`${Math.round(l.days*.72)} jours · eau −${w(.9)} · épuise les bêtes et les hommes`)}</div>`,
+   {p0:()=>stepGo(0),p1:()=>stepGo(1),p2:()=>stepGo(2)});}
+
+let anim=null;
+function stepGo(p){const l=L[S.leg],pf=[1.3,1,.72][p],wf=[1.15,1,.9][p];
+  const d={jour:Math.round(l.days*pf),eau:-8*l.heat*wf,viv:-6*[1.15,1,.9][p],moral:[1,-1,-6][p]-(l.terr==='desert'||l.terr==='arabie'?2:0)};
+  if(p===2)d.cham=-2;
+  P.innerHTML=`<p class="eyebrow">${TERR[l.terr]}</p><h2>La caravane avance…</h2>`;
+  const from=S.step/l.steps,to=(S.step+1)/l.steps,t0=performance.now(),dur=matchMedia('(prefers-reduced-motion:reduce)').matches?1:900;
+  cancelAnimationFrame(anim);(function fr(now){const u=clamp((now-t0)/dur,0,1);drawMap(from+(to-from)*u);if(u<1)anim=requestAnimationFrame(fr);else after();})(t0);
+  function after(){let m=fx(d);S.step++;
+    if(S.eau<=0){m+=' · '+fx({cham:-8,moral:-12});m+=' (la soif frappe la caravane)';}
+    if(S.viv<=0){m+=' · '+fx({moral:-10});m+=' (les vivres manquent)';}
+    if(lost())return;
+    const pe=[.42,.6,.72][p]-(S.guide?.08:0);
+    if(ch(pe))return event(pickEvent(l.terr),m);
+    arrive(m);}
+}
+function arrive(m){const l=L[S.leg];if(S.step>=l.steps){S.done.push(S.leg);S.node=l.to;S.guide=false;S.leg=null;
+    if(S.node==='mecque')return ending();if(S.node==='caire')return sultan(m);return city(m);}travel(m);}
+function lost(){if(S.cham<=15||S.moral<=0){S.screen='lost';show(`<p class="eyebrow">Jour ${S.jour}</p><h2>La caravane se disperse</h2>
+   <p>${S.moral<=0?"Épuisés et découragés, tes compagnons refusent d'aller plus loin.":"Il ne reste plus assez de bêtes pour porter l'eau et les vivres."} Le pèlerinage s'arrête ici, entre ${N[L[S.leg].f].n} et ${N[L[S.leg].to].n}.</p>
+   <p class="note">Le vrai Mansa Moussa, lui, est arrivé au Caire en juillet 1324.</p><button class="go" data-a="re">Repartir de Niani</button>`,{re:()=>{S=fresh();intro();}});return true;}return false;}
+function event(e,m){S.screen='event';const H={};
+  show(`<p class="eyebrow">Imprévu · jour ${S.jour}</p><h2>${e.t}</h2>${m?`<p class="delta">${m}</p>`:''}<p>${e.x}</p><div class="acts">${e.c.map((c,i)=>btn('c'+i,c.t,c.need&&!c.need()?c.d:'',c.need&&!c.need())).join('')}</div>`,
+   Object.fromEntries(e.c.map((c,i)=>['c'+i,()=>{const r=c.f(),dm=fx(r[1]);result(e.t,r[0],dm);}])));}
+function result(t,x,dm,next){S.screen='result';show(`<p class="eyebrow">Jour ${S.jour}</p><h2>${t}</h2><p>${x}</p>${dm?`<p class="delta">${dm}</p>`:''}<button class="go" data-a="ok">Continuer</button>`,
+  {ok:()=>{if(next)return next();if(lost())return;arrive('');}});}
+
+function sultan(m){S.screen='sultan';S.caire=1;vig('egypte',true);show(`<p class="eyebrow">Le Caire · jour ${S.jour}</p><h2>L'audience du sultan</h2>${m?`<p class="delta">${m}</p>`:''}
+  <p>Le sultan al-Nasir Muhammad te reçoit dans sa citadelle. Le protocole exige que chaque visiteur baise le sol devant lui. Toute la cour te regarde.</p><div class="acts">
+  ${btn('s0','Refuser de te prosterner','Tu es empereur, pas vassal')}${btn('s1',"Te prosterner en déclarant : « Je me prosterne devant Dieu qui m'a créé »")}${btn('s2','Te prosterner devant le sultan','Pour avoir la paix')}</div>`,{
+  s0:()=>{S.infl*=1.3;result("L'audience du sultan","Un silence glacial tombe sur la salle. On te laisse repartir, mais les marchands du Caire ont compris qu'ils pouvaient te faire payer.",fx({ren:2,moral:6}),gold);},
+  s1:()=>result("L'audience du sultan","La cour murmure d'admiration. Le sultan te fait asseoir à ses côtés et t'offre un palais pour ton séjour. C'est ce que rapporte le chroniqueur al-Umari.",fx({ren:9,moral:5,eau:30,viv:30}),gold),
+  s2:()=>result("L'audience du sultan","Le sultan est satisfait et te comble de présents. Tes compagnons, eux, ont le cœur serré de voir leur empereur à terre.",fx({ren:1,moral:-10,or:6,eau:40,viv:40}),gold)});}
+function gold(){S.screen='gold';S.caire=2;const mk=(n,r,i,x)=>()=>{S.infl*=i;result("L'or du Mali",x,fx({or:-n,ren:r,moral:Math.round(r/4)}),()=>city());};
+  show(`<p class="eyebrow">Le Caire · jour ${S.jour}</p><h2>L'or du Mali</h2>
+  <p>Émirs, juges, savants et mendiants se pressent à ta porte. Tous attendent un geste du roi le plus riche du monde. Combien d'or fais-tu distribuer ?</p><div class="acts">
+  ${btn('g0','Une aumône mesurée','8 or',S.or<8)}${btn('g1','Des largesses de roi','25 or · les prix montent',S.or<25)}${btn('g2','Un fleuve d\'or','45 or · les prix s\'envolent',S.or<45)}${btn('g3','Rien : la route est encore longue')}</div>`,{
+  g0:mk(8,6,1,"Tu donnes avec mesure. Le Caire te remercie poliment."),
+  g1:mk(25,20,1.6,"Pas un émir, pas un portier qui ne reçoive sa part. Il y a tant d'or en ville que sa valeur baisse, et tout ce que tu achètes coûte plus cher."),
+  g2:mk(45,36,2.4,"Tu inondes Le Caire d'or. Douze ans plus tard, selon al-Umari, son cours ne s'en était toujours pas remis. Ton nom entre dans la légende, et les marchands doublent leurs prix."),
+  g3:()=>result("L'or du Mali","Tu gardes tes coffres fermés. La foule se disperse en grommelant.",fx({moral:-6,ren:-3}),()=>city())});}
+
+function ending(){S.screen='end';vig('arabie',true);const late=S.jour>S.dl,score=Math.round(S.ren+S.cham/5+S.or/4+(late?-15:10)+(S.hard?15:0)),prev=best(),rec=score>prev;if(rec){try{localStorage.setItem('caravane-best',score);}catch(e){}}
+  const t=late?"Le pèlerin en retard":score>=75?"La légende de l'or":score>=48?"Le roi pèlerin":"Le voyage éprouvant";
+  const x=late?"Tu atteins La Mecque après les jours du pèlerinage. Il te faudra attendre une année entière pour l'accomplir.":
+    score>=75?"Tu entres à La Mecque à la tête d'une caravane intacte, précédé par ta renommée. De l'Andalousie à la Perse, on parle du roi du Mali.":
+    score>=48?"Tu accomplis le pèlerinage au milieu de tes compagnons. Le voyage a coûté cher, mais tu as tenu parole.":"Tu atteins La Mecque avec une caravane amaigrie. Le pèlerinage est accompli, de justesse.";
+  show(`<p class="eyebrow">La Mecque · jour ${S.jour}</p><h1>${t}</h1><p>${x}</p>
+  <p class="delta">Score ${score}${S.hard?' (mode difficile)':''} · renommée ${S.ren} · ${S.cham} chameaux · ${S.or} or${rec&&prev?' · nouveau record':prev?' · record : '+prev:''}</p>
+  ${S.or<20?`<p>Il ne te reste presque plus d'or. Pour rentrer, tu devras emprunter aux marchands du Caire, à prix fort. C'est ce qui est arrivé au vrai Mansa Moussa.</p>`:`<p>Il te reste assez d'or pour rentrer sans rien devoir à personne. Le vrai Mansa Moussa, lui, a dû emprunter aux marchands du Caire.</p>`}
+  <hr><p class="note">En 1325, Mansa Moussa rentre au Mali avec l'architecte andalou al-Sahéli et fait bâtir la mosquée Djinguereber à Tombouctou. En 1375, l'Atlas catalan le représente assis sur son trône, une pépite d'or à la main.</p>
+  <p class="note">Oualata, le Touat et Le Caire sont cités par les chroniques ; le reste du tracé est une reconstitution.</p>
+  <button class="go" data-a="re">Rejouer</button>`,{re:()=>{S=fresh();intro();}});}
+
+/* ---------- carte ---------- */
+const mc=$('map'),g=mc.getContext('2d');let MW=1200,MH=600,ox=0,oy=0,sc=1;
+const LON0=-19.5,LON1=47,LAT0=5.5,LAT1=39;
+const X=lon=>ox+(lon-LON0)/(LON1-LON0)*1200*sc,Y=lat=>oy+(LAT1-lat)/(LAT1-LAT0)*604*sc;
+const LAND=[[-12,5.5],[-13.3,8.5],[-16.8,12],[-17.5,14.7],[-16.5,18],[-17,21],[-13,27],[-9.6,30.4],[-7.6,33.6],[-5.9,35.8],[-2,35.2],[3,36.8],[10,37.2],[11,33.6],[15,32.3],[20,32.5],[20.2,30.8],[25,31.8],[30,31.5],[32.4,31.2],[34.3,31.3],[35,33],[35.8,35],[36.2,36.6],[34,36.6],[30.5,36.3],[27.5,36.8],[26.5,39],[47,39],[47,5.5]];
+const IBER=[[-9.6,39],[-9,37],[-6.3,36.2],[-5.4,36.1],[-2,36.7],[0.2,38.6],[0.2,39]];
+const SICI=[[12.5,38],[15.6,38.2],[15.1,36.7],[12.5,37.6]];
+const RED=[[32.3,29.95],[32.8,29.95],[33.9,27.75],[34.5,28.1],[34.95,29.5],[35.1,29.4],[34.8,28],[36.6,25.8],[38,23.4],[39.1,21.3],[40.6,18.8],[42.5,15.3],[43.4,12.7],[45,12.9],[47,13.7],[47,11.2],[44.5,10.4],[43.2,11.6],[42.4,13.2],[40.9,15],[39.3,15.7],[37.4,19.4],[37,21.6],[35.6,23.9],[34.2,26.4],[33.3,28.2]];
+const RIV=[[[-10.7,9.1],[-8,12.6],[-6.3,13.4],[-4.2,14.5],[-3,16.7],[0,16.3],[2.1,13.5],[4.5,11],[6,8],[6,5.5]],[[31.5,5.5],[32.5,15.6],[33.9,18],[31,19.6],[32.9,24],[31.2,30],[31,31.5]],[[-11.5,14.4],[-13.5,16.2],[-16.4,16]]];
+function poly(pts,fill,stroke,lw){g.beginPath();pts.forEach((p,i)=>i?g.lineTo(X(p[0]),Y(p[1])):g.moveTo(X(p[0]),Y(p[1])));g.closePath();if(fill){g.fillStyle=fill;g.fill();}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw*sc;g.stroke();}}
+function legPts(id){const l=L[id];return[[N[l.f].lon,N[l.f].lat],...l.via,[N[l.to].lon,N[l.to].lat]];}
+function along(pts,u){let tot=0;const d=[];for(let i=1;i<pts.length;i++){const q=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);d.push(q);tot+=q;}let t=u*tot;for(let i=0;i<d.length;i++){if(t<=d[i]||i===d.length-1){const f=clamp(t/d[i],0,1);return[pts[i][0]+(pts[i+1][0]-pts[i][0])*f,pts[i][1]+(pts[i+1][1]-pts[i][1])*f];}t-=d[i];}}
+function line(pts,u){g.beginPath();g.moveTo(X(pts[0][0]),Y(pts[0][1]));if(u>=1){for(let i=1;i<pts.length;i++)g.lineTo(X(pts[i][0]),Y(pts[i][1]));}else{const n=24;for(let i=1;i<=n;i++){const p=along(pts,u*i/n);g.lineTo(X(p[0]),Y(p[1]));}}g.stroke();}
+const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+function drawMap(prog){
+  const dpr=Math.min(devicePixelRatio||1,2),r=mc.getBoundingClientRect();if(!r.width)return;
+  if(mc.width!==Math.round(r.width*dpr)||mc.height!==Math.round(r.height*dpr)){mc.width=Math.round(r.width*dpr);mc.height=Math.round(r.height*dpr);}
+  MW=mc.width;MH=mc.height;sc=Math.min(MW/1200,MH/604);ox=(MW-1200*sc)/2;oy=(MH-604*sc)/2;
+  const ink=css('--ink'),vel=css('--vellum'),sea=css('--sea'),red=css('--vermilion'),blue=css('--azurite'),gold=css('--gold');
+  g.fillStyle=css('--vellum-deep');g.fillRect(0,0,MW,MH);
+  g.save();g.beginPath();g.rect(ox,oy,1200*sc,604*sc);g.clip();
+  g.fillStyle=sea;g.fillRect(ox,oy,1200*sc,604*sc);
+  poly(LAND,vel,ink,1.6);poly(IBER,vel,ink,1.4);poly(SICI,vel,ink,1.2);poly(RED,sea,ink,1.3);
+  /* lignes de rhumb */
+  g.lineWidth=.6*sc;[[4,31.5],[25,14]].forEach((c,ci)=>{for(let i=0;i<16;i++){const a=i/16*Math.PI*2;g.strokeStyle=i%4===0?'rgba(42,32,24,.3)':i%2===0?'rgba(43,78,122,.26)':'rgba(168,57,42,.22)';g.beginPath();g.moveTo(X(c[0]),Y(c[1]));g.lineTo(X(c[0])+Math.cos(a)*1500*sc,Y(c[1])+Math.sin(a)*1500*sc);g.stroke();}});
+  /* fleuves */
+  g.strokeStyle=blue;g.lineWidth=2*sc;g.lineJoin='round';RIV.forEach(rv=>{g.beginPath();rv.forEach((p,i)=>i?g.lineTo(X(p[0]),Y(p[1])):g.moveTo(X(p[0]),Y(p[1])));g.stroke();});
+  /* dunes du Sahara */
+  g.strokeStyle='rgba(42,32,24,.28)';g.lineWidth=1*sc;for(let i=0;i<46;i++){const lon=-12+((i*37)%52),lat=19+((i*53)%11)+(i%3)*.4;if(lon>28&&lat>26)continue;const x=X(lon),y=Y(lat);g.beginPath();g.arc(x,y,7*sc,Math.PI*1.1,Math.PI*1.9);g.stroke();}
+  /* rose des vents */
+  (function(){const cx=X(-13.5),cy=Y(33.2),R=30*sc;for(let i=0;i<8;i++){const a=i/8*Math.PI*2-Math.PI/2;g.beginPath();g.moveTo(cx,cy);g.lineTo(cx+Math.cos(a-.2)*R*.38,cy+Math.sin(a-.2)*R*.38);g.lineTo(cx+Math.cos(a)*R*(i%2?.62:1),cy+Math.sin(a)*R*(i%2?.62:1));g.closePath();g.fillStyle=i===0?red:i%2?gold:blue;g.fill();}
+    g.strokeStyle=ink;g.lineWidth=1*sc;g.beginPath();g.arc(cx,cy,R*.4,0,7);g.stroke();})();
+  /* noms */
+  const lab=(t,lon,lat,s,c,sp,it)=>{g.font=`${it?'italic ':''}${s*sc}px ${it?'"IM Fell English"':'"IM Fell English SC"'},Georgia,serif`;g.fillStyle=c;g.textAlign='center';if(sp){const w=[...t];const tw=w.length*sp*sc;w.forEach((ch2,i)=>g.fillText(ch2,X(lon)-tw/2+i*sp*sc,Y(lat)));}else g.fillText(t,X(lon),Y(lat));};
+  lab('SAHARA',6,22.3,26,'rgba(42,32,24,.42)',44);lab('Mali',-10.5,14.4,24,red);lab('Égypte',28.5,26.4,20,'rgba(42,32,24,.6)');lab('Arabie',43.2,24.8,20,'rgba(42,32,24,.6)');
+  lab('Mer Méditerranée',17,35.3,17,blue,0,true);lab('Océan Atlantique',-15.8,24.5,15,blue,0,true);lab('Niger',1.2,14.6,14,blue,0,true);lab('Nil',33.6,21.6,14,blue,0,true);
+  /* pépite d'or du Mali, clin d'œil à l'Atlas catalan */
+  g.fillStyle=gold;g.strokeStyle=ink;g.lineWidth=1.2*sc;g.beginPath();g.arc(X(-12.6),Y(11.6),9*sc,0,7);g.fill();g.stroke();
+  /* routes */
+  g.setLineDash([5*sc,5*sc]);g.strokeStyle='rgba(42,32,24,.55)';g.lineWidth=1.6*sc;for(const id in L)if(!S.done.includes(id))line(legPts(id),1);
+  g.setLineDash([]);g.strokeStyle=red;g.lineWidth=3.2*sc;S.done.forEach(id=>line(legPts(id),1));
+  let pos=[N[S.node].lon,N[S.node].lat];
+  if(S.leg){const pts=legPts(S.leg),u=prog==null?S.step/L[S.leg].steps:prog;if(u>0)line(pts,u);pos=along(pts,u);}
+  /* villes */
+  for(const k in N){const n=N[k],x=X(n.lon),y=Y(n.lat),big=k==='mecque'||k==='caire'||k==='niani';g.fillStyle=k==='mecque'?gold:red;g.strokeStyle=ink;g.lineWidth=1.2*sc;
+    g.beginPath();if(big)g.rect(x-5.5*sc,y-5.5*sc,11*sc,11*sc);else g.arc(x,y,4.2*sc,0,7);g.fill();g.stroke();
+    g.font=`${(big?17:14.5)*sc}px "IM Fell English SC",Georgia,serif`;g.fillStyle=ink;const left=k==='oualata'||k==='niani'||k==='medine'||k==='aqaba';g.textAlign=left?(k==='medine'||k==='aqaba'?'left':'right'):'left';
+    const dx=(left&&k!=='medine'&&k!=='aqaba'?-9:9)*sc,dy=(k==='aqaba'?-7:k==='mecque'?14:k==='tombouctou'?14:5)*sc;g.fillText(n.n,x+dx,y+dy);}
+  /* la caravane */
+  const cx=X(pos[0]),cy=Y(pos[1]);g.fillStyle=gold;g.strokeStyle=ink;g.lineWidth=1.6*sc;g.beginPath();g.arc(cx,cy,10*sc,0,7);g.fill();g.stroke();
+  camel(cx-6.5*sc,cy-6*sc,sc*.62,ink);
+  g.restore();
+  g.strokeStyle=ink;g.lineWidth=1.5*sc;g.strokeRect(ox,oy,1200*sc,604*sc);
+  if(oy>58*sc){g.textAlign='center';g.fillStyle=ink;g.font=`${34*sc}px "IM Fell English SC",Georgia,serif`;g.fillText('Le pèlerinage de Mansa Moussa',MW/2,oy/2+6*sc);
+    g.font=`italic ${18*sc}px "IM Fell English",Georgia,serif`;g.fillStyle=red;g.fillText("de Niani à La Mecque, l'an 1324",MW/2,oy/2+34*sc);
+    const mid=S.done.includes('b')||S.leg==='b'||S.node==='taghaza'?'taghaza':S.done.includes('c')||S.leg==='c'||S.node==='tombouctou'?'tombouctou':null;
+    const seq=['niani','oualata',mid,'touat','ghadames','caire','aqaba','medine','mecque'],by=oy+604*sc+oy/2,x0=ox+90*sc,x1=ox+1110*sc;
+    const reached=k=>k&&(k===S.node||S.done.some(id=>L[id].f===k||L[id].to===k));
+    g.strokeStyle='rgba(42,32,24,.5)';g.lineWidth=1.4*sc;g.beginPath();g.moveTo(x0,by);g.lineTo(x1,by);g.stroke();
+    seq.forEach((k,i)=>{const x=x0+(x1-x0)*i/(seq.length-1),on=reached(k);g.beginPath();g.arc(x,by,(k===S.node?8:5.5)*sc,0,7);g.fillStyle=on?red:vel;g.fill();g.strokeStyle=ink;g.lineWidth=1.2*sc;g.stroke();
+      g.fillStyle=ink;g.font=`${15*sc}px "IM Fell English SC",Georgia,serif`;g.fillText(k?N[k].n:'Taghaza ou Tombouctou',x,by+(i%2?-14:24)*sc);});}
+}
+function camel(x,y,s,c){g.fillStyle=c;const r=(a,b,w,h)=>g.fillRect(x+a*s,y+b*s,w*s,h*s);r(3,8,13,6);r(7,4,5,5);r(15,3,2.6,8);r(15,1.5,5.5,3);r(3.5,13,2,7);r(7.5,13,2,7);r(11,13,2,7);r(14,13,2,7);}
+
+/* ---------- vignette ---------- */
+function vig(terr,halt){const c=$('vig'),v=c.getContext('2d'),W=c.width,H=c.height;
+  const sky={sahel:['#f0b25e','#f7d8a0'],desert:['#e8914a','#f6cf8e'],egypte:['#8fa9c9','#f2d9b0'],arabie:['#b6566a','#f2b27c']}[terr],gr=v.createLinearGradient(0,0,0,H);gr.addColorStop(0,sky[0]);gr.addColorStop(1,sky[1]);v.fillStyle=gr;v.fillRect(0,0,W,H);
+  v.fillStyle='rgba(255,244,214,.9)';v.beginPath();v.arc(W*.78,H*.42,26,0,7);v.fill();
+  const dune=(y,a,f,ph,col)=>{v.fillStyle=col;v.beginPath();v.moveTo(0,H);for(let x=0;x<=W;x+=8)v.lineTo(x,y+Math.sin(x*f+ph)*a+Math.sin(x*f*2.3+ph)*a*.3);v.lineTo(W,H);v.fill();};
+  const gc={sahel:['#b9924a','#8a6a32','#5d4a24'],desert:['#d9a25a','#b9783a','#7a4a24'],egypte:['#c9ad7a','#9a7d4c','#5e4a2c'],arabie:['#8a5a4a','#5e3a36','#3a2428']}[terr];
+  dune(H*.6,16,.008,1,gc[0]);dune(H*.72,12,.012,3,gc[1]);
+  if(terr==='sahel')for(let i=0;i<7;i++){const x=60+i*140+(i%2)*40,y=H*.66;v.fillStyle='#3d3a1e';v.fillRect(x,y-26,4,30);v.beginPath();v.ellipse(x+2,y-30,26,9,0,0,7);v.fill();}
+  if(terr==='egypte'){v.fillStyle=gc[2];[[W*.2,70],[W*.3,46]].forEach(p=>{v.beginPath();v.moveTo(p[0]-p[1],H*.72);v.lineTo(p[0],H*.72-p[1]);v.lineTo(p[0]+p[1],H*.72);v.fill();});}
+  const n=clamp(Math.round(S.cham/9),2,12),base=H*.8;v.fillStyle='#231a14';
+  for(let i=0;i<n;i++){const x=(halt?W*.3:W*.12)+i*58,y=base-30+Math.sin(i*1.7)*3,s=2.1;const r=(a,b,w,h)=>v.fillRect(x+a*s,y+b*s,w*s,h*s);r(3,8,13,6);r(7,4,5,5);r(15,3,2.6,8);r(15,1.5,5.5,3);r(3.5,13,2,7);r(7.5,13,2,7);r(11,13,2,7);r(14,13,2,7);}
+  dune(H*.9,7,.02,5,gc[2]);
+}
+
+/* ---------- reprise ---------- */
+function save(){}
+const hot=window.claude&&window.claude.hot;
+if(hot&&hot.snapshot)hot.snapshot(()=>({S}));
+function start(d){S=fresh();if(d&&d.S&&d.S.node&&N[d.S.node]){S=Object.assign(fresh(),d.S);if(S.leg&&L[S.leg]&&S.step<L[S.leg].steps)travel();else if(S.node==='mecque')ending();else if(S.screen==='intro')intro();else{S.leg=null;city();}}else intro();}
+addEventListener('resize',()=>drawMap());
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>drawMap());
+if(hot&&hot.ready)hot.ready(start);else start(hot&&hot.data);
+window.__game={get S(){return S;}};
+})();
+</script>
+
+</html>
